@@ -34,17 +34,11 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
-          echo test,             - name: Docker Login
+          echo test
+          
       - name: Docker Login
         uses: docker/login-action@v3.2.0
         with:
-          # Server address of Docker registry. If not set then will default to Docker Hub
-          registry: # optional
-          # Username used to log against the Docker registry
-          username: # optional
-          # Password or personal access token used to log against the Docker registry
-          password: # optional
-          # Specifies whether the given registry is ECR (auto, true or false)
-          ecr: # optional, default is auto
-          # Log out from the Docker registry at the end of a job
-          logout: # optional, default is true
+          registry: registry.digitalocean.com
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
