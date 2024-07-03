@@ -1,7 +1,6 @@
 FROM python:3.9-slim
 WORKDIR /app
-COPY src/requirements.txt ./
+COPY . .
 RUN pip install -r requirements.txt
-COPY src
-EXPOSE 8080
+USER 1000
 CMD [ "python", "main.py" ]
