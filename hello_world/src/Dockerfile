@@ -1,5 +1,6 @@
 FROM python:3.9-slim
 WORKDIR /usr/src/app
+RUN cat /requirements.txt
 COPY --chown=1000:root . ./
 RUN pip3 install -r requirements.txt
 USER 1000
