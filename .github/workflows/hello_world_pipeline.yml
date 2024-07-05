@@ -55,7 +55,13 @@ jobs:
           context: ${{ github.workspace }}/hello_world/
           file: ${{ github.workspace }}/hello_world/src/Dockerfile
           push: true
-          tags: hello_world/${{ steps.meta.outputs.tags }}
-          labels: hello_world/${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Run a multi-line script
+        run: |
+          echo ${{ steps.meta.outputs.tags }}
+          echo ${{ steps.meta.outputs.labels }}
+      
 
       
