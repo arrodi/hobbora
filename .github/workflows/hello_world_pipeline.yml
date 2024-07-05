@@ -55,7 +55,7 @@ jobs:
           context: ${{ github.workspace }}/hello_world/
           file: ${{ github.workspace }}/hello_world/src/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: hello_world/${{ steps.meta.outputs.tags }}
+          labels: hello_world/${{ steps.meta.outputs.labels }}
 
       
