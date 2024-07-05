@@ -60,8 +60,11 @@ jobs:
 
       - name: Run a multi-line script
         run: |
-          echo ${{ steps.meta.outputs.tags }}
-          echo ${{ steps.meta.outputs.labels }}
+          echo "TAGS: $TAGS"
+          echo "LABELS: $LABELS"
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          LABELS: ${{ steps.meta.outputs.labels }}
       
 
       
