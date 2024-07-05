@@ -56,15 +56,15 @@ jobs:
           context: ${{ github.workspace }}/hello_world/
           file: ${{ github.workspace }}/hello_world/src/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: test_test/myapp:${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Run a multi-line script
+      - name: PRINT METADATA
         run: |
           echo "TAGS: $TAGS"
           echo "LABELS: $LABELS"
         env:
-          TAGS: test_test/myapp:${{ steps.meta.outputs.tags }}
+          TAGS: ${{ steps.meta.outputs.tags }}
           LABELS: ${{ steps.meta.outputs.labels }}
       
 
