@@ -56,7 +56,7 @@ jobs:
           context: ${{ github.workspace }}/hello_world/
           file: ${{ github.workspace }}/hello_world/src/Dockerfile
           push: true
-          tags: test_test/myapp:${{ steps.meta.outputs.tags }}
+          tags: artemek47/smartsforall:latest
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: PRINT METADATA
