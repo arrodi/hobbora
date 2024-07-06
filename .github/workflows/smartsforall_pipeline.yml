@@ -14,6 +14,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  REGISTRY_URL: artemek47/smartsforall
+  SERVICE_NAME: smartsforall
+  SERVICE_TAG: latest
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -47,25 +52,26 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: artemek47/smartsforall
+          images: ${{ env.REGISTRY_URL }}
 
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ${{ github.workspace }}/hello_world/
-          file: ${{ github.workspace }}/hello_world/src/Dockerfile
+          context: ${{ github.workspace }}/smartsforall/
+          file: ${{ github.workspace }}/smartsforall/src/Dockerfile
           push: true
-          tags: artemek47/smartsforall:${{ github.run_id }},artemek47/smartsforall:latest
+          tags: ${{ env.REGISTRY_URL }}:${{ github.run_id }},artemek47/smartsforall:latest
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: PRINT METADATA
-        run: |
-          echo "TAGS: $TAGS"
-          echo "LABELS: $LABELS"
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          LABELS: ${{ steps.meta.outputs.labels }}
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Setup Cluster Authentication
+      	run: cat ${{ secrets.KUBECONFIG }} > /tmp/kubeconfig
+      
+      - name: Deploying ${{ env.SERVICE_NAME }}
+        run: kubectl --kubeconfig=/tmp/kubeconfig rollout restart deployment ${{ env.SERVICE_NAME }}
       
 
       

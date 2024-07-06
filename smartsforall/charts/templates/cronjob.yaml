@@ -12,4 +12,10 @@ spec:
           - name: {{$.Values.deployment.name}}
             image: {{$.Values.deployment.image.path}}:{{$.Values.deployment.image.tag}}
             imagePullPolicy: IfNotPresent
+            resources:
+              limits:
+                memory: 128Mi
+                cpu: 50m
+            ports:
+            - containerPort: 8443
           restartPolicy: OnFailure

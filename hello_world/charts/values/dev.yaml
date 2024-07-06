@@ -1,5 +1,0 @@
-main:
-  name: hello-world
-  image:
-    path: 
-    tag:
