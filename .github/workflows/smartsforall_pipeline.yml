@@ -58,7 +58,7 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ${{ github.workspace }}/smartsforall/
+          context: ${{ github.workspace }}/smartsforall/src/
           file: ${{ github.workspace }}/smartsforall/src/Dockerfile
           push: true
           tags: ${{ env.REGISTRY_URL }}:${{ github.run_id }},artemek47/smartsforall:latest

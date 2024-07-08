@@ -1,5 +1,0 @@
-apiVersion: "v1"
-name: "smartsforall"
-version: "1.0.0"
-keywords:
-  - hello

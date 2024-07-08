@@ -1,5 +1,0 @@
-main:
-  name: hello-world
-  image:
-    path: artemek47/smartsforall
-    tag: latest
