@@ -12,6 +12,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: Never
           containers:
             - name: {{$.Values.deployment.name}}
               image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
