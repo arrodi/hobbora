@@ -63,5 +63,51 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY_URL }}:${{ github.run_id }},artemek47/smartsforall:latest
           labels: ${{ steps.meta.outputs.labels }}
+    
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+
+      - run: kubectl get pods
+          
+      - name: pull kubeconfig
+        run: |
+          mkdir kubeconf
+          echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+  
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Uninstall Previous Deployment
+        run: helm uninstall smartsforall
+
+      - name: Install Deployment
+        if: always()
+        run: helm upgrade --install smartsforall smartsforall/charts
+
 
       
