@@ -15,11 +15,12 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY_URL: artemek47/smartsforall
-  SERVICE_NAME: smartsforall
-  SERVICE_TAG: latest
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  DOCKER_URL: artemek47/smartsforall
+  DOCKER_TAG: latest
+  DEPLOYMENT_NAME: smartsforall
+  DEPLOYMENT_VALUES_PATH: smartsforall/charts/values-dev.yaml
+  
+  
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -52,16 +53,16 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY_URL }}
+          images: ${{ env.DOCKER_URL }}
 
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ${{ github.workspace }}/smartsforall/src/
-          file: ${{ github.workspace }}/smartsforall/src/Dockerfile
+          context: ${{ github.workspace }}/${{ env.DEPLOYMENT_NAME }}/src/
+          file: ${{ github.workspace }}/${{ env.DEPLOYMENT_NAME }}/src/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY_URL }}:${{ github.run_id }},artemek47/smartsforall:latest
+          tags: ${{ env.DOCKER_URL }}:${{ github.run_id }},${{ env.DOCKER_URL }}:${{ env.DOCKER_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
     
   deploy:
@@ -80,17 +81,15 @@ jobs:
           mkdir -p ~/.kube
           echo "${KUBECONFIG}" > ~/.kube/config
 
-      - name: Install kubectl
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y kubectl
-
-      - run: kubectl get pods
-          
-      - name: pull kubeconfig
-        run: |
-          mkdir kubeconf
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
+      # - name: pull kubeconfig
+      #   run: |
+      #     mkdir kubeconf
+      #     echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
+      
+      # - name: Install kubectl
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y kubectl
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v3
@@ -107,7 +106,7 @@ jobs:
 
       - name: Install Deployment
         if: always()
-        run: helm upgrade --install smartsforall smartsforall/charts
+        run: helm upgrade --install -f ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}/charts
 
 
       
