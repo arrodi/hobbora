@@ -12,7 +12,6 @@ spec:
     spec:
       template:
         spec:
-          restartPolicy: Never
           containers:
             - name: {{$.Values.deployment.name}}
               image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
@@ -24,4 +23,4 @@ spec:
                 limits:
                   cpu: {{$.Values.deployment.resources.cpu}}
                   memory: {{$.Values.deployment.resources.memory}}
-          
+          restartPolicy: OnFailure
