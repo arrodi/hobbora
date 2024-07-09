@@ -74,17 +74,17 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      # - name: Set up Kubeconfig
-      #   env:
-      #     KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
-      #   run: |
-      #     mkdir -p ~/.kube
-      #     echo "${KUBECONFIG}" > ~/.kube/config
-
-      - name: pull kubeconfig
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
-          mkdir kubeconf
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      # - name: pull kubeconfig
+      #   run: |
+      #     mkdir kubeconf
+      #     echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
       
       # - name: Install kubectl
       #   run: |
