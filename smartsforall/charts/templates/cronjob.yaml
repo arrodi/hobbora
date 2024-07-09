@@ -17,10 +17,10 @@ spec:
               image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
               imagePullPolicy: Always
               restartPolicy: OnFailure
-              imagePullSecrets:
-                - name: {{$.Values.deployment.docker.secret}}
               resources:
                 limits:
                   cpu: {{$.Values.deployment.resources.cpu}}
                   memory: {{$.Values.deployment.resources.memory}}
           restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: {{$.Values.deployment.docker.secret}}
