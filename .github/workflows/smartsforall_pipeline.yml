@@ -64,14 +64,4 @@ jobs:
           tags: ${{ env.REGISTRY_URL }}:${{ github.run_id }},artemek47/smartsforall:latest
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Install Kubectl
-        uses: azure/setup-kubectl@v3
-
-      - name: Setup Cluster Authentication
-        run: cat ${{ secrets.KUBECONFIG }} > /tmp/kubeconfig
-      
-      - name: Deploying ${{ env.SERVICE_NAME }}
-        run: kubectl --kubeconfig=/tmp/kubeconfig rollout restart deployment ${{ env.SERVICE_NAME }}
-      
-
       
