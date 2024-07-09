@@ -16,7 +16,6 @@ spec:
           - name: {{$.Values.deployment.name}}
             image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
             imagePullPolicy: Always
-            restartPolicy: OnFailure
             resources:
               limits:
                 cpu: {{$.Values.deployment.resources.cpu}}
