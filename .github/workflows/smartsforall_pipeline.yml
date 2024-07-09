@@ -86,15 +86,15 @@ jobs:
           mkdir kubeconf
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconf/kubeconf.conf
       
-      - name: Install kubectl
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y kubectl
-
       # - name: Install kubectl
-      #   uses: azure/setup-kubectl@v3
-      #   with:
-      #     version: 'latest'
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y kubectl
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
   
       - name: Install Helm
         uses: azure/setup-helm@v3
