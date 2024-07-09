@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: {{$.Values.deployment.name}}
 spec:
-  schedule: {{$.Values.deployment.schedule}}
+  schedule: {{$.Values.deployment.schedule | quote }}
   suspend: {{$.Values.deployment.suspend}}
   succesfulJobsHistoryLImit: 3
   failedJobsHistoryLimit: 1
