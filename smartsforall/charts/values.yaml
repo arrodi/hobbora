@@ -1,6 +1,6 @@
 deployment:
   name: smartsforall
-  schedule: "* * * * *"
+  schedule: '* * * * *'
   suspend: false
   docker:
     image: artemek47/smartsforall
