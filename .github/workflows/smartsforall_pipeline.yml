@@ -11,6 +11,7 @@ env:
   DOCKER_TAG: latest
   DEPLOYMENT_NAME: smartsforall
   DEPLOYMENT_VALUES_PATH: smartsforall/charts/values-dev.yaml
+  DEPLOYMENT_NAMESPACE: dev
   
   
 jobs:
@@ -94,11 +95,11 @@ jobs:
           version: 'latest'
 
       - name: Uninstall Previous Deployment
-        run: helm uninstall ${{ env.DEPLOYMENT_NAME }}
+        run: helm uninstall --namespace ${{ env.DEPLOYMENT_NAMESPACE }} ${{ env.DEPLOYMENT_NAME }}
 
       - name: Install Deployment
         if: always()
-        run: helm upgrade --namespace dev --install --values ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}/charts
+        run: helm upgrade --namespace ${{ env.DEPLOYMENT_NAMESPACE }} --install --values ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}/charts
 
 
       
