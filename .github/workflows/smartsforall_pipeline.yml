@@ -98,7 +98,7 @@ jobs:
 
       - name: Install Deployment
         if: always()
-        run: helm upgrade --install -f ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}/charts
+        run: helm upgrade --namespace dev --install --values ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_NAME }}/charts
 
 
       
