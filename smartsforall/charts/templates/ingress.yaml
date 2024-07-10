@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Ingress
+metadata:
+  name: {{$.Values.deployment.name}}
+spec:
+  rules:
+    {{ - range $host := .Values.onPremIngressHosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+        

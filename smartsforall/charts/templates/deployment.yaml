@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Deployment
+metadata:
+  name: {{$.Values.deployment.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{$.Values.deployment.name}}
+  replicas: {{$.Values.deployment.replicas}}
+  suspend: {{$.Values.deployment.suspend}}
+  template:
+    metadata:
+      labels:
+        app: {{$.Release.Name}}
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{$.Values.deployment.name}}
+            image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
+            imagePullPolicy: Always
+            ports:
+            - containerPort: 8000
+            resources:
+              limits:
+                cpu: {{$.Values.deployment.resources.cpu}}
+                memory: {{$.Values.deployment.resources.memory}}
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: {{$.Values.deployment.docker.secret}}
