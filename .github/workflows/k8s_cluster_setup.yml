@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ "main" ]
   
+
+env:
+  CHART_VERSION: "4.11.1"
+  APP_VERSION: "1.11.1"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,3 +33,25 @@ jobs:
 
       - name: Create Namespace nginx
         run: kubectl apply -f ${{ github.workspace }}/kubernetes/namespace_nginx.yaml
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Helm Add nginx to Repository
+        if: always()
+        run: helm repo --namespace nginx add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+      - name: Create Directory Path
+        run: mkdir ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
+
+      - name: Helm Install nginx
+        if: always()
+        run: |
+          helm template nginx nginx-ingress \
+          --repo https://kubernetes.github.io/ingress-nginx \
+          --version ${CHART_VERSION} \
+          --namespace nginx \
+          > ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
+        

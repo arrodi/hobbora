@@ -4,10 +4,3 @@ metadata:
   name: nginx
   labels:
     kubernetes.io/metadata.name: nginx
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cert-manager
-  labels:
-    kubernetes.io/metadata.name: cert-manager
