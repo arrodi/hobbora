@@ -49,7 +49,7 @@ jobs:
       - name: Helm Install nginx
         if: always()
         run: |
-          helm template nginx nginx-ingress \
+          helm template nginx ingress-nginx \
           --repo https://kubernetes.github.io/ingress-nginx \
           --version ${CHART_VERSION} \
           --namespace nginx \
