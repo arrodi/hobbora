@@ -1,7 +1,6 @@
 deployment:
-  name: smartsforall
-  schedule: '* * * * *'
-  suspend: false
+  name: lurnen
+  domain: lurnen.com
   docker:
     image: artemek47/smartsforall
     tag: latest
@@ -9,3 +8,5 @@ deployment:
   resources:
     cpu: 100m
     memory: 250Mi
+  port: 80
+  repllicas: 1

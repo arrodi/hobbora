@@ -9,8 +9,8 @@ on:
 env:
   DOCKER_URL: artemek47/smartsforall
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: smartsforall
-  DEPLOYMENT_VALUES_PATH: smartsforall/charts/values-dev.yaml
+  DEPLOYMENT_NAME: lurnen
+  DEPLOYMENT_VALUES_PATH: lurnen/charts/values.yaml
   DEPLOYMENT_NAMESPACE: dev
   
 jobs:

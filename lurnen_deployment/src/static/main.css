@@ -1,0 +1,60 @@
+html,body {
+    margin:0;
+    padding:0;
+    background-image: url('/static/visuals/manufacturing.png');
+}
+
+.cs { 
+    text-align: center;
+    font-size: 550%;
+    margin-top:300px;
+    margin-bottom:100px;
+    margin-left:500px;
+    margin-right:500px;
+    font-weight: bold;
+    background-color:rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+.logo img{
+    position: absolute;
+    width:150px;
+    height:50px;
+    margin-top:10px;
+    margin-left:10px;
+}
+.background_img img{
+    position: absolute;
+    width:100%;
+}
+
+nav {
+    width:100%;
+    background-color:rgb(0, 0, 0);
+    overflow: hidden;
+}
+
+ul  {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 170px;
+}
+
+li {
+    float: left; 
+}
+nav a{
+    font-size: 20px;
+    width: 200px;
+    display:block;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 22px;
+    padding-bottom: 20px;
+    text-decoration:none;
+    font-family:Arial;
+    color:#f2f2f2;
+    text-align:center;
+}
+nav a:hover{
+    background-color:rgb(56, 56, 56);
+}
