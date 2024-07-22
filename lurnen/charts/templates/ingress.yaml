@@ -2,14 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.deployment.name }}-ingress
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt
+  # annotations:
+  #   kubernetes.io/ingress.class: nginx
+  #   cert-manager.io/cluster-issuer: letsencrypt
 spec:
-  tls:
-  - hosts:
-    - {{ .Values.deployment.domain }}
-    secretName: {{ .Values.deployment.name }}-tls
+  # tls:
+  # - hosts:
+  #   - {{ .Values.deployment.domain }}
+  #   secretName: {{ .Values.deployment.name }}-tls
+  ingressClassName: nginx
   rules:
   - host: {{ .Values.deployment.domain }}
     http:
@@ -18,6 +19,6 @@ spec:
         path: /
         backend:
           service:
-            name: {{ .Values.deployment.name }}-ingress
+            name: {{ .Values.deployment.name }}-service
             port:
               number: {{ .Values.deployment.port }}
