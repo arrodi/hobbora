@@ -16,7 +16,7 @@ spec:
       - name: {{ .Values.deployment.docker.secret }}
       containers:
       - name: {{ .Values.deployment.name }}
-        image: {{$.Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
+        image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
         ports:
         - containerPort: {{ .Values.deployment.port }}
         env:
