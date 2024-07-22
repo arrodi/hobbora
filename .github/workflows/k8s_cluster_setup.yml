@@ -12,7 +12,7 @@ env:
   APP_VERSION: 1.11.1
 
 jobs:
-  deploy:
+  deploy_nginx:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
-
+      
       - name: Create Namespace nginx
         run: kubectl apply -f ${{ github.workspace }}/kubernetes/namespace_nginx.yaml
 
@@ -46,7 +46,7 @@ jobs:
       - name: Create Directory Path
         run: mkdir -p ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/
 
-      - name: Helm Install nginx
+      - name: Helm Create nginx Template
         if: always()
         run: |
           helm template nginx ingress-nginx \
@@ -54,4 +54,7 @@ jobs:
           --version ${CHART_VERSION} \
           --namespace nginx \
           > ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
+
+      - name: Deploy nginx Template
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
         
