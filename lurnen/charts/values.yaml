@@ -2,7 +2,7 @@ deployment:
   name: lurnen
   domain: lurnen.com
   docker:
-    image: artemek47/smartsforall
+    image: artemek47/lurnen
     tag: latest
     secret: docker.secret
   resources:
