@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_URL: artemek47/smartsforall
+  DOCKER_URL: artemek47/lurnen
   DOCKER_TAG: latest
   DEPLOYMENT_NAME: lurnen
   DEPLOYMENT_VALUES_PATH: lurnen/charts/values.yaml
