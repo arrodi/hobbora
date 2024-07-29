@@ -8,6 +8,8 @@ from waitress import serve
 # FLASK INIT
 app = Flask(__name__)
 
+print("App Started!")
+
 #########################
 ##### SERVER ROUTES #####
 #########################
