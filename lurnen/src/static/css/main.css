@@ -1,3 +1,4 @@
+/* Global Styles */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -6,25 +7,25 @@ body {
     color: #333;
 }
 
+/* Container */
 .container {
     width: 80%;
     margin: 0 auto;
 }
 
+/* Header Styles */
 header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
     padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 header .logo {
-    font-size: 24px;
+    font-size: 36px;
     font-weight: bold;
-    color: #333;
-    text-decoration: none;
 }
 
 header nav ul {
@@ -32,22 +33,44 @@ header nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 15px;
+    justify-content: center;
+    gap: 20px;
 }
 
 header nav ul li a {
-    color: #333;
+    color: white;
     text-decoration: none;
-    padding: 5px 10px;
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 18px;
+    position: relative;
+    transition: color 0.3s;
 }
 
 header nav ul li a:hover {
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
+    color: #000;
 }
 
+header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    animation: rotate-bg 10s linear infinite;
+    z-index: -1;
+}
+
+@keyframes rotate-bg {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Main Styles */
 main {
     padding: 40px 0;
     background-color: #fff;
@@ -57,19 +80,40 @@ main {
 }
 
 main h2 {
-    color: #007bff;
-    margin-top: 0;
+    color: #ff8a00;
+    animation: fadeIn 2s;
 }
 
 main p {
     line-height: 1.6;
+    animation: slideIn 2s;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Footer Styles */
 footer {
     background-color: #333;
     color: #fff;
     text-align: center;
     padding: 20px 0;
+    margin-top: 20px;
     position: relative;
     width: 100%;
 }
@@ -89,6 +133,7 @@ footer .social-media img {
     filter: invert(100%);
 }
 
+/* Login Window Styles */
 .login-window {
     display: none;
     position: fixed;
@@ -101,11 +146,21 @@ footer .social-media img {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     z-index: 1000;
+    animation: popIn 0.5s;
+}
+
+@keyframes popIn {
+    from {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .login-window h3 {
     margin-top: 0;
-    color: #007bff;
+    color: #ff8a00;
 }
 
 .login-window form {
@@ -126,7 +181,7 @@ footer .social-media img {
 
 .login-window button {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #ff8a00;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -135,7 +190,7 @@ footer .social-media img {
 }
 
 .login-window button:hover {
-    background-color: #0056b3;
+    background-color: #e52e71;
 }
 
 #close-login {
