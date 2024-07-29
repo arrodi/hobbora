@@ -18,11 +18,11 @@ spec:
       - name: {{ .Values.deployment.name }}
         image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
         ports:
-        - containerPort: {{ .Values.deployment.targetPort }}
+        - containerPort: {{ .Values.deployment.port }}
         env:
         - name: PYTHONUNBUFFERED
           value: "1"
         - name: APP_PORT
-          value: {{ .Values.deployment.targetPort | quote }}
+          value: {{ .Values.deployment.port | quote }}
         - name: APP_HOSTNAME
           value: {{ .Values.deployment.domain }}
