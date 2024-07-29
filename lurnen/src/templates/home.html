@@ -42,27 +42,5 @@
         </div>
     </footer>
 
-    <div class="login-window" id="login-window">
-        <h3>Login</h3>
-        <form>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <button id="close-login">Close</button>
-    </div>
-
-    <script>
-        document.getElementById('login-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('login-window').style.display = 'block';
-        });
-
-        document.getElementById('close-login').addEventListener('click', function() {
-            document.getElementById('login-window').style.display = 'none';
-        });
-    </script>
 </body>
 </html>
