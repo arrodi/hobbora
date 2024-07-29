@@ -5,10 +5,10 @@ from os import environ
 from flask import Flask, render_template
 from waitress import serve
 
+print("App Started!")
+
 # FLASK INIT
 app = Flask(__name__)
-
-print("App Started!")
 
 #########################
 ##### SERVER ROUTES #####
