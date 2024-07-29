@@ -6,10 +6,10 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
-  # tls:
-  # - hosts:
-  #   - {{ .Values.deployment.domain }}
-  #   secretName: {{ .Values.deployment.name }}-tls
+  tls:
+  - hosts:
+    - {{ .Values.deployment.domain }}
+    secretName: {{ .Values.deployment.name }}-tls
   rules:
   - host: {{ .Values.deployment.domain }}
     http:
