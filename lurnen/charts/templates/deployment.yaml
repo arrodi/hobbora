@@ -18,7 +18,7 @@ spec:
       - name: {{ .Values.deployment.name }}
         image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
         ports:
-        - containerPort: {{ .Values.deployment.port }}
+        - containerPort: {{ .Values.deployment.targetpPort }}
         env:
         - name: PYTHONUNBUFFERED
           value: "1"

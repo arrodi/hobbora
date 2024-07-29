@@ -6,6 +6,6 @@ spec:
   type: ClusterIP
   ports:
   - port: {{ .Values.deployment.port }}
-    targetPort: {{ .Values.deployment.port }}
+    targetPort: {{ .Values.deployment.targetPort }}
   selector:
     app: {{ .Values.deployment.name }}-service

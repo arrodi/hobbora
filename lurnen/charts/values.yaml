@@ -2,11 +2,12 @@ deployment:
   name: lurnen
   domain: lurnen.com
   docker:
-    image: artemek47/smartsforall
+    image: artemek47/lurnen
     tag: latest
     secret: docker.secret
   resources:
     cpu: 100m
     memory: 250Mi
   port: 80
+  targetPort: 5678
   repllicas: 1
