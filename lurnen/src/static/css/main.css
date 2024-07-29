@@ -1,78 +1,56 @@
 body {
     font-family: 'Arial', sans-serif;
+    background-color: #FFFFFF;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
+h1, h2, h3 {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
-header {
-    background-color: #343a40;
-    color: #fff;
-    padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header .logo {
+h1 {
     margin: 0;
+    padding: 10px;
 }
 
-header nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 15px;
+h2 {
+    color: #000080;
 }
 
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 5px 10px;
+h3 {
+    color: #000080;
 }
 
-header nav ul li a:hover {
-    background-color: #495057;
-    border-radius: 5px;
-}
-
-main {
-    padding: 40px 0;
-}
-
-main h2 {
-    color: #343a40;
-}
-
-main p {
-    line-height: 1.8;
-}
-
-footer {
-    background-color: #343a40;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    position: fixed;
+table {
     width: 100%;
-    bottom: 0;
+    border-collapse: collapse;
 }
 
-footer .social-media a {
-    display: inline-block;
-    margin: 0 10px;
+td {
+    padding: 10px;
 }
 
-footer .social-media img {
-    width: 24px;
-    height: 24px;
-    filter: invert(100%);
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #0000EE;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+marquee {
+    padding: 10px 0;
 }
 
 .login-window {
@@ -81,10 +59,10 @@ footer .social-media img {
     top: 20px;
     right: 20px;
     width: 300px;
-    background-color: #fff;
+    background-color: #FFFFFF;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border: 2px solid #000080;
+    border-radius: 10px;
     z-index: 1000;
 }
 
@@ -103,13 +81,13 @@ footer .social-media img {
 }
 
 .login-window input {
-    padding: 8px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 .login-window button {
-    padding: 10px;
+    padding: 5px;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -128,4 +106,14 @@ footer .social-media img {
 
 #close-login:hover {
     background-color: #c82333;
+}
+
+.social-media a {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.social-media img {
+    width: 24px;
+    height: 24px;
 }
