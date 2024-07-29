@@ -3,33 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Website</title>
+    <title>Lurnen</title>
     <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
 </head>
 <body>
     <header>
-        <h1>Welcome to My Website</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <h1 class="logo">Lurnen</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#" id="login-link">Login</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <main>
+    <main class="container">
         <section>
-            <h2>About Us</h2>
-            <p>This is a simple website to demonstrate basic HTML and CSS.</p>
+            <h2>About Lurnen</h2>
+            <p>Welcome to Lurnen, where we provide exceptional services to help you achieve your learning goals.</p>
         </section>
         <section>
-            <h2>Services</h2>
-            <p>We offer a variety of services to meet your needs.</p>
+            <h2>Our Services</h2>
+            <p>Discover a wide range of services tailored to meet your learning needs.</p>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 My Website</p>
+        <div class="container">
+            <p>&copy; 2024 Lurnen</p>
+            <div class="social-media">
+                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+            </div>
+        </div>
     </footer>
+
+    <div class="login-window" id="login-window">
+        <h3>Login</h3>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <button id="close-login">Close</button>
+    </div>
+
+    <script>
+        document.getElementById('login-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('login-window').style.display = 'block';
+        });
+
+        document.getElementById('close-login').addEventListener('click', function() {
+            document.getElementById('login-window').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
