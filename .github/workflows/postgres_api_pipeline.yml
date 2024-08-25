@@ -7,9 +7,9 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_URL: artemek47/postgres_api
+  DOCKER_URL: artemek47/postgres-api
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: postgres_api
+  DEPLOYMENT_NAME: postgres-api
   DEPLOYMENT_VALUES_PATH: postgres_api/charts/values.yaml
   DEPLOYMENT_NAMESPACE: postgres
   
