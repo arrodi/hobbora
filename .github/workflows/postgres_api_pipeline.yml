@@ -7,11 +7,11 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_URL: artemek47/lurnen
+  DOCKER_URL: artemek47/postgres_api
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: lurnen
-  DEPLOYMENT_VALUES_PATH: lurnen/charts/values.yaml
-  DEPLOYMENT_NAMESPACE: default
+  DEPLOYMENT_NAME: postgres_api
+  DEPLOYMENT_VALUES_PATH: postgres_api/charts/values.yaml
+  DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
   build:

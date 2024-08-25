@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.deployment.docker.secret }}
+      containers:
+      - name: {{ .Values.deployment.name }}
+        image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
+        ports:
+        - containerPort: {{ .Values.deployment.port }}
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-creds
+              key: POSTGRES_USER
+              optional: false
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-creds
+              key: POSTGRES_PASSWORD
+              optional: false
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-creds
+              key: POSTGRES_DB
+              optional: false
+        - name: POSTGRES_HOST
+          value: {{ .Values.postgres.host }}
+        - name: POSTGRES_PORT
+          value: {{ .Values.postgres.port }}
