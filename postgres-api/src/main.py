@@ -1,20 +1,25 @@
 import psycopg2
 from os import environ
+from time import sleep
 
 connection = psycopg2.connect(database=environ["POSTGRES_DB"], user=environ["POSTGRES_USER"], password=environ["POSTGRES_PASSWORD"], host=environ["POSTGRES_HOST"], port=environ["POSTGRES_PORT"])
 
-cursor = connection.cursor()
+while True:
 
-sql_context ="""
-select 
-    *
-from 
-    customers
-"""
+    cursor = connection.cursor()
 
-cursor.execute(sql_context)
+    sql_context ="""
+    select 
+        *
+    from 
+        customers
+    """
 
-# Fetch all rows from database TEST
-record = cursor.fetchall()
+    cursor.execute(sql_context)
 
-print("Data from Database:- ", record)
+    # Fetch all rows from database TEST
+    record = cursor.fetchall()
+
+    print("Data from Database:- ", record)
+
+    sleep(600)
