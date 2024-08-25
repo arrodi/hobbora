@@ -40,7 +40,5 @@ spec:
               name: postgres-creds
               key: POSTGRES_DB
               optional: false
-        - name: POSTGRES_HOST
-          value: {{ .Values.postgres.host }}
         - name: POSTGRES_PORT
           value: {{ .Values.postgres.port }}
