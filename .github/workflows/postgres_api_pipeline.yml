@@ -1,4 +1,4 @@
-name: Build and Deploy postgresAPI
+name: Build and Deploy postgres-api
 
 on:
   push:
@@ -7,10 +7,10 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_URL: artemek47/postgresAPI
+  DOCKER_URL: artemek47/postgres-api
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: postgresAPI
-  DEPLOYMENT_VALUES_PATH: postgresAPI/charts/values.yaml
+  DEPLOYMENT_NAME: postgres-api
+  DEPLOYMENT_VALUES_PATH: postgres-api/charts/values.yaml
   DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
