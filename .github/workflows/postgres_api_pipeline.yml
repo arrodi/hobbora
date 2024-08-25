@@ -3,8 +3,8 @@ name: Build and Deploy postgres-api
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    paths:
+      - postgres-api
 
 env:
   DOCKER_URL: artemek47/postgres-api

@@ -3,8 +3,8 @@ name: Build and Deploy Lurnen Web UI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    paths:
+      - lurnen
 
 env:
   DOCKER_URL: artemek47/lurnen
