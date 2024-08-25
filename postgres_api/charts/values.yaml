@@ -1,7 +1,7 @@
 deployment:
-  name: postgres_api
+  name: postgres-api
   docker:
-    image: artemek47/postgres_api
+    image: artemek47/postgres-api
     tag: latest
     secret: docker.secret
   resources:
