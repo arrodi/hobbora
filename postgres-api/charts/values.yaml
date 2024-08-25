@@ -10,5 +10,5 @@ deployment:
   port: 80
   repllicas: 1
 postgres:
-  host: 10.244.0.86
+  host: "10.244.0.86"
   port: 5432
