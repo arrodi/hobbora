@@ -14,7 +14,7 @@ from
 
 cursor.execute(sql_context)
 
-# Fetch all rows from database
+# Fetch all rows from database TEST
 record = cursor.fetchall()
 
 print("Data from Database:- ", record)
