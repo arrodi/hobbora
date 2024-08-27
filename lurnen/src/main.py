@@ -25,7 +25,7 @@ def homepage():
 def about():
     print("Someone visited ABOUT!")
     db_info_json = requests.get("postgres.postgres-api-service:5000", "")
-    return render_template("about.html", str(db_info_json))
+    return render_template("about.html", db_info = str(db_info_json))
 
 #########################
 ##### SERVER BEGIN! #####
