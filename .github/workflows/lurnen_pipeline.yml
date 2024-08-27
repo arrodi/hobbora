@@ -2,7 +2,6 @@ name: Build and Deploy Lurnen Web UI
 
 on:
   push:
-    branches: [ "main" ]
     paths:
       - 'lurnen/**'
 
