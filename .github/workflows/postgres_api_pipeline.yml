@@ -2,7 +2,6 @@ name: Build and Deploy postgres-api
 
 on:
   push:
-    branches: [ "main" ]
     paths:
       - 'postgres-api/**'
 

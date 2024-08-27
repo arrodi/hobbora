@@ -22,25 +22,25 @@ spec:
         env:
         - name: PYTHONUNBUFFERED
           value: "1"
-        - name: POSTGRES_USER
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: postgres-creds
-              key: POSTGRES_USER
+              name: {{ .Values.database.secret }}
+              key: DB_USER
               optional: false
-        - name: POSTGRES_PASSWORD
+        - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-creds
-              key: POSTGRES_PASSWORD
+              name: {{ .Values.database.secret }}
+              key: DB_PASSWORD
               optional: false
-        - name: POSTGRES_DB
+        - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: postgres-creds
-              key: POSTGRES_DB
+              name: {{ .Values.database.secret }}
+              key: DB_NAME
               optional: false
-        - name: POSTGRES_PORT
-          value: "{{ .Values.postgres.port }}"
-        - name: POSTGRES_HOST
-          value: "{{ .Values.postgres.host }}"
+        - name: DB_PORT
+          value: "{{ .Values.database.port }}"
+        - name: DB_HOST
+          value: "{{ .Values.database.host }}"
