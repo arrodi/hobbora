@@ -44,3 +44,5 @@ spec:
           value: "{{ .Values.database.port }}"
         - name: DB_HOST
           value: "{{ .Values.database.host }}"
+        - name: APP_PORT
+          value: {{ .Values.deployment.port }}
