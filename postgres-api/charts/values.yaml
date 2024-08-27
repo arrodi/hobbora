@@ -11,5 +11,5 @@ deployment:
   repllicas: 1
 database:
   secret: postgres-creds
-  host: 10.244.0.86
+  host: postgres-db-service
   port: 5432
