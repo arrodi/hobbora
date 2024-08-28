@@ -26,11 +26,6 @@ def get_customer():
 
     username_param = request.args.get('username')
 
-    if isinstance(username_param, list):
-        username_param = username_param[0]
-        if isinstance(username_param, list):
-            username_param = username_param[0]
-
     sql_context =f"""
     SELECT 
         PASSWORD
@@ -43,6 +38,11 @@ def get_customer():
     print(sql_context)
 
     password_str = postgres.execute_query(sql_context)
+
+    if isinstance(password_str, list):
+        password_str = password_str[0]
+        if isinstance(password_str, list):
+            password_str = password_str[0]
 
     if password_str:
 
