@@ -40,9 +40,7 @@ def get_customer():
     password_str = postgres.execute_query(sql_context)
 
     if isinstance(password_str, list):
-        password_str = password_str[0]
-        if isinstance(password_str, list):
-            password_str = password_str[0]
+        password_str = password_str[0][0]
 
     if password_str:
 
