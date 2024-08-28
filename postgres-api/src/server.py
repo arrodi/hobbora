@@ -26,6 +26,10 @@ def get_customer():
 
     username_param = request.args.get('username')
 
+    if isinstance(username_param, list):
+        username_param = username_param[0]
+        if isinstance(username_param, list):
+            username_param = username_param[0]
 
     sql_context =f"""
     SELECT 
