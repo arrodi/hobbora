@@ -24,7 +24,7 @@ def homepage():
 @app.route("/about", methods=['GET'])
 def about():
     print("Someone visited ABOUT!")
-    db_info_json = requests.get("http://postgres.postgres-api-service:8086", "")
+    db_info_json = requests.get("http://postgres-api-service.postgres.svc.cluster.local:8080", "")
     return render_template("about.html", db_info = str(db_info_json))
 
 #########################
