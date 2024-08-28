@@ -20,17 +20,39 @@ app = Flask(__name__)
 #########################
 ##### SERVER ROUTES #####
 #########################
-@app.route("/", methods=['GET'])
-def hello_world():
+@app.route("/get_password", methods=['GET'])
+def get_customer():
     print(f"{request.remote_addr} requested!")
-    sql_context ="""
-    select 
-        *
-    from 
-        customers
+
+    username_param = request.artgs.get('username')
+
+
+    sql_context =f"""
+    SELECT 
+        PASSWORD
+    FROM 
+        USER_ACCOUNTS
+    WHERE
+        USERNAME={username_param}
     """
-    record_str = postgres.execute_query(sql_context)
-    return jsonify({"Data":record_str})
+    password_str = postgres.execute_query(sql_context)
+
+    if password_str:
+
+        response = {
+        'username': username_param,
+        'password': password_str,
+        'message': 'GET request received successfully!'
+        }
+
+    else:
+        response = {
+        'username': username_param,
+        'password': "",
+        'message': 'GET request received successfully!'
+        }
+
+    return jsonify(response)
 
 #########################
 ##### SERVER BEGIN! #####

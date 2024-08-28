@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lurnen</title>
+    <title>Welcome to Lurnen</title>
     <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
 </head>
 <body>
@@ -23,21 +23,9 @@
 
     <main class="container">
         <section class="welcome-section">
-            <h2>Welcome to Lurnen</h2>
-            <p>Your go-to platform for all your learning needs. Explore our services and find out how we can help you achieve your educational goals.</p>
-        </section>
-
-        <section class="login-section">
-            <h3>Login to Lurnen</h3>
-            <form action="/login" method="POST">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <button type="submit">Login</button>
-            </form>
+            <h2>Welcome, {{ username }}!</h2>
+            <p>You have successfully logged in to Lurnen.</p>
+            <p>Feel free to explore our services and enjoy your learning journey.</p>
         </section>
     </main>
 
@@ -48,4 +36,3 @@
     </footer>
 </body>
 </html>
-    

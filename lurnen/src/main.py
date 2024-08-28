@@ -24,7 +24,14 @@ def home_page():
 @app.route("/login", methods=['POST'])
 def login_page():
     print(f"{request.remote_addr} visited HOME!")
-    return render_template("home.html")
+    input_username =  request.fomr['username']
+    input_password = request.fomr['password']
+    db_password = requests.get("http://postgres-api-service.postgres.svc.cluster.local:8080", f"get_password&?username={input_username}")["password"]
+
+    if db_password == input_password:
+        return render_template("welcome.html", username = input_username)
+    else:
+        return render_template("wrong_password.html", username = input_username)
 
 @app.route("/about", methods=['GET'])
 def about_page():
