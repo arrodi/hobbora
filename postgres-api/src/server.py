@@ -33,7 +33,7 @@ def get_customer():
     FROM 
         USER_ACCOUNTS
     WHERE
-        USERNAME="{username_param}"
+        USERNAME='{username_param}'
     """
 
     print(sql_context)
