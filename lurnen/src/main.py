@@ -17,12 +17,17 @@ app = Flask(__name__)
 ##### SERVER ROUTES #####
 #########################
 @app.route("/", methods=['GET'])
-def homepage():
+def home_page():
+    print(f"{request.remote_addr} visited HOME!")
+    return render_template("home.html")
+
+@app.route("/login", methods=['POST'])
+def login_page():
     print(f"{request.remote_addr} visited HOME!")
     return render_template("home.html")
 
 @app.route("/about", methods=['GET'])
-def about():
+def about_page():
     print(f"{request.remote_addr} visited ABOUT!")
     db_info_json = requests.get("http://postgres-api-service.postgres.svc.cluster.local:8080", "")
     return render_template("about.html", db_info = str(db_info_json))
