@@ -41,14 +41,14 @@ def get_customer():
 
     if password_str:
 
+        if isinstance(password_str, list):
+            password_str = password_str[0][0]
+
         response = {
         'username': username_param,
         'password': password_str,
         'message': 'GET request received successfully!'
         }
-
-        if isinstance(password_str, list):
-            password_str = password_str[0][0]
 
     else:
         response = {
