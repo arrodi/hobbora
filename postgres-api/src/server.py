@@ -24,7 +24,7 @@ app = Flask(__name__)
 def get_customer():
     print(f"{request.remote_addr} requested!")
 
-    username_param = request.artgs.get('username')
+    username_param = request.args.get('username')
 
 
     sql_context =f"""
