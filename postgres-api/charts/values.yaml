@@ -7,7 +7,7 @@ deployment:
   resources:
     cpu: 100m
     memory: 250Mi
-  port: 5000
+  port: 8080
   repllicas: 1
 database:
   secret: postgres-creds

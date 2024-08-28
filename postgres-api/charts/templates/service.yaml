@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: {{ .Values.deployment.name }}-service
 spec:
-  type: ExternalName
-  externalName: {{ .Values.deployment.name }}-service
+  type: ClusterIP
   ports:
-    - port: 8086
-      name: http
+  - protocol: TCP
+    port: {{ .Values.deployment.port }}
+    targetPort: {{ .Values.deployment.port }}
+  selector:
+    app: {{ .Values.deployment.name }}
