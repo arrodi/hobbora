@@ -39,9 +39,6 @@ def get_customer():
 
     password_str = postgres.execute_query(sql_context)
 
-    if isinstance(password_str, list):
-        password_str = password_str[0][0]
-
     if password_str:
 
         response = {
@@ -49,6 +46,9 @@ def get_customer():
         'password': password_str,
         'message': 'GET request received successfully!'
         }
+
+        if isinstance(password_str, list):
+            password_str = password_str[0][0]
 
     else:
         response = {
