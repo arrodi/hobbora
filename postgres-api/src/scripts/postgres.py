@@ -11,7 +11,7 @@ class Postgres:
 
         cursor = self.connection.cursor()
         cursor.execute(query_str)
-        record = self.cursor.fetchall()
+        record = cursor.fetchall()
         cursor.close()
 
         return record
