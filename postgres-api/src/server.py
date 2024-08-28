@@ -2,7 +2,7 @@
 from os import environ
 
 # EXT IMPORTS
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from waitress import serve
 
 #AUTHORED IMPORTS
@@ -22,7 +22,7 @@ app = Flask(__name__)
 #########################
 @app.route("/", methods=['GET'])
 def hello_world():
-    print("Someone visited!")
+    print(f"{request.remote_addr} requested!")
     sql_context ="""
     select 
         *
