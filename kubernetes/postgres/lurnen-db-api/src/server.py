@@ -9,6 +9,7 @@ from waitress import serve
 from scripts.settings import Settings
 from scripts.postgres import Postgres
 
+#Test
 print("App Started!")
 
 settings = Settings()
