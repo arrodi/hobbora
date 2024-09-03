@@ -24,7 +24,7 @@ jobs:
           version: 'latest'
       
       - name: Create Namespace cert-manager
-        run: kubectl apply -f ${{ github.workspace }}/cert_manager/namespace_cert-manager.yaml
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/cert_manager/namespace_cert-manager.yaml
 
       - name: Helm Add cert-manager to Repository
         run: helm repo --namespace cert-manager add jetstack https://charts.jetstack.io
@@ -33,5 +33,5 @@ jobs:
         run: helm install --namespace cert-manager cert-manager --wait --version v1.9.1 --set installCRDs=true jetstack/cert-manager
 
       - name: Deploy Cert Manager
-        run: kubectl apply -f ${{ github.workspace }}/cert_manager/cert-manager.yaml
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/cert_manager/cert-manager.yaml
       

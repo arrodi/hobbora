@@ -29,7 +29,7 @@ jobs:
           version: 'latest'
       
       - name: Create Namespace nginx
-        run: kubectl apply -f ${{ github.workspace }}/nginx/namespace_nginx.yaml
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/nginx/namespace_nginx.yaml
 
       - name: Install Helm
         uses: azure/setup-helm@v3
@@ -41,7 +41,7 @@ jobs:
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
       - name: Create Directory Path
-        run: mkdir -p ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/
+        run: mkdir -p ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/
 
       - name: Helm Create nginx Template
         run: |
@@ -49,7 +49,7 @@ jobs:
           --repo https://kubernetes.github.io/ingress-nginx \
           --version "${CHART_VERSION}" \
           --namespace nginx \
-          > ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress."${APP_VERSION}".yaml
+          > ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/nginx-ingress."${APP_VERSION}".yaml
 
       - name: Deploy nginx Template
-        run: kubectl apply -f ${{ github.workspace }}/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
+        run: kubectl apply -f ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml

@@ -3,13 +3,13 @@ name: Build and Deploy postgres-api
 on:
   push:
     paths:
-      - 'postgres-api/**'
+      - 'kubernetes/postgres/lurnen-db-api/**'
 
 env:
-  DOCKER_URL: artemek47/postgres-api
+  DOCKER_URL: artemek47/lurnen-db-api
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: postgres-api
-  DEPLOYMENT_VALUES_PATH: postgres-api/charts/values.yaml
+  DEPLOYMENT_NAME: lurnen-db-api
+  DEPLOYMENT_VALUES_PATH: kubernetes/postgres/lurnen-db-api/charts/values.yaml
   DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
@@ -36,8 +36,8 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ${{ github.workspace }}/${{ env.DEPLOYMENT_NAME }}/src/
-          file: ${{ github.workspace }}/${{ env.DEPLOYMENT_NAME }}/src/Dockerfile
+          context: ${{ github.workspace }}/kubernetes/postgres/${{ env.DEPLOYMENT_NAME }}/src/
+          file: ${{ github.workspace }}/kubernetes/postgres/${{ env.DEPLOYMENT_NAME }}/src/Dockerfile
           push: true
           tags: ${{ env.DOCKER_URL }}:${{ github.run_id }},${{ env.DOCKER_URL }}:${{ env.DOCKER_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
