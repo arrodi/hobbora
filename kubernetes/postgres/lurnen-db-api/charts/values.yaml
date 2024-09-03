@@ -1,7 +1,7 @@
 deployment:
-  name: postgres-api
+  name: lurnen-db-api
   docker:
-    image: artemek47/postgres-api
+    image: artemek47/lurnen-db-api
     tag: latest
     secret: docker.secret
   resources:
