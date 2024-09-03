@@ -10,7 +10,7 @@ env:
   DOCKER_TAG: latest
   DEPLOYMENT_NAME: lurnen-db-api
   DEPLOYMENT_VALUES_PATH: kubernetes/postgres/lurnen-db-api/charts/values.yaml
-  DEPLOYMENT_CHARTS_PATH: kubernetes/postgres/lurnen-db-api/charts/Chart.yaml
+  DEPLOYMENT_CHARTS_PATH: kubernetes/postgres/lurnen-db-api/charts
   DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
