@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lurnen</title>
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Lurnen</h1>
+        </div>
+    </header>
+    <main class="container">
+        <section>
+            <h2>About Lurnen</h2>
+            <p> {{ db_info }} </p>
+        </section>
+        <section>
+            <h2>Our Services</h2>
+            <p>Discover a wide range of services tailored to meet your learning needs.</p>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Lurnen</p>
+            <div class="social-media">
+                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+                <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

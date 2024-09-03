@@ -7,8 +7,9 @@ deployment:
   resources:
     cpu: 100m
     memory: 250Mi
-  port: 80
+  port: 8080
   repllicas: 1
-postgres:
-  host: 10.244.0.86
+database:
+  secret: postgres-creds
+  host: postgres-db-service
   port: 5432

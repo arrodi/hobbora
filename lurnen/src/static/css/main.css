@@ -3,7 +3,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     color: #333;
 }
 
@@ -15,12 +15,11 @@ body {
 
 /* Header Styles */
 header {
-    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    background-color: #4CAF50;
     padding: 20px 0;
     color: white;
     text-align: center;
     position: relative;
-    overflow: hidden;
 }
 
 header .logo {
@@ -41,147 +40,66 @@ header nav ul li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
-    position: relative;
     transition: color 0.3s;
 }
 
 header nav ul li a:hover {
-    color: #000;
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(90deg, #ff8a00, #e52e71);
-    animation: rotate-bg 10s linear infinite;
-    z-index: -1;
-}
-
-@keyframes rotate-bg {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    color: #333;
 }
 
 /* Main Styles */
 main {
     padding: 40px 0;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-main h2 {
-    color: #ff8a00;
-    animation: fadeIn 2s;
+.welcome-section {
+    width: 60%;
 }
 
-main p {
+.welcome-section h2 {
+    color: #4CAF50;
+}
+
+.welcome-section p {
     line-height: 1.6;
-    animation: slideIn 2s;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-/* Footer Styles */
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 20px;
-    position: relative;
-    width: 100%;
-}
-
-footer .social-media {
-    margin-top: 10px;
-}
-
-footer .social-media a {
-    display: inline-block;
-    margin: 0 5px;
-}
-
-footer .social-media img {
-    width: 24px;
-    height: 24px;
-    filter: invert(100%);
-}
-
-/* Login Window Styles */
-.login-window {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
+.login-section {
+    width: 35%;
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
     border-radius: 8px;
-    z-index: 1000;
-    animation: popIn 0.5s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes popIn {
-    from {
-        transform: translate(-50%, -50%) scale(0);
-    }
-    to {
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-.login-window h3 {
+.login-section h3 {
     margin-top: 0;
-    color: #ff8a00;
+    color: #4CAF50;
 }
 
-.login-window form {
+.login-section form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
-.login-window label {
+.login-section label {
     font-weight: bold;
 }
 
-.login-window input {
-    padding: 8px;
+.login-section input {
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-.login-window button {
+.login-section button {
     padding: 10px;
-    background-color: #ff8a00;
+    background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -189,15 +107,15 @@ footer .social-media img {
     transition: background-color 0.3s;
 }
 
-.login-window button:hover {
-    background-color: #e52e71;
+.login-section button:hover {
+    background-color: #45a049;
 }
 
-#close-login {
-    background-color: #dc3545;
-    margin-top: 10px;
-}
-
-#close-login:hover {
-    background-color: #c82333;
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
 }
