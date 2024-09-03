@@ -26,3 +26,5 @@ spec:
           value: {{ .Values.deployment.port | quote }}
         - name: APP_HOSTNAME
           value: {{ .Values.deployment.domain }}
+        - name: API_URL
+          value: {{ .Values.deployment.api.url }}

@@ -41,8 +41,8 @@ spec:
               key: DB_NAME
               optional: false
         - name: DB_PORT
-          value: "{{ .Values.database.port }}"
+          value: {{ .Values.database.port  | quote }}
         - name: DB_HOST
-          value: "{{ .Values.database.host }}"
+          value: {{ .Values.database.host  | quote }}
         - name: APP_PORT
-          value: "{{ .Values.deployment.port }}"
+          value: {{ .Values.deployment.port  | quote }}
