@@ -1,0 +1,88 @@
+name: Deploy Postgres
+
+on:
+  workflow_dispatch
+
+env:
+  STORAGE_CLASS_NAME: do-block-storage
+  
+jobs:
+  set-up:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Delete Previous Namespace postgres
+        continue-on-error: true
+        run: |
+          kubectl delete namespace postgres
+
+      - name: Create Namespace postgres
+        run: kubectl apply -f ${{ github.workspace }}/postgres/namespace_postgres.yaml
+
+      - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolume.yaml
+        run: |
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/postgres/persistentvolume.yaml
+
+      - name: Create Persistent Volume - postgres-pv
+        run: kubectl apply -f ${{ github.workspace }}/postgres/persistentvolume.yaml
+
+
+  deploy:
+    needs: set-up
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Delete Secret - postgres-creds
+        continue-on-error: true
+        run: |
+          kubectl -n postgres delete secret postgres-creds
+
+      - name: Create Secret - postgres-creds
+        run: |
+          kubectl -n postgres create secret generic postgres-creds --from-literal DB_USER="${{ vars.POSTGRES_USER }}" --from-literal DB_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" --from-literal DB_NAME="${{ vars.POSTGRES_DB }}"
+      
+      - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolumeclaim.yaml
+        run: |
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/postgres/persistentvolumeclaim.yaml
+
+      - name: Create Persistent Volume Claim - postgres-pvc
+        run: kubectl -n postgres apply -f ${{ github.workspace }}/postgres/persistentvolumeclaim.yaml
+      
+      - name: Deploy Statefulset - postgres
+        run: |
+          kubectl -n postgres apply -f ${{ github.workspace }}/postgres/statefulset.yaml
+
+      - name: Deploy Service - postgres-db-service
+        run: |
+          kubectl -n postgres apply -f ${{ github.workspace }}/postgres/service.yaml
