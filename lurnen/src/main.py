@@ -26,7 +26,7 @@ def login_page():
     print(f"{request.remote_addr} visited HOME!")
     input_username =  request.form['username']
     input_password = request.form['password']
-    db_password = requests.get("http://postgres-api-service.postgres.svc.cluster.local:8080", f"get_password?username={input_username}")["password"]
+    db_password = requests.get("http://lurnen-db-api-service.postgres.svc.cluster.local:8080", f"get_password?username={input_username}")["password"]
 
     if db_password == input_password:
         return render_template("welcome.html", username = input_username)
@@ -36,7 +36,7 @@ def login_page():
 @app.route("/about", methods=['GET'])
 def about_page():
     print(f"{request.remote_addr} visited ABOUT!")
-    db_info_json = requests.get("http://postgres-api-service.postgres.svc.cluster.local:8080", "")
+    db_info_json = requests.get("http://lurnen-db-api-service.postgres.svc.cluster.local:8080", "")
     return render_template("about.html", db_info = str(db_info_json))
 
 #########################
