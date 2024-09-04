@@ -23,8 +23,8 @@ spec:
         - name: PYTHONUNBUFFERED
           value: "1"
         - name: APP_PORT
-          value: {{ .Values.deployment.port | quote }}
-        - name: APP_HOSTNAME
-          value: {{ .Values.deployment.domain }}
+          value: {{ .Values.app.port | quote }}
+        - name: APP_HOST
+          value: {{ .Values.app.host | quote }}
         - name: API_URL
-          value: {{ .Values.deployment.api.url }}
+          value: {{ .Values.app.api.url }}

@@ -44,4 +44,4 @@ def about_page():
 #########################
 ##### SERVER BEGIN! #####
 #########################
-serve(app, host='0.0.0.0', port=int(settings.app_port))
+serve(app, host=settings.app_host, port=int(settings.app_port))
