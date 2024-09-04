@@ -1,22 +1,21 @@
 ## Example of entering the pod and logining into Postgres
 
 ```
-
+# ENTER THE POSTGRES POD
 kubectl -n postgresql exec -it postgres-0 -- bash
 
-# login to postgres
+# LOGIN TO POSTGRES
 psql --username=postgresadmin postgresdb
 
-# see our replication user created
-\du
+# CREATE A TABLE
+CREATE TABLE # login to postgres (username text, password text, customer_id serial, date_created timestamp);
 
-#create a table
-CREATE TABLE customers (firstname text, customer_id serial, date_created timestamp);
+# ADD A TABLE RECORD
+INSERT INTO customers (firstname, lastname) VALUES ( 'Bob', 'Smith');
 
 #show the table
-\dt
+\dts
 
 # quit out of postgresql
 \q
-
 ```
