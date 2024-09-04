@@ -34,7 +34,7 @@ To setup a python virtual enviroment and perform local development we need to cr
 
 **Populate VENV with variables**
 1. Create a `.env.bat` file in {name-of-venv}/Scripts folder to store your enviroment variables
-2. Populate the `.env.bat` file with variables in format `{env_name}={env_string}` Note: variables can only be strings
+2. Populate the `.env.bat` file with variables in format `set {env_name}={env_string}` Note: variables can only be strings
 3. Run the command `call {relative_path/.env.bat}`. This will print out the variables and add them to your VENV
 4. !IMPORTANT: Make sure to add the VENV folder to your `.gitignore` file to prevent pushing secrets to your repo
 
