@@ -1,6 +1,6 @@
 ## Example of entering the pod and logining into Postgres
 
----
+```
 
 kubectl -n postgresql exec -it postgres-0 -- bash
 
@@ -19,4 +19,4 @@ CREATE TABLE customers (firstname text, customer_id serial, date_created timesta
 # quit out of postgresql
 \q
 
----
+```
