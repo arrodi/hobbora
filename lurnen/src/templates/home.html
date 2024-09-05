@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lurnen</title>
-    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css')}}">
 </head>
 <body>
     <header>
@@ -39,6 +39,22 @@
                 <button type="submit">Login</button>
             </form>
         </section>
+
+        <section class="signup-section">
+            <h3>Sign Up for Lurnen</h3>
+            <form action="/signup" method="POST">
+                <label for="signup-username">Username:</label>
+                <input type="text" id="signup-username" name="username" required>
+                
+                <label for="signup-email">Email:</label>
+                <input type="email" id="signup-email" name="email" required>
+                
+                <label for="signup-password">Password:</label>
+                <input type="password" id="signup-password" name="password" required>
+                
+                <button type="submit">Sign Up</button>
+            </form>
+        </section>
     </main>
 
     <footer>
@@ -48,4 +64,3 @@
     </footer>
 </body>
 </html>
-    
