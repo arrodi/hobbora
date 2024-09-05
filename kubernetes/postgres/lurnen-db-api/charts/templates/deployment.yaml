@@ -47,4 +47,4 @@ spec:
         - name: APP_PORT
           value: {{ .Values.app.port  | quote }}
         - name: APP_HOST
-          value: {{ .Values.app.port  | quote }}
+          value: {{ .Values.app.host  | quote }}
