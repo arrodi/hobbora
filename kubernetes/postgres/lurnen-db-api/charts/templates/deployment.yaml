@@ -45,4 +45,6 @@ spec:
         - name: DB_HOST
           value: {{ .Values.database.host  | quote }}
         - name: APP_PORT
-          value: {{ .Values.deployment.port  | quote }}
+          value: {{ .Values.app.port  | quote }}
+        - name: APP_HOST
+          value: {{ .Values.app.port  | quote }}
