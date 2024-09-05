@@ -8,6 +8,7 @@ deployment:
     cpu: 100m
     memory: 250Mi
   repllicas: 1
+  port: 8080
 database:
   secret: postgres-creds
   host: postgres-db-service
