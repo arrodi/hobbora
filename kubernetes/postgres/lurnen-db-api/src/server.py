@@ -19,7 +19,7 @@ print("API INITIALIZED")
 #########################
 ##### SERVER ROUTES #####
 #########################
-@app.route("/", methods=['GET'])
+@app.route("/about", methods=['GET'])
 def health_check():
     response_dict = postgres.test_connection()
 
@@ -120,4 +120,6 @@ def add_user():
 #########################
 ##### SERVER BEGIN! #####
 #########################
+print(settings.app_host)
+print(settings.app_port)
 serve(app, host=settings.app_host, port=int(settings.app_port))

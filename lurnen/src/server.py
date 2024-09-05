@@ -67,4 +67,6 @@ def about_page():
 #########################
 ##### SERVER BEGIN! #####
 #########################
+print(settings.app_host)
+print(settings.app_port)
 serve(app, host=settings.app_host, port=int(settings.app_port))
