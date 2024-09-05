@@ -9,4 +9,4 @@ class Settings:
         self.db_port=environ["DB_PORT"]
         
         self.app_host=environ["APP_HOST"]
-        self.app_port=int(environ["APP_PORT"])
+        self.app_port=environ["APP_PORT"]
