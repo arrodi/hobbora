@@ -1,16 +1,16 @@
-name: Build and Deploy postgres-api
+name: Build and Deploy postgres-db-api
 
 on:
   push:
     paths:
-      - 'kubernetes/postgres/lurnen-db-api/**'
+      - 'microservices/postgres-db-api/**'
 
 env:
-  DOCKER_URL: artemek47/lurnen-db-api
+  DOCKER_URL: artemek47/postgres-db-api
   DOCKER_TAG: latest
-  DEPLOYMENT_NAME: lurnen-db-api
-  DEPLOYMENT_VALUES_PATH: kubernetes/postgres/lurnen-db-api/charts/values.yaml
-  DEPLOYMENT_CHARTS_PATH: kubernetes/postgres/lurnen-db-api/charts
+  DIR_PATH: microservices/postgres-db-api/
+  DEPLOYMENT_NAME: postgres-db-api
+  DEPLOYMENT_VALUES_PATH: charts/values.yaml
   DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
@@ -37,8 +37,8 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ${{ github.workspace }}/kubernetes/postgres/${{ env.DEPLOYMENT_NAME }}/src/
-          file: ${{ github.workspace }}/kubernetes/postgres/${{ env.DEPLOYMENT_NAME }}/src/Dockerfile
+          context: ${{ github.workspace }}/${{ env.DIR_PATH }}/src/
+          file: ${{ github.workspace }}/${{ env.DIR_PATH }}/src/Dockerfile
           push: true
           tags: ${{ env.DOCKER_URL }}:${{ github.run_id }},${{ env.DOCKER_URL }}:${{ env.DOCKER_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -73,7 +73,4 @@ jobs:
         run: helm uninstall --namespace ${{ env.DEPLOYMENT_NAMESPACE }} ${{ env.DEPLOYMENT_NAME }}
 
       - name: Install Deployment
-        run: helm upgrade --namespace ${{ env.DEPLOYMENT_NAMESPACE }} --install --values ${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DEPLOYMENT_CHARTS_PATH }}
-
-
-      
+        run: helm upgrade --namespace ${{ env.DEPLOYMENT_NAMESPACE }} --install --values ${{ env.DIR_PATH }}/${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DIR_PATH }}/charts

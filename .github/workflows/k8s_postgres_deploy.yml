@@ -33,14 +33,14 @@ jobs:
           kubectl delete namespace postgres
 
       - name: Create Namespace postgres
-        run: kubectl apply -f ${{ github.workspace }}/kubernetes/postgres/lurnen-db/namespace_postgres.yaml
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/postgres/namespace_postgres.yaml
 
       - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolume.yaml
         run: |
-          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/postgres/lurnen-db/persistentvolume.yaml
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/postgres/persistentvolume.yaml
 
       - name: Create Persistent Volume - postgres-pv
-        run: kubectl apply -f ${{ github.workspace }}/kubernetes/postgres/lurnen-db/persistentvolume.yaml
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/postgres/persistentvolume.yaml
 
 
   deploy:
@@ -74,15 +74,15 @@ jobs:
       
       - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolumeclaim.yaml
         run: |
-          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/postgres/lurnen-db/persistentvolumeclaim.yaml
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/postgres/persistentvolumeclaim.yaml
 
       - name: Create Persistent Volume Claim - postgres-pvc
-        run: kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/lurnen-db/persistentvolumeclaim.yaml
+        run: kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/persistentvolumeclaim.yaml
       
       - name: Deploy Statefulset - postgres
         run: |
-          kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/lurnen-db/statefulset.yaml
+          kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/statefulset.yaml
 
       - name: Deploy Service - postgres-db-service
         run: |
-          kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/lurnen-db/service.yaml
+          kubectl -n postgres apply -f ${{ github.workspace }}/kubernetes/postgres/service.yaml

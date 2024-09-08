@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lurnen - Sign In</title>
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Lurnen</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/my-account">My Account</a></li>
+            </ul>
+        </nav>
+        
+    </header>
+
+    <!-- Sign In Section -->
+    <main class="sign-in-section">
+        <div class="sign-in-box">
+            <h2>Sign In to Lurnen</h2>
+            <form action="/sign-in" method="POST">
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="username" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-button">Sign In</button>
+                <!-- Error message -->
+                {% if error_message %}
+                    <div class="error-message">
+                        {{ error_message }}
+                    </div>
+                {% endif %}
+            </form>
+            <p>Don't have an account? <a href="/sign-up">Sign Up</a></p>
+        </div>
+    </main>
+
+</body>
+</html>

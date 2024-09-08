@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.errorcodes
 
 class Postgres:
 
@@ -10,15 +11,18 @@ class Postgres:
     
     def execute_query(self, query_str, return_bool=False):
 
-        cursor = self.connection.cursor()
-        cursor.execute(query_str)
-        cursor.connection.commit()
-        if return_bool:
-            record = cursor.fetchall()
-        else:
-            record = []
-        cursor.close()
-
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query_str)
+            cursor.connection.commit()
+            if return_bool:
+                record = cursor.fetchall()
+            else:
+                record = []
+            cursor.close()
+        except psycopg2.errors.lookup(psycopg2.errorcodes.UNIQUE_VIOLATION) as e:
+            cursor.connection.rollback()
+            record = "Insert Error"
         return record
     
     def test_connection(self):

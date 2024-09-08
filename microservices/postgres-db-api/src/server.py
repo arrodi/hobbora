@@ -111,11 +111,16 @@ def add_user():
 
     print(sql_context)
 
-    postgres.execute_query(sql_context)
+    return_str = postgres.execute_query(sql_context)
 
-    request_data["insert"] = "success"
+    print(return_str)
 
-    return jsonify(request_data)
+    if not return_str:
+        request_data["insert"] = "success"
+        return jsonify(request_data)
+    else:
+        if return_str == "Insert Error":
+            return {}
 
 #########################
 ##### SERVER BEGIN! #####

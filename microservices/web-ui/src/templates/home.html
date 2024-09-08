@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lurnen - Tutoring Platform</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Lurnen</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/my-account">My Account</a></li>
+            </ul>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <!-- Profile Button linking to account page -->
+            <a href="/my-account" class="profile-button">
+                <span>{{ username if username else 'SIGN IN' }}</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to Lurnen</h1>
+            <p>Find the perfect tutor or offer your tutoring services to others!</p>
+            <a href="/tutor-catalog" class="cta-button">Browse Tutors</a>
+            <a href="/sign-up" class="cta-button">Become a Tutor</a>
+        </section>
+    </main>
+
+</body>
+</html>

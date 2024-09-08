@@ -1,8 +1,8 @@
 deployment:
-  name: lurnen
-  domain: lurnen.com
+  name: web-ui
+  domain: earnandeducate.com
   docker:
-    image: artemek47/lurnen
+    image: artemek47/web-ui
     tag: latest
     secret: docker.secret
   resources:
@@ -15,4 +15,4 @@ app:
   host: '0.0.0.0'
   port: 80
   api:
-    url: "http://lurnen-db-api-service.postgres.svc.cluster.local:8080"
+    url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
