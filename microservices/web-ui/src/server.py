@@ -33,13 +33,13 @@ def home_page():
         return render_template("home.html", username = username)
     return render_template("home.html")
 
-@app.route("/", methods=['GET'])
+@app.route("/tutor-catalog", methods=['GET'])
 def home_page():
-    print(f"{request.remote_addr} visited HOME!")
+    print(f"{request.remote_addr} visited Tutor-Catalog!")
     if 'user' in session:
         username = session['user']   
-        return render_template("home.html", username = username)
-    return render_template("home.html")
+        return render_template("tutor_catalog.html", username = username)
+    return render_template("tutor_catalog.html")
 
 @app.route('/logout')
 def logout():
@@ -50,7 +50,7 @@ def logout():
 def my_account():
     if session:
         username = session['user'] 
-        return render_template("myaccount.html", username = username)
+        return render_template("my_account.html", username = username)
     else:
         return redirect(url_for('signin_page'))
     
