@@ -34,11 +34,11 @@ spec:
               name: {{ .Values.database.secret }}
               key: POSTGRES_PASSWORD
               optional: false
-        - name: POSTGRES_NAME
+        - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:
               name: {{ .Values.database.secret }}
-              key: POSTGRES_NAME
+              key: POSTGRES_DB
               optional: false
         - name: POSTGRES_PORT
           value: {{ .Values.database.port  | quote }}
