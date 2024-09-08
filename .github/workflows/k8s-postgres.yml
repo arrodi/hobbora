@@ -70,7 +70,7 @@ jobs:
 
       - name: Create Secret - postgres-creds
         run: |
-          kubectl -n postgres create secret generic postgres-creds --from-literal DB_USER="${{ vars.POSTGRES_USER }}" --from-literal DB_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" --from-literal DB_NAME="${{ vars.POSTGRES_DB }}"
+          kubectl -n postgres create secret generic postgres-creds --from-literal POSTGRES_USER="${{ vars.POSTGRES_USER }}" --from-literal POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" --from-literal POSTGRES_DB="${{ vars.POSTGRES_DB }}"
       
       - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolumeclaim.yaml
         run: |
