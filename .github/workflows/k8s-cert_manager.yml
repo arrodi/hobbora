@@ -1,0 +1,37 @@
+name: k8s-cert_manager
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy_cert_manager:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+      
+      - name: Create Namespace cert-manager
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/cert_manager/namespace_cert-manager.yaml
+
+      - name: Helm Add cert-manager to Repository
+        run: helm repo --namespace cert-manager add jetstack https://charts.jetstack.io
+
+      - name: Helm install cert-manager
+        run: helm install --namespace cert-manager cert-manager --wait --version v1.9.1 --set installCRDs=true jetstack/cert-manager
+
+      - name: Deploy Cert Manager
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/cert_manager/cert-manager.yaml
+      

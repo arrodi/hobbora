@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lurnen - Tutoring Platform</title>
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
+</head>
+<body>
+
+        <!-- Tutoring Catalog Section -->
+        <section class="catalog">
+            <h2>Tutoring Services Catalog</h2>
+            <div class="filter">
+                <label for="subject-filter">Filter by Subject:</label>
+                <select id="subject-filter">
+                    <option value="all">All Subjects</option>
+                    <option value="math">Math</option>
+                    <option value="science">Science</option>
+                    <option value="language">Language</option>
+                </select>
+            </div>
+            <div class="tutor-list">
+                <div class="tutor-card">
+                    <h3>John Doe</h3>
+                    <p>Subject: Math</p>
+                    <p>Rate: $20/hour</p>
+                    <button>Request Tutoring</button>
+                </div>
+                <!-- Add more tutor cards here -->
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

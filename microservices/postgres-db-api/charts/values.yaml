@@ -1,0 +1,19 @@
+deployment:
+  name: postgres-db-api
+  docker:
+    image: artemek47/postgres-db-api
+    tag: latest
+    secret: docker.secret
+  resources:
+    cpu: 100m
+    memory: 250Mi
+  repllicas: 1
+  port: 8080
+database:
+  secret: postgres-creds
+  host: postgres-db-service
+  port: 5432
+
+app:
+  host: '0.0.0.0'
+  port: 8080

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lurnen - My Account</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Lurnen</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/my-account">My Account</a></li>
+            </ul>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <!-- Profile Button linking to account page -->
+            <a href="/my-account" class="profile-button">
+                <span>{{ username if username else 'SIGN IN' }}</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <section class="account-section">
+            <h2>My Account</h2>
+            <div class="account-details">
+                <h3>Username:</h3>
+                <p>{{ username }}</p>
+            </div>
+            <div class="account-details">
+                <h3>Email:</h3>
+                <p>dummyemail@example.com</p>
+            </div>
+            <div class="account-details">
+                <h3>Qualifications:</h3>
+                <p>Placeholder for qualifications or bio.</p>
+            </div>
+            <div class="account-details">
+                <h3>Rating:</h3>
+                <p>4.5/5 (based on 20 reviews)</p>
+            </div>
+            <div class="account-actions">
+                <a href="/edit-account" class="edit-button">Edit</a>
+                <a href="/logout" class="logout-button">Logout</a>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

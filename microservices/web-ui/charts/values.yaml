@@ -1,0 +1,18 @@
+deployment:
+  name: web-ui
+  domain: earnandeducate.com
+  docker:
+    image: artemek47/web-ui
+    tag: latest
+    secret: docker.secret
+  resources:
+    cpu: 100m
+    memory: 250Mi
+  port: 80
+  repllicas: 1
+
+app:
+  host: '0.0.0.0'
+  port: 80
+  api:
+    url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"

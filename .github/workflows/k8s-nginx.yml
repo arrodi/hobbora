@@ -1,0 +1,55 @@
+name: k8s-nginx
+
+on:
+  workflow_dispatch
+  
+
+env:
+  CHART_VERSION: 4.11.1
+  APP_VERSION: 1.11.1
+
+jobs:
+  deploy_nginx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+      
+      - name: Create Namespace nginx
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/nginx/namespace_nginx.yaml
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Helm Add nginx to Repository
+        run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+      - name: Create Directory Path
+        run: mkdir -p ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/
+
+      - name: Helm Create nginx Template
+        run: |
+          helm template nginx ingress-nginx \
+          --repo https://kubernetes.github.io/ingress-nginx \
+          --version "${CHART_VERSION}" \
+          --namespace nginx \
+          > ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/nginx-ingress."${APP_VERSION}".yaml
+
+      - name: Deploy nginx Template
+        run: kubectl apply -f ${{ github.workspace }}/temp/kubernetes/ingress/controller/nginx/manifests/nginx-ingress.${APP_VERSION}.yaml
