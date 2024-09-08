@@ -1,4 +1,4 @@
-name: Deploy Postgres
+name: k8s-postgres
 
 on:
   workflow_dispatch

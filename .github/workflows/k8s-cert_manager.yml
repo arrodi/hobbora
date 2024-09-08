@@ -1,4 +1,4 @@
-name: Setup Cert Manager Kubernetes Cluster
+name: k8s-cert_manager
 
 on:
   workflow_dispatch

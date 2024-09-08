@@ -1,17 +1,17 @@
-name: Build and Deploy web-ui
+name: app-deploy-postgres_db_api
 
 on:
   push:
     paths:
-      - 'microservices/web-ui/**'
+      - 'microservices/postgres-db-api/**'
 
 env:
-  DOCKER_URL: artemek47/web-ui
+  DOCKER_URL: artemek47/postgres-db-api
   DOCKER_TAG: latest
-  DIR_PATH: microservices/web-ui/
-  DEPLOYMENT_NAME: web-ui
+  DIR_PATH: microservices/postgres-db-api/
+  DEPLOYMENT_NAME: postgres-db-api
   DEPLOYMENT_VALUES_PATH: charts/values.yaml
-  DEPLOYMENT_NAMESPACE: default
+  DEPLOYMENT_NAMESPACE: postgres
   
 jobs:
   build:
