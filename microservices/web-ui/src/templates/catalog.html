@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lurnen - Tutoring Platform</title>
+    <title>Earn and Educate - Tutor Catalog</title>
     <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/main.css')}}">
 </head>
 <body>
 
+        <!-- Header Section -->
+        <header>
+            <div class="logo">Earn and Educate</div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                    <li><a href="/my-account">My Account</a></li>
+                </ul>
+            </nav>
+            
+            <!-- User Profile Section -->
+            <div class="user-profile">
+                <!-- Profile Button linking to account page -->
+                <a href="/my-account" class="profile-button">
+                    <span>{{ username if username else 'SIGN IN' }}</span>
+                </a>
+            </div>
+        </header>
+    
+        <!-- Main Content Section -->
+        <main>
         <!-- Tutoring Catalog Section -->
         <section class="catalog">
             <h2>Tutoring Services Catalog</h2>

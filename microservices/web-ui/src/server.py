@@ -33,6 +33,14 @@ def home_page():
         return render_template("home.html", username = username)
     return render_template("home.html")
 
+@app.route("/", methods=['GET'])
+def home_page():
+    print(f"{request.remote_addr} visited HOME!")
+    if 'user' in session:
+        username = session['user']   
+        return render_template("home.html", username = username)
+    return render_template("home.html")
+
 @app.route('/logout')
 def logout():
     session.pop('user', None)  # Remove user from session
