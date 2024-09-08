@@ -34,7 +34,7 @@ def home_page():
     return render_template("home.html")
 
 @app.route("/tutor-catalog", methods=['GET'])
-def home_page():
+def tutor_catalog_page():
     print(f"{request.remote_addr} visited Tutor-Catalog!")
     if 'user' in session:
         username = session['user']   
