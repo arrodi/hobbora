@@ -76,7 +76,7 @@ def add_user():
     
 
 @app.route("/user_hobbies/add_hobby", methods=['POST'])
-def add_user():
+def add_hobby():
 
     request_data = request.get_json()
     sql_context = queries.insert_into_table("USER_HOBBIES", request_data)
