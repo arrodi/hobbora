@@ -38,15 +38,11 @@
             </div>
             <div class="account-details">
                 <h3>Email:</h3>
-                <p>dummyemail@example.com</p>
+                <p>{{ email }}</p>
             </div>
             <div class="account-details">
-                <h3>Qualifications:</h3>
-                <p>Placeholder for qualifications or bio.</p>
-            </div>
-            <div class="account-details">
-                <h3>Rating:</h3>
-                <p>4.5/5 (based on 20 reviews)</p>
+                <h3>Hobbies:</h3>
+                <p>{{ hobbies if hobbies else 'No hobbies added!' }}</p>
             </div>
             <div class="account-actions">
                 <a href="/edit-account" class="edit-button">Edit</a>

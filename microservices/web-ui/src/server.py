@@ -28,29 +28,31 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session time
 @app.route("/", methods=['GET'])
 def home_page():
     print(f"{request.remote_addr} visited HOME!")
-    if 'user' in session:
-        username = session['user']   
+    if session:
+        username = session['USER_NAME']   
         return render_template("home.html", username = username)
     return render_template("home.html")
 
 @app.route("/tutor-catalog", methods=['GET'])
 def tutor_catalog_page():
     print(f"{request.remote_addr} visited Tutor-Catalog!")
-    if 'user' in session:
-        username = session['user']   
-        return render_template("tutor_catalog.html", username = username)
+    if session:
+
+        return render_template("tutor_catalog.html", username = session['USER_NAME'])
     return render_template("tutor_catalog.html")
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)  # Remove user from session
+    session.clear()
     return redirect(url_for('home_page'))
 
 @app.route("/my-account", methods=['GET'])
 def my_account():
     if session:
-        username = session['user'] 
-        return render_template("my_account.html", username = username)
+        print(session)
+        print(type(session))
+        query_response = requests.post(settings.api_url, f"/user_accounts/get_user", dict(session))
+        return render_template("my_account.html", username = session['USER_NAME'] , email = query_response['USER_EMAIL'])
     else:
         return redirect(url_for('signin_page'))
     
@@ -59,19 +61,22 @@ def my_account():
 def signin_page():
     if request.method == 'POST':
         print(f"{request.remote_addr} visited HOME!")
-        input_username =  request.form['username']
-        input_password = request.form['password']
-        db_password = requests.get(settings.api_url, f"/user_accounts/get_password?username={input_username}")["password"]
-        print(f"api return: {db_password}")
 
-        if db_password:
-            if encrypt.check_password(input_password, db_password):
-                session['user'] = input_username
+        dict_payload = {}
+        dict_payload["USER_EMAIL"] =  request.form['email']
+        dict_payload["USER_PASS"] = request.form['password']
+
+        query_response = requests.post(settings.api_url, f"/user_accounts/get_user", dict_payload)
+
+        if query_response["USER_EXISTS"]:
+            if encrypt.check_password(dict_payload["USER_PASS"], query_response["USER_PASS"]):
+                session['USER_NAME'] = query_response["USER_NAME"]
+                session['USER_EMAIL'] = query_response["USER_EMAIL"]
                 return redirect(url_for('home_page'))
             else:
                 return render_template("signin.html", error_message="Incorrect password. Please Try Again!")
         else:
-            return render_template("signin.html", error_message="No Username Found! Try Again or Sign Up!")
+            return render_template("signin.html", error_message="No Email Found! Try Again or Sign Up!")
     return render_template("signin.html")
     
 @app.route("/sign-up", methods=['GET', 'POST'])
@@ -79,23 +84,19 @@ def signup_page():
     if request.method == 'POST':
 
         dict_payload = {}
-
         dict_payload["USER_NAME"] = request.form['username']
         dict_payload["USER_EMAIL"] = request.form['email']
         dict_payload["USER_PASS"] = encrypt.hash_password(request.form['password'])
 
-        json_payload = json.dumps(dict_payload, indent=4)
-
-        query_response = requests.post(settings.api_url, f"/user_accounts/add_user", json_payload)
-
-        print(type(query_response))
-        print(query_response)
+        query_response = requests.post(settings.api_url, f"/user_accounts/add_user", dict_payload)
         
-        if query_response:
-            session['user'] = dict_payload["USER_NAME"]
+        if query_response["INSERT"] == "SUCCESS":
+            session['USER_NAME'] = dict_payload["USER_NAME"]
             return redirect(url_for('home_page'))
-        else:
+        elif query_response["INSERT"] == "INSERT ERROR":
             return render_template("signup.html", error_message="That email is already taken. Please sign in or make a new account!")
+        else:
+            return render_template("signup.html", error_message="Unknown error. Please try again!")
 
     return render_template("signup.html")
 
