@@ -99,7 +99,8 @@ def add_hobby():
 def get_hobbies():
 
     request_data = request.get_json()
-    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_EMAIL = '{request_data["USER_EMAIL"]}'")
+    request_email = request_data["USER_EMAIL"]
+    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_EMAIL = '{request_email}'")
     query_return = postgres.execute_query(sql_context, fetch=True)
 
     
