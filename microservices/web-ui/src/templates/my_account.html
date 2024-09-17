@@ -30,25 +30,47 @@
 
     <!-- Main Content Section -->
     <main>
-        <section class="account-section">
-            <h2>My Account</h2>
-            <div class="account-details">
-                <h3>Username:</h3>
-                <p>{{ username }}</p>
-            </div>
-            <div class="account-details">
-                <h3>Email:</h3>
-                <p>{{ email }}</p>
-            </div>
-            <div class="account-details">
-                <h3>Hobbies:</h3>
-                <p>{{ hobbies if hobbies else 'No hobbies added!' }}</p>
-            </div>
-            <div class="account-actions">
-                <a href="/edit-account" class="edit-button">Edit</a>
-                <a href="/logout" class="logout-button">Logout</a>
-            </div>
-        </section>
+        <div class="container">
+            <!-- Account Section -->
+            <section class="account-section">
+                <div class="profile-picture">
+                    <img src="{{ profile_picture_url }}" alt="Profile Picture">
+                </div>
+                <div class="account-details">
+                    <h2>My Account</h2>
+                    <div class="account-info">
+                        <h3>Username:</h3>
+                        <p>{{ username }}</p>
+                    </div>
+                    <div class="account-info">
+                        <h3>Email:</h3>
+                        <p>{{ email }}</p>
+                    </div>
+                    <div class="account-actions">
+                        <a href="/edit-account" class="edit-button">Edit</a>
+                        <a href="/logout" class="logout-button">Logout</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hobbies Section -->
+            <section class="hobbies-section">
+                <h2>My Hobbies</h2>
+                <div class="hobbies-list">
+                    {% for hobby in hobbies %}
+                        <div class="hobby-tile">
+                            <h3>{{ hobby.HOBBY_NAME }}</h3>
+                            <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>
+                            <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
+                            <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="add-hobby">
+                    <a href="/add-hobby" class="add-hobby-button">Add a Hobby</a>
+                </div>
+            </section>
+        </div>
     </main>
 
 </body>

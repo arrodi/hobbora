@@ -37,9 +37,9 @@ print("API INITIALIZED")
 
 @app.route("/user_accounts/get_user", methods=['POST'])
 def get_customer():
-    request_data = request.json
-    email = request_data.get("USER_EMAIL", "")
-    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{email}'")
+
+    request_data = request.get_json()
+    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{request_data["USER_EMAIL"]}'")
     query_return = list(postgres.execute_query(sql_context, fetch=True))
     
     if query_return:
@@ -94,6 +94,27 @@ def add_hobby():
         request_data["INSERT"] = "UNKOWN ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
+    
+@app.route("/user_hobbies/get_hobbies", methods=['POST'])
+def get_hobbies():
+
+    request_data = request.get_json()
+    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_EMAIL = '{request_data["USER_EMAIL"]}'")
+    query_return = postgres.execute_query(sql_context, fetch=True)
+
+    
+    if len(query_return) > 0:
+        query_return_lst = []
+        for _record in query_return:
+            _temp_dict = {}
+            for _index, _column in enumerate(queries.table_schemas["USER_HOBBIES"].keys()):
+                _temp_dict[_column] = _record[_index]
+            query_return_lst.append(_temp_dict)
+    else:
+        query_return_lst = query_return
+
+    request_data["DATA"] = query_return_lst
+    return jsonify(request_data)
 #########################
 ##### SERVER BEGIN! #####
 #########################

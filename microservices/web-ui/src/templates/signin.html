@@ -18,7 +18,13 @@
                 <li><a href="/my-account">My Account</a></li>
             </ul>
         </nav>
-        
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <!-- Profile Button linking to account page -->
+            <a href="/my-account" class="profile-button">
+                <span>{{ username if username else 'SIGN IN' }}</span>
+            </a>
+        </div>
     </header>
 
     <!-- Sign In Section -->

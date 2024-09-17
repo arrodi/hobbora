@@ -1,34 +1,39 @@
-/* Reset body margin */
+/* Global Styles */
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    color: #e0e0e0;
+    background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+    padding-top: 60px; /* Adjust to ensure content isn't hidden under the fixed menu */
 }
 
-/* Header Styling */
+/* Header Styles */
 header {
     display: flex;
-    justify-content: center; /* Center everything in the header */
+    justify-content: center;
     align-items: center;
-    background-color: #1f1f1f;
+    background: rgba(30, 30, 30, 0.8);
     padding: 15px 30px;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
-/* Logo Styling */
 .logo {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
-    margin-right: 30px; /* Spacing between logo and nav */
+    margin-right: 30px;
+    color: #4CAF50; /* Neon Green */
 }
 
-/* Navigation Menu Styling */
 nav {
     display: flex;
-    justify-content: center; /* Center the nav items */
+    justify-content: center;
     flex-grow: 1;
 }
 
@@ -37,203 +42,185 @@ nav ul {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 20px; /* Reduce spacing between buttons */
-}
-
-nav ul li {
-    position: relative;
+    gap: 20px;
 }
 
 nav ul li a {
     text-decoration: none;
-    color: white;
+    color: #e0e0e0;
     font-size: 16px;
     font-weight: 500;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border-radius: 5px;
     transition: color 0.3s, background-color 0.3s, box-shadow 0.3s;
     display: inline-block;
 }
 
-nav ul li a::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 0;
-    background-color: #4CAF50;
-    transition: width 0.3s ease;
-}
-
-nav ul li a:hover::before {
-    width: 100%;
-}
-
 nav ul li a:hover {
-    color: #4CAF50;
-    background-color: rgba(76, 175, 80, 0.1); /* Light green background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-/* Sign In Button */
-.sign-in {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.sign-in:hover {
-    background-color: #45a049;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Main Content Styling */
-main {
-    padding: 20px;
-}
-
-.hero {
-    text-align: center;
-    margin: 50px 0;
-}
-
-.hero h1 {
-    font-size: 4rem; /* Responsive unit */
-    margin-bottom: 20px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.cta-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.cta-button:hover {
-    background-color: #45a049;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Tutoring Catalog Section */
-.catalog {
-    margin-top: 50px;
-}
-
-.catalog h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-.filter {
-    margin: 20px 0;
-}
-
-.tutor-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Modern spacing */
-}
-
-.tutor-card {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 10px;
-    width: calc(33.333% - 20px); /* Responsive width */
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s;
-}
-
-.tutor-card:hover {
+    color: #0a0a0a;
+    background-color: #4CAF50; /* Neon Green */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.tutor-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+/* Main Content Styles */
+main {
+    display: flex;
+    height: calc(100vh - 80px); /* Adjust for header height */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container for main sections */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fixed menu button styles */
+.fixed-menu {
+    position: fixed;
+    top: 70px; /* Adjust based on header height */
+    left: 20px; /* Adjust as needed */
+    z-index: 1000;
 }
 
 /* Account Section */
-.account {
-    margin-top: 50px;
+.account-section {
+    flex: 0 0 24%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(40, 40, 40, 0.8);
+    border-right: 1px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.account h2 {
-    font-size: 2.5rem;
+/* Profile Picture */
+.profile-picture {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.profile-picture img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50; /* Neon Green */
+}
+
+/* Account Details */
+.account-details {
+    flex: 1;
+}
+
+.account-info {
     margin-bottom: 20px;
 }
 
-.account-info, .qualifications, .rating, .tutoring-post {
-    margin: 20px 0;
+.account-actions {
+    margin-top: 20px;
+    text-align: center;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
+/* Hobbies Section */
+.hobbies-section {
+    flex: 0 0 74%;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 10px;
+}
+
+/* Hobbies List */
+.hobbies-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hobby-tile {
+    background: rgba(60, 60, 60, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 220px; /* Fixed size */
+    height: 180px; /* Fixed size */
+    box-sizing: border-box;
+}
+
+/* Add Hobby Section */
+.add-hobby {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.add-hobby-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.add-hobby-button:hover {
+    background: #388e3c; /* Darker Green */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+button, .submit-button {
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
     padding: 12px 20px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
-button:hover {
-    background-color: #45a049;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+button:hover, .submit-button:hover {
+    background: #388e3c; /* Darker Green */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* User Profile Button Styling */
-.user-profile {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
+/* Profile Button */
 .profile-button {
     text-decoration: none;
-    background-color: #4CAF50; /* Customize button color */
-    color: white;
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
     padding: 10px 20px;
     border-radius: 25px;
     font-size: 16px;
     font-weight: 500;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .profile-button:hover {
-    background-color: #45a049; /* Hover effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #388e3c; /* Darker Green */
 }
 
-/* Center and style the sign-in section */
+/* Sign-In/Sign-Up Section */
 .sign-in-section, .sign-up-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
-    background-color: #f4f4f4;
+    height: calc(100vh - 80px); /* Full viewport height minus header height */
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
 }
 
 .sign-in-box, .sign-up-box {
-    background-color: white;
+    background: rgba(30, 30, 30, 0.9);
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     max-width: 400px;
     width: 100%;
     text-align: center;
@@ -242,10 +229,9 @@ button:hover {
 .sign-in-box h2, .sign-up-box h2 {
     margin-bottom: 20px;
     font-size: 1.75rem;
-    color: #333;
+    color: #e0e0e0;
 }
 
-/* Styling the input fields */
 .input-group {
     margin-bottom: 15px;
     text-align: left;
@@ -255,128 +241,320 @@ button:hover {
     display: block;
     margin-bottom: 5px;
     font-size: 16px;
-    color: #333;
+    color: #e0e0e0;
 }
 
-.input-group input {
+.input-group input, .input-group textarea {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     border-radius: 5px;
     font-size: 16px;
+    background: rgba(60, 60, 60, 0.8);
+    color: #e0e0e0;
     transition: border-color 0.3s;
 }
 
-.input-group input:focus {
-    border-color: #4CAF50;
+.input-group input:focus, .input-group textarea:focus {
+    border-color: #4CAF50; /* Neon Green */
     outline: none;
 }
 
-/* Styling the submit button */
-.submit-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.submit-button:hover {
-    background-color: #45a049;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Link to sign-in */
-.sign-in-box p, .sign-up-box p {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #666;
-}
-
-.sign-in-box a, .sign-up-box a {
-    color: #4CAF50;
-    text-decoration: none;
-}
-
-.sign-in-box a:hover, .sign-up-box a:hover {
-    text-decoration: underline;
-}
+/* Error Message */
 .error-message {
     margin-top: 20px;
     padding: 10px;
-    background-color: #f8d7da; /* Light red background */
-    color: #721c24; /* Dark red text color */
-    border: 1px solid #f5c6cb; /* Light red border */
+    background: rgba(255, 80, 80, 0.2);
+    color: #ff6f6f;
+    border: 1px solid #ff6f6f;
     border-radius: 5px;
     font-size: 16px;
     text-align: center;
 }
-/* Account Section Styling */
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #bbb;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.cta-button:hover {
+    background: #388e3c; /* Darker Green */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Account Section */
 .account-section {
-    max-width: 800px;
-    margin: 20px auto;
+    margin-top: 40px;
     padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(30, 30, 30, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .account-section h2 {
-    margin-top: 0;
-    font-size: 36px;
-    color: #333;
     text-align: center;
+    font-size: 2rem;
+    color: #e0e0e0;
+    margin-bottom: 20px;
 }
 
 .account-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
     padding: 15px;
-    border-bottom: 1px solid #ddd;
+    background: rgba(60, 60, 60, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.account-details h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
-    color: #555;
+.account-details:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.account-details p {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
+.account-details img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50; /* Neon Green */
+    margin-bottom: 10px;
 }
 
-.account-actions {
-    text-align: center;
-    margin-top: 20px;
+.account-info p {
+    font-size: 1.2rem;
+    margin: 5px 0;
 }
 
-.edit-button, .logout-button {
-    text-decoration: none;
-    color: white;
+/* Edit Button */
+.edit-button {
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
     padding: 10px 20px;
+    border: none;
     border-radius: 5px;
     font-size: 16px;
-    margin: 0 10px;
-    display: inline-block;
-}
-
-.edit-button {
-    background-color: #4CAF50;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .edit-button:hover {
-    background-color: #45a049;
+    background: #388e3c; /* Darker Green */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Logout Button */
 .logout-button {
-    background-color: #f44336; /* Red color for logout */
+    background: #f44336;
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .logout-button:hover {
-    background-color: #d32f2f;
+    background: #d32f2f;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .account-section, .hobbies-section {
+        flex: 1 1 100%;
+    }
+
+    .hobby-tile {
+        width: 100%;
+        height: auto;
+    }
+}
+/* Account Section */
+.account-section {
+    flex: 1;
+    background: rgba(30, 30, 30, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+}
+
+.profile-picture {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #4CAF50;
+}
+
+.account-details h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.account-info {
+    margin-bottom: 15px;
+}
+
+.account-info h3 {
+    font-size: 1.2rem;
+    color: #4CAF50;
+}
+
+.account-info p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+.account-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.edit-button, .logout-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #e0e0e0;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #388e3c;
+}
+
+.logout-button {
+    background-color: #f44336;
+}
+
+.logout-button:hover {
+    background-color: #e53935;
+}
+
+/* Hobbies Section */
+.hobbies-section {
+    flex: 2;
+    background: rgba(30, 30, 30, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+}
+
+.hobbies-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.hobbies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.hobby-tile {
+    background: rgba(60, 60, 60, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.hobby-tile:hover {
+    background: rgba(60, 60, 60, 0.9);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.add-hobby {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.add-hobby-button {
+    background-color: #4CAF50;
+    color: #e0e0e0;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.add-hobby-button:hover {
+    background-color: #388e3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hobbies-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 }

@@ -15,7 +15,7 @@ class Queries:
                         "USER_EMAIL": "text REFERENCES USER_ACCOUNTS (USER_EMAIL)",
                         "HOBBY_NAME": "text PRIMARY KEY",
                         "HOBBY_DESCRIPTION": "text",
-                        "HOBBY_PROFECIENCY": "text",
+                        "HOBBY_PROFICIENCY": "text",
                         "EXPERIENCE_YEARS": "integer",
                         "EXPERIENCE_MONTHS": "integer",
                         "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
@@ -89,6 +89,21 @@ class Queries:
         BEFORE UPDATE ON {table_nm}
         FOR EACH ROW
         EXECUTE FUNCTION {function_nm}();
+        """
+
+        return sql
+    
+    def drop_tables(self):
+        sql = """
+        DO $$ 
+        DECLARE
+            r RECORD;
+        BEGIN
+            FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public')
+            LOOP
+                EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+            END LOOP;
+        END $$;
         """
 
         return sql

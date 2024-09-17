@@ -51,10 +51,31 @@ def my_account():
     if session:
         print(session)
         print(type(session))
-        query_response = requests.post(settings.api_url, f"/user_accounts/get_user", dict(session))
-        return render_template("my_account.html", username = session['USER_NAME'] , email = query_response['USER_EMAIL'])
+        user_data = requests.post(settings.api_url, f"/user_accounts/get_user", dict(session))
+        hobby_data = requests.post(settings.api_url, f"/user_hobbies/get_hobbies", dict(session))["DATA"]
+
+        print(user_data)
+        print(hobby_data)
+
+        return render_template("my_account.html", username = session['USER_NAME'] , email = user_data['USER_EMAIL'], hobbies=hobby_data)
     else:
         return redirect(url_for('signin_page'))
+    
+@app.route("/add-hobby", methods=['GET', 'POST'])
+def add_hobby():
+    if request.method == 'POST':
+
+        dict_payload = dict(request.form)
+        dict_payload["USER_EMAIL"] = session["USER_EMAIL"]
+
+        print(dict_payload)
+
+        requests.post(settings.api_url, f"/user_hobbies/add_hobby", dict_payload)
+
+        return redirect(url_for('my_account'))
+    else:
+        return render_template("add_hobby.html")
+    
     
 
 @app.route("/sign-in", methods=['GET', 'POST'])
@@ -92,6 +113,7 @@ def signup_page():
         
         if query_response["INSERT"] == "SUCCESS":
             session['USER_NAME'] = dict_payload["USER_NAME"]
+            session["USER_EMAIL"] = dict_payload["USER_EMAIL"]
             return redirect(url_for('home_page'))
         elif query_response["INSERT"] == "INSERT ERROR":
             return render_template("signup.html", error_message="That email is already taken. Please sign in or make a new account!")
