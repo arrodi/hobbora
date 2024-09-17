@@ -39,7 +39,8 @@ print("API INITIALIZED")
 def get_customer():
 
     request_data = request.get_json()
-    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{request_data["USER_EMAIL"]}'")
+    request_email = request_data["USER_EMAIL"]
+    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{request_email}'")
     query_return = list(postgres.execute_query(sql_context, fetch=True))
     
     if query_return:
