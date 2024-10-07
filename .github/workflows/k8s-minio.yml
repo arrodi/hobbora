@@ -1,0 +1,88 @@
+name: k8s-minio
+
+on:
+  workflow_dispatch
+
+env:
+  STORAGE_CLASS_NAME: do-block-storage
+  
+jobs:
+  set-up:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Delete Previous Namespace minio
+        continue-on-error: true
+        run: |
+          kubectl delete namespace minio
+
+      - name: Create Namespace minio
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/minio/namespace.yaml
+
+      - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolume.yaml
+        run: |
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/minio/persistentvolume.yaml
+
+      - name: Create Persistent Volume - minio-pv
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/minio/persistentvolume.yaml
+
+
+  deploy:
+    needs: set-up
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Delete Secret - minio-creds
+        continue-on-error: true
+        run: |
+          kubectl -n minio delete secret minio-creds
+
+      - name: Create Secret - minio-creds
+        run: |
+          kubectl -n minio create secret generic minio-creds --from-literal minio_USER="${{ vars.MINIO_USER }}" --from-literal minio_PASSWORD="${{ secrets.MINIO_PASSWORD }}"
+      
+      - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolumeclaim.yaml
+        run: |
+          sed -i 's/STORAGE_CLASS_NAME_VAR/${{ env.STORAGE_CLASS_NAME }}/g' ${{ github.workspace }}/kubernetes/minio/persistentvolumeclaim.yaml
+
+      - name: Create Persistent Volume Claim - minio-pvc
+        run: kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/minio/persistentvolumeclaim.yaml
+      
+      - name: Deploy Statefulset - minio
+        run: |
+          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/minio/statefulset.yaml
+
+      - name: Deploy Service - minio-db-service
+        run: |
+          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/minio/service.yaml

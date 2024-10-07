@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio
+  serviceName: minio
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - name: minio
+        image: quay.io/minio/minio:latest
+        args:
+        - server
+        - /data
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 9000
+        env:
+        - name: MINIO_USER
+          valueFrom:
+            secretKeyRef:
+              name: minio-creds
+              key: MINIO_USER
+              optional: false
+        - name: MINIO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: minio-creds
+              key: MINIO_PASSWORD
+              optional: false
+        volumeMounts:
+        - name: data
+          mountPath: /data
+          readOnly: false
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: minio-pvc
