@@ -9,6 +9,7 @@ spec:
       labels:
         app: {{ .Values.deployment.name }}
     spec:
+      restartPolicy: OnFailure
       imagePullSecrets:
       - name: {{ .Values.deployment.docker.secret }}
       containers:
