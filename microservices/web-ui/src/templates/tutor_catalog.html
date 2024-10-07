@@ -15,15 +15,15 @@
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
-                    <li><a href="/my-account">My Account</a></li>
+                    <li><a href="/account">My Account</a></li>
                 </ul>
             </nav>
             
             <!-- User Profile Section -->
             <div class="user-profile">
                 <!-- Profile Button linking to account page -->
-                <a href="/my-account" class="profile-button">
-                    <span>{{ username if username else 'SIGN IN' }}</span>
+                <a href="/account" class="profile-button">
+                    <span>{{ session.USER_NAME if session.USER_NAME else 'SIGN IN' }}</span>
                 </a>
             </div>
         </header>
@@ -42,15 +42,25 @@
                     <option value="language">Language</option>
                 </select>
             </div>
-            <div class="tutor-list">
-                <div class="tutor-card">
-                    <h3>John Doe</h3>
-                    <p>Subject: Math</p>
-                    <p>Rate: $20/hour</p>
-                    <button>Request Tutoring</button>
+        </section>
+
+        <section class="hobbies-section">
+            <h2>Tutoring Available</h2>
+                <div class="hobbies-list">
+                    {% for hobby in hobbies %}
+                        <a href="/view-tutoring/{{ hobby.HOBBY_ID }}" class="hobby-tile">
+                            <h3>{{ hobby.HOBBY_NAME }}</h3>
+                            <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
+                            <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months</p>
+                            <p><strong>Description:</strong> {{ hobby.TUTORING_DESCRIPTION }}</p>
+                            <p><strong>Hourly Rate:</strong> {{ hobby.TUTORING_HOURLY_RATE }}</p>
+                            <h3>Tutoring Modes</h3>
+                            <p><strong>Live Calls:</strong> {{ hobby.TUTORING_MODE_LIVE_CALL }}</p>
+                            <p><strong>Private:</strong> {{ hobby.TUTORING_MODE_PRIVATE_IN_PERSON }}</p>
+                            <p><strong>Public:</strong> {{ hobby.TUTORING_MODE_PUBLIC_IN_PERSON }}</p>
+                        </a>
+                    {% endfor %}
                 </div>
-                <!-- Add more tutor cards here -->
-            </div>
         </section>
     </main>
 

@@ -99,17 +99,24 @@ main {
 }
 
 /* Profile Picture */
-.profile-picture {
+.profile-picture-reg, .profile-picture-tutor {
     margin-bottom: 20px;
     text-align: center;
 }
 
-.profile-picture img {
+.profile-picture-reg img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #4CAF50; /* Neon Green */
+}
+.profile-picture-tutor img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #cabd00; /* Neon Green */
 }
 
 /* Account Details */
@@ -147,9 +154,34 @@ main {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 220px; /* Fixed size */
-    height: 180px; /* Fixed size */
+    width: 220px;
+    height: 180px;
     box-sizing: border-box;
+    overflow: hidden; /* This hides any overflowed text */
+    text-overflow: ellipsis; /* Adds ellipsis if text overflows */
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+.hobby-tile:hover {
+    background: rgba(60, 60, 60, 1); /* Changes the color on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    white-space: normal; /* Allows text to wrap on hover */
+}
+.edit-hobby-button {
+    display: inline-block;
+    background-color: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+}
+
+.edit-hobby-button:hover {
+    background-color: #388e3c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Add Hobby Section */
@@ -308,146 +340,39 @@ button:hover, .submit-button:hover {
     background: #388e3c; /* Darker Green */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
-/* Account Section */
-.account-section {
-    margin-top: 40px;
-    padding: 20px;
-    background: rgba(30, 30, 30, 0.9);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.account-section h2 {
-    text-align: center;
-    font-size: 2rem;
-    color: #e0e0e0;
-    margin-bottom: 20px;
-}
-
-.account-details {
+/* Main Content Styling */
+.container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(60, 60, 60, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.account-details:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.account-section, .hobbies-section {
+    width: 48%;
 }
 
-.account-details img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #4CAF50; /* Neon Green */
-    margin-bottom: 10px;
-}
-
-.account-info p {
-    font-size: 1.2rem;
-    margin: 5px 0;
-}
-
-/* Edit Button */
-.edit-button {
-    background: #4CAF50; /* Neon Green */
-    color: #e0e0e0;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s;
-}
-
-.edit-button:hover {
-    background: #388e3c; /* Darker Green */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Logout Button */
-.logout-button {
-    background: #f44336;
-    color: #e0e0e0;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s;
-}
-
-.logout-button:hover {
-    background: #d32f2f;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 10px 20px;
-    }
-
-    .logo {
-        margin-bottom: 10px;
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .container {
-        flex-direction: column;
-    }
-
-    .account-section, .hobbies-section {
-        flex: 1 1 100%;
-    }
-
-    .hobby-tile {
-        width: 100%;
-        height: auto;
-    }
-}
 /* Account Section */
 .account-section {
-    flex: 1;
-    background: rgba(30, 30, 30, 0.8);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     color: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-picture {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.profile-picture img {
+.account-section .profile-picture-reg, .profile-picture-tutor img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #4CAF50;
+    margin-bottom: 20px;
 }
 
 .account-details h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 24px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
 }
 
 .account-info {
@@ -455,79 +380,85 @@ button:hover, .submit-button:hover {
 }
 
 .account-info h3 {
-    font-size: 1.2rem;
+    font-size: 18px;
     color: #4CAF50;
 }
 
-.account-info p {
-    font-size: 1rem;
-    margin: 5px 0;
-}
-
 .account-actions {
-    margin-top: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
 }
 
-.edit-button, .logout-button {
-    display: inline-block;
+.edit-button, .become-tutor-button, .hobby-button {
     background-color: #4CAF50;
-    color: #e0e0e0;
-    padding: 12px 20px;
+    color: white;
+    padding: 5px 10px;
     border-radius: 5px;
-    font-size: 16px;
-    margin: 0 10px;
     text-decoration: none;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s;
 }
 
-.edit-button:hover {
+.edit-button, .become-tutor-button, .hobby-button:hover {
     background-color: #388e3c;
 }
-
 .logout-button {
-    background-color: #f44336;
+    background-color: #d32f2f;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .logout-button:hover {
-    background-color: #e53935;
+    background-color: #b62929; /* Red for logout */
 }
 
 /* Hobbies Section */
-.hobbies-section {
-    flex: 2;
-    background: rgba(30, 30, 30, 0.8);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    color: #e0e0e0;
-}
-
 .hobbies-section h2 {
-    font-size: 2rem;
+    font-size: 24px;
+    color: #e0e0e0;
     margin-bottom: 20px;
 }
 
 .hobbies-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
 .hobby-tile {
-    background: rgba(60, 60, 60, 0.8);
+    background: rgba(60, 60, 60, 0.9);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 220px;
+    height: auto;
+    box-sizing: border-box;
+    overflow: hidden;
     color: #e0e0e0;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
+    text-decoration: none;  /* Remove underline from link */
+    cursor: pointer;  /* Change cursor to pointer */
+    display: block;  /* Make the whole tile clickable */
 }
 
 .hobby-tile:hover {
-    background: rgba(60, 60, 60, 0.9);
+    background: rgb(73, 73, 73);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
+.hobby-tile h3 {
+    font-size: 20px;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.hobby-tile p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+/* Add Hobby Button */
 .add-hobby {
     margin-top: 20px;
     text-align: center;
@@ -535,26 +466,174 @@ button:hover, .submit-button:hover {
 
 .add-hobby-button {
     background-color: #4CAF50;
-    color: #e0e0e0;
-    padding: 12px 24px;
+    color: white;
+    padding: 12px 20px;
     border-radius: 5px;
     text-decoration: none;
     font-size: 16px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s;
 }
 
 .add-hobby-button:hover {
     background-color: #388e3c;
 }
 
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #e0e0e0;
+    font-weight: 500; /* Added for consistency */
+}
+
+.input-group input, 
+.input-group textarea, 
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #333; /* Dark border */
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(60, 60, 60, 0.8); /* Match background */
+    color: #e0e0e0; /* Text color */
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus, 
+.input-group textarea:focus, 
+.input-group select:focus {
+    border-color: #4CAF50; /* Neon Green */
+    outline: none; /* Remove default outline */
+}
+
+/* Add a hover effect for select dropdown */
+.input-group select:hover {
+    background: rgba(50, 50, 50, 0.8); /* Darker on hover */
+}
+/* Style for the warning message */
+.warning-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Style for the buttons */
+.hobby-button-group {
+    display: flex;
+    gap: 10px;
+}
+/* Style for action buttons container */
+.action-buttons-section {
+    margin-top: 30px;
+}
+
+.action-buttons-section h3 {
+    margin-bottom: 20px;
+}
+.warning-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 1s ease-out; /* Fade-out effect over 1 second */
+}
+/* Hobby Information Section */
+.hobby-info-section {
+    padding: 20px;
+    background-color: rgba(40, 40, 40, 0.9);
+    color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: left;
+}
+
+.hobby-info-section h2 {
+    font-size: 28px;
+    color: #4CAF50; /* Neon Green */
+    margin-bottom: 15px;
+}
+
+.hobby-info-section p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    color: #bbb;
+}
+
+.hobby-info-section strong {
+    color: #e0e0e0;
+}
+
+/* Pictures Section */
+.hobby-pictures-section {
+    padding: 20px;
+    background-color: rgba(40, 40, 40, 0.9);
+    color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.hobby-pictures-section h3 {
+    font-size: 24px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.pictures-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.picture-item {
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.picture-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.picture-item:hover img {
+    transform: scale(1.1);
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
+        padding: 0 20px; /* Reduced padding for smaller screens */
     }
 
     .hobbies-list {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjusted for smaller screens */
     }
 }

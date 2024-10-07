@@ -15,15 +15,15 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
-                <li><a href="/my-account">My Account</a></li>
+                <li><a href="/account">My Account</a></li>
             </ul>
         </nav>
         
         <!-- User Profile Section -->
         <div class="user-profile">
             <!-- Profile Button linking to account page -->
-            <a href="/my-account" class="profile-button">
-                <span>{{ username if username else 'SIGN IN' }}</span>
+            <a href="/account" class="profile-button">
+                <span>{{ session.USER_NAME if session.USER_NAME else 'SIGN IN' }}</span>
             </a>
         </div>
     </header>
@@ -47,7 +47,11 @@
                     </div>
                     <div class="input-group">
                         <label for="hobby-proficiency">Hobby Proficiency</label>
-                        <input type="text" id="hobby-proficiency" name="HOBBY_PROFICIENCY" required>
+                        <select id="hobby-proficiency" name="HOBBY_PROFICIENCY" required>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Expert">Expert</option>
+                        </select>
                     </div>
                     <div class="input-group">
                         <label for="experience-years">Experience (Years)</label>

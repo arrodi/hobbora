@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Your Hobby</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Earn&Educate</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/account">My Account</a></li>
+            </ul>
+        </nav>
+        
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <a href="/account" class="profile-button">
+                <span>{{ session.USER_NAME if session.USER_NAME else 'SIGN IN' }}</span>
+            </a>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main>
+        <div class="agreement-container">
+            <h2>User Agreement</h2>
+            <p>
+                By using the Earn&Educate platform, you agree to the following terms and conditions:
+            </p>
+            <ul>
+                <li>You will not misuse the platform.</li>
+                <li>You will provide accurate information.</li>
+                <li>You acknowledge that you are responsible for your interactions with other users.</li>
+                <li>The platform is not liable for any disputes between users.</li>
+            </ul>
+            <p>
+                If you agree to these terms, please click the "Accept" button below. If you do not agree, you may decline.
+            </p>
+    
+            <div class="buttons">
+                <form action="{{ url_for('become_tutor') }}" method="post">
+                    <button type="submit" class="button">Accept</button>
+                </form>
+                <form action="{{ url_for('my_account') }}" method="post">
+                    <button type="submit" class="button">Decline</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

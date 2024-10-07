@@ -1,0 +1,146 @@
+/* Hobbies Section Styles */
+.hobbies-section {
+    flex-basis: 70%; /* Take 45% of the width */
+    margin-left: 2%; /* Space between profile and account */
+    margin-right: 5%;
+    border-radius: 10px;
+    color: #e0e0e0; /* Text color */
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* Hobbies Header Styles */
+.hobbies-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.hobbies-header h2 {
+    font-size: 24px;
+    color: #4CAF50; /* Neon green */
+    margin: 0px;
+}
+.add-hobby-button {
+    padding: 5px 20px;
+    background-color: #4CAF50; /* Neon green */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.add-hobby-button:hover {
+    background-color: #388e3c;
+}
+/* Hobbies List Grid */
+.hobbies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Minimum width set to 200px */
+    gap: 20px; /* Space between tiles */
+    margin: 0px;
+}
+
+@media screen and (min-width: 400px) {
+    .hobbies-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ensure hobbies take up 1/4 of the section */
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .hobbies-list {
+        grid-template-columns: repeat(4, 1fr); /* Explicitly set 4 columns for larger screens */
+    }
+}
+
+/* Hobby Tile Styling */
+.hobby-tile {
+    background: rgba(30, 30, 30, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;  /* Prevent content overflow and hide excess */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures content is spread out within tile */
+    text-decoration: none; /* Removes the default underline */
+    flex: 1; /* Make the tile expand to fill the available space */
+    height: auto; /* Auto height to adjust based on content */
+    min-height: 150px; /* Minimum height for consistency */
+    max-height: 300px; /* Maximum height to avoid overflow */
+}
+
+.hobby-tile:hover {
+    transform: translateY(-5px); /* Slight hover effect for modern feel */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+    text-decoration: none; /* Removes the default underline */
+}
+
+/* Responsive Design Adjustments */
+@media screen and (max-width: 1000px) {
+    .hobbies-section {
+        padding: 20px;
+        overflow: auto;
+    }
+
+    .hobbies-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller screens still maintain at most 1/4 width */
+        margin-bottom: 10%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .hobbies-list {
+        grid-template-columns: 1fr; /* Stack items vertically on very small screens */
+    }
+}
+
+
+.hobby-tile h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.hobby-tile p {
+    font-size: 16px;
+    color: #e0e0e0; /* Subtle gray text */
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.hobby-tile strong {
+    color: #777; /* Green for emphasis */
+}
+/* No Hobbies Message Styling */
+.no-hobbies-message {
+    padding: 50px;
+    text-align: center;
+    font-size: 24px;
+    color: #e0e0e0;
+    font-weight: bold;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+/* Responsive Design Adjustments */
+@media screen and (max-width: 1000px) {
+
+    .hobbies-section {
+        padding: 20px;
+        
+        overflow:scroll;
+    }
+
+    .hobbies-list {
+        grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
+        margin-bottom: 10%;
+    }
+}

@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn&Educate - Sign Up</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-    <style>
-
-    </style>
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/base.css')}}">
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/authentication/sign-up.css')}}">
 </head>
 <body>
 
@@ -18,14 +16,14 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
-                <li><a href="/my-account">My Account</a></li>
+                <li><a href="/account">My Account</a></li>
             </ul>
         </nav>
         <!-- User Profile Section -->
         <div class="user-profile">
             <!-- Profile Button linking to account page -->
-            <a href="/my-account" class="profile-button">
-                <span>{{ username if username else 'SIGN IN' }}</span>
+            <a href="/account" class="profile-button">
+                <span>{{ user.USER_NAME if user.USER_NAME else 'SIGN IN' }}</span>
             </a>
         </div>
     </header>
@@ -36,16 +34,16 @@
             <h2>Sign Up for Earn&Educate</h2>
             <form action="/sign-up" method="POST">
                 <div class="input-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="USER_NAME" required>
                 </div>
                 <div class="input-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="USER_EMAIL" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="USER_PASS" required>
                 </div>
                 <button type="submit" class="submit-button">Sign Up</button>
                 <!-- Error message -->
@@ -55,7 +53,7 @@
                     </div>
                 {% endif %}
             </form>
-            <p>Already have an account? <a href="/sign-in">Sign In</a></p>
+            <p>Already have an account? <a class="standard-link" href="/sign-in">Sign In</a></p>
         </div>
     </main>
 
