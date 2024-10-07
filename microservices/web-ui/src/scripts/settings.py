@@ -7,6 +7,9 @@ class Settings:
         
         self.api_url=os.environ["API_URL"]
 
+        current_directory = os.listdir()
+        print(current_directory)
+
         self.default_pictures_urls = self._get_all_paths_in_folder("static\images\default_hobbies")
 
     def _get_all_paths_in_folder(self, directory):
