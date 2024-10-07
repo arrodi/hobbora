@@ -23,17 +23,17 @@ spec:
         ports:
         - containerPort: 9000
         env:
-        - name: MINIO_USER
+        - name: MINIO_ROOT_USER
           valueFrom:
             secretKeyRef:
               name: minio-creds
-              key: MINIO_USER
+              key: MINIO_ROOT_USER
               optional: false
-        - name: MINIO_PASSWORD
+        - name: MINIO_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: minio-creds
-              key: MINIO_PASSWORD
+              key: MINIO_ROOT_PASSWORD
               optional: false
         volumeMounts:
         - name: data
