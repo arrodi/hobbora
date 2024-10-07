@@ -4,39 +4,41 @@ metadata:
   name: {{ .Values.deployment.name }}
 spec:
   schedule: {{ .Values.deployment.schedule }}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.deployment.name }}
+  jobTemplate:
     spec:
-      restartPolicy: OnFailure
-      imagePullSecrets:
-      - name: {{ .Values.deployment.docker.secret }}
-      containers:
-      - name: {{ .Values.deployment.name }}
-        image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
-        env:
-        - name: PYTHONUNBUFFERED
-          value: "1"
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.database.secret }}
-              key: POSTGRES_USER
-              optional: false
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.database.secret }}
-              key: POSTGRES_PASSWORD
-              optional: false
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.database.secret }}
-              key: POSTGRES_DB
-              optional: false
-        - name: POSTGRES_PORT
-          value: {{ .Values.database.port  | quote }}
-        - name: POSTGRES_HOST
-          value: {{ .Values.database.host  | quote }}
+      template:
+        metadata:
+          labels:
+            app: {{ .Values.deployment.name }}
+        spec:
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: {{ .Values.deployment.docker.secret }}
+          containers:
+          - name: {{ .Values.deployment.name }}
+            image: {{ .Values.deployment.docker.image}}:{{$.Values.deployment.docker.tag}}
+            env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.secret }}
+                  key: POSTGRES_USER
+                  optional: false
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.secret }}
+                  key: POSTGRES_PASSWORD
+                  optional: false
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.secret }}
+                  key: POSTGRES_DB
+                  optional: false
+            - name: POSTGRES_PORT
+              value: {{ .Values.database.port  | quote }}
+            - name: POSTGRES_HOST
+              value: {{ .Values.database.host  | quote }}
