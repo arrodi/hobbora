@@ -10,7 +10,7 @@ class Settings:
         current_directory = os.listdir()
         print(current_directory)
 
-        self.default_pictures_urls = self._get_all_paths_in_folder("static\images\default_hobbies")
+        self.default_pictures_urls = self._get_all_paths_in_folder("static/images/default_hobbies")
 
     def _get_all_paths_in_folder(self, directory):
         file_urls = []
