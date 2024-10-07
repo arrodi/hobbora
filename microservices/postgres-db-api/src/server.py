@@ -72,7 +72,8 @@ def get_customer():
 def add_user():
 
     request_data = request.get_json()
-    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_NAME = '{request_data["USER_NAME"]}'")
+    request_data_username = request_data["USER_NAME"]
+    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_NAME = '{request_data_username}'")
     query_return = postgres.execute_query(sql_context, fetch=True)
     if query_return:
         request_data["INSERT"] = "ERROR"
