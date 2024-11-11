@@ -18,7 +18,7 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/catalog">Tutoring Catalog</a></li>
                 <li><a href="/account">My Account</a></li>
             </ul>
         </nav>
@@ -26,7 +26,7 @@
         <!-- User Profile Section -->
         <div class="user-profile">
             <a href="/account" class="profile-button">
-                <span>{{ user.USER_NAME if user.USER_NAME else 'SIGN IN' }}</span>
+                <span>{{ user.USER_NAME if user.USER_NAME else 'Sign In' }}</span>
             </a>
         </div>
     </header>
@@ -36,7 +36,12 @@
         <div class="account-section">
             <div class="account-profile-section">
                 <div class="profile-picture-reg {% if user.USER_TUTOR %}profile-picture-tutor{% endif %}">
-                    <img src="{{ url_for('static', filename=pfp_url) }}" alt="Profile Picture">
+                    {% if default_image %}
+                    <img src="{{ url_for('static', filename=default_image) }}" alt="Profile Picture">
+                    {% endif %}
+                    {% if encoded_image %}
+                    <img src="data:image/jpeg;base64,{{ encoded_image }}" alt="Image">
+                    {% endif %}
                 </div>
                 <div class="account-details">
                     <h1>{{ user.USER_NAME }}</h1>
@@ -56,7 +61,7 @@
                 </ul>
             </div>
             <div class="account-actions">
-                {% if not user.USER_TUTOR %}<a href="/become-tutor" class="button">Become Tutor</a>{% endif %}
+                {% if not user.USER_TUTOR %}<a href="/account/become-tutor" class="button">Become Tutor</a>{% endif %}
                 <a href="/logout" class="logout-button">Logout</a>
             </div>
         </div>
@@ -67,7 +72,7 @@
             <div class="non-tutored-hobbies">
                 <div class="hobbies-header">
                     <h2>My Hobbies</h2>
-                    <a href="/add-hobby" class="add-hobby-button">Add a Hobby</a>
+                    <a href="/account/hobbies/hobby/add" class="add-hobby-button">Add a Hobby</a>
                 </div>
                 <div class="hobbies-list">
                     {% if hobbies|selectattr('HOBBY_TUTORING', 'equalto', false) | list | length == 0 %}
@@ -77,10 +82,9 @@
                     {% else %}
                     {% for hobby in hobbies %}
                     {% if hobby.HOBBY_TUTORING == false %}
-                    <a href="/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
+                    <a href="/account/hobbies/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
                         <div class="hobby-tile-content">
                             <h3>{{ hobby.HOBBY_NAME }}</h3>
-                            <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>
                             <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
                             <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{
                                 hobby.EXPERIENCE_MONTHS }} months</p>
@@ -105,7 +109,7 @@
                     {% else %}
                     {% for hobby in hobbies %}
                     {% if hobby.HOBBY_TUTORING == true %}
-                    <a href="/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
+                    <a href="/account/hobbies/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
                         <div class="hobby-tile-content">
                             <h3>{{ hobby.HOBBY_NAME }}</h3>
                             <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>

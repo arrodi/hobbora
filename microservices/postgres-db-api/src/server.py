@@ -46,12 +46,34 @@ print("API INITIALIZED")
 ##### SERVER ROUTES #####
 #########################
 
-@app.route("/user_accounts/get_user", methods=['POST'])
-def get_customer():
+@app.route("/user_accounts/get_user/email", methods=['POST'])
+def get_customer_email():
 
     request_data = request.get_json()
     request_email = request_data["USER_EMAIL"]
     sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{request_email}'")
+    query_return = list(postgres.execute_query(sql_context, fetch=True))
+    
+    if query_return:
+        query_return = query_return[0]
+        # Format datetime fields
+        query_return = [value.strftime("%Y-%m-%d %H:%M:%S") if isinstance(value, datetime) else value for value in query_return]
+        
+        print(query_return)
+
+        response = {'USER_EXISTS': True}
+        for i, key in enumerate(queries.table_schemas["USER_ACCOUNTS"].keys()):
+            response[key] = query_return[i]
+        return jsonify(response)
+    else:
+        return jsonify({'USER_EXISTS': False})
+    
+@app.route("/user_accounts/get_user/user_id", methods=['POST'])
+def get_customer_user_id():
+
+    request_data = request.get_json()
+    request_user_id = request_data["USER_ID"]
+    sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_ID = '{request_user_id}'")
     query_return = list(postgres.execute_query(sql_context, fetch=True))
     
     if query_return:
@@ -79,9 +101,17 @@ def add_user():
         request_data["INSERT"] = "ERROR"
         request_data["MESSAGE"] = "This username is already in use!"
         return jsonify(request_data)
-    else:        
-        sql_context = queries.insert_into_table("USER_ACCOUNTS", request_data)
-        query_return = postgres.execute_query(sql_context, fetch=False)
+    else:
+        request_data_email = request_data["USER_EMAIL"]
+        sql_context = queries.select_table("USER_ACCOUNTS", queries.table_schemas["USER_ACCOUNTS"].keys(), f"USER_EMAIL = '{request_data_email}'")
+        query_return = postgres.execute_query(sql_context, fetch=True)
+        if query_return:
+            request_data["INSERT"] = "ERROR"
+            request_data["MESSAGE"] = "This email is already in use!"
+            return jsonify(request_data)
+        else:
+            sql_context = queries.insert_into_table("USER_ACCOUNTS", request_data)
+            query_return = postgres.execute_query(sql_context, fetch=False)
 
     if "QUERY SUCCESS" in query_return:
         request_data["INSERT"] = "SUCCESS"
@@ -99,17 +129,18 @@ def add_user():
 @app.route("/user_accounts/become_tutor", methods=['POST'])
 def become_tutor():
     request_data = request.get_json()
-    user_email = request_data.pop("USER_EMAIL")
+    user_id = request_data.pop("USER_ID")
     request_data = {"USER_TUTOR": request_data["USER_TUTOR"]}
-    sql_context = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_EMAIL = '{user_email}'")
+    sql_context = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
     query_return = postgres.execute_query(sql_context, fetch=False)
+    print(query_return)
     if "QUERY SUCCESS" in query_return:
-        request_data["USER_EMAIL"] = user_email
+        request_data["USER_ID"] = user_id
         request_data["MODIFY"] = "SUCCESS"
         request_data["MESSAGE"] = "Succesfully became a tutor!"
         return jsonify(request_data)
     else:
-        request_data["USER_EMAIL"] = user_email
+        request_data["USER_ID"] = user_id
         request_data["MODIFY"] = "FAILURE"
         request_data["MESSAGE"] = "Unknown failure!"
         return jsonify(request_data)
@@ -136,14 +167,37 @@ def add_hobby():
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     
+@app.route("/user_hobbies/add_picture", methods=['POST'])
+def add_hobby_picture():
+
+    request_data = request.get_json()
+    request_data["PICTURE_MAIN"] = False
+    sql_context = queries.insert_into_table("USER_HOBBIES_PICTURES", request_data)
+    print(sql_context)
+    query_return = postgres.execute_query(sql_context, fetch=False)
+
+    if "QUERY SUCCESS" in query_return:
+        request_data["INSERT"] = "SUCCESS"
+        request_data["MESSAGE"] = "Succesfully added the hobby!"
+        return jsonify(request_data)
+    elif "INSERT ERROR" in query_return:
+        request_data["INSERT"] = "INSERT ERROR"
+        request_data["MESSAGE"] = query_return
+        return jsonify(request_data)
+    else:
+        request_data["INSERT"] = "UNKOWN ERROR"
+        request_data["MESSAGE"] = query_return
+        return jsonify(request_data)
+    
 @app.route("/user_hobbies/get_hobbies", methods=['POST'])
 def get_hobbies():
 
     request_data = request.get_json()
-    request_email = request_data["USER_EMAIL"]
-    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_EMAIL = '{request_email}'")
+    request_user_id = request_data["USER_ID"]
+    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_ID = '{request_user_id}'")
     query_return = postgres.execute_query(sql_context, fetch=True)
 
+    print(query_return)
     
     if len(query_return) > 0:
         query_return_lst = []
@@ -161,12 +215,15 @@ def get_hobbies():
 @app.route("/user_hobbies/get_hobby", methods=['POST'])
 #Returns all information on a single hobby
 def get_hobby():
-
+    print("/user_hobbies/get_hobby")
     request_data = request.get_json()
-    request_email = request_data["USER_EMAIL"]
     hobby_id = request_data["HOBBY_ID"]
-    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"USER_EMAIL = '{request_email}' AND HOBBY_ID = '{hobby_id}'")
+
+
+    sql_context = queries.select_table("USER_HOBBIES", queries.table_schemas["USER_HOBBIES"].keys(), f"HOBBY_ID = '{hobby_id}'")
     query_return = postgres.execute_query(sql_context, fetch=True)
+
+    print(query_return)
 
     
     if query_return:
@@ -177,7 +234,15 @@ def get_hobby():
                 _temp_dict[_column] = _record[_index]
             query_return_lst.append(_temp_dict)
 
-    request_data["DATA"] = query_return_lst
+        request_data["DATA"] = query_return_lst
+
+    for _hobby in query_return_lst:
+        _hobby["HOBBY_ID"]
+        sql_context = queries.select_table("USER_HOBBIES_PICTURES", queries.table_schemas["USER_HOBBIES_PICTURES"].keys(), f"HOBBY_ID = '{hobby_id}'")
+        print(sql_context)
+        query_return = postgres.execute_query(sql_context, fetch=True)
+    
+
     return jsonify(request_data)
 
 @app.route("/user_hobbies/tutor_hobby", methods=['POST'])
@@ -220,6 +285,8 @@ def get_tutored_hobbies():
 
     request_data = request.get_json()
 
+    print(request_data)
+
     USER_HOBBIES_TUTORING_lst = list(queries.table_schemas["USER_HOBBIES_TUTORING"].keys())
     USER_HOBBIES_lst = list(queries.table_schemas["USER_HOBBIES"].keys())
 
@@ -241,10 +308,6 @@ def get_tutored_hobbies():
 
     request_columns = [_column.replace("a.", "") for _column in request_columns]
 
-    print("/user_hobbies/get_tutored_hobbies")
-    print(request_columns)
-    print(query_return)
-
     
     if query_return:
         query_return_lst = []
@@ -253,8 +316,13 @@ def get_tutored_hobbies():
             for _index, _column in enumerate(request_columns):
                 _temp_dict[_column] = _record[_index]
             query_return_lst.append(_temp_dict)
+        
+        print("/user_hobbies/get_tutored_hobbies")
+        print(query_return_lst)
+        request_data["DATA"] = query_return_lst
+    else:
+        request_data["DATA"] = []
 
-    request_data["DATA"] = query_return_lst
     return jsonify(request_data)
 #########################
 ##### SERVER BEGIN! #####

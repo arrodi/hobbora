@@ -3,25 +3,44 @@ class Queries:
     def __init__(self):
         self.table_schemas = {
             "USER_ACCOUNTS": {
-                "USER_EMAIL": "text PRIMARY KEY",
+                "USER_ID": "text PRIMARY KEY",
+                "USER_EMAIL": "text",
                 "USER_NAME": "text",
+                "USER_FIRST_NAME": "text",
+                "USER_LAST_NAME": "text",
+                "USER_ABOUT": "text",
                 "USER_PASS": "text",
-                "USER_RATING": "decimal",
-                "USER_SCHOOL": "text",
                 "USER_TUTOR": "boolean",
+                "USER_BACKGROUND_CHECK": "boolean",
+                "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+                "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+            },
+            "USER_TUTOR_ACCOUNTS": {
+                "TUTOR_ID": "text PRIMARY KEY",
+                "USER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+                "TUTOR_RATING": "decimal",
+                "TUTOR_EXPERIENCE": "text",
+                "TUTOR_DESCRIPTION": "text",
                 "USER_BACKGROUND_CHECK": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             },
             "USER_HOBBIES" : {
                 "HOBBY_ID": "text PRIMARY KEY",
-                "USER_EMAIL": "text REFERENCES USER_ACCOUNTS (USER_EMAIL)",
+                "USER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
                 "HOBBY_NAME": "text",
                 "HOBBY_DESCRIPTION": "text",
                 "HOBBY_PROFICIENCY": "text",
                 "HOBBY_TUTORING": "boolean",
                 "EXPERIENCE_YEARS": "integer",
                 "EXPERIENCE_MONTHS": "integer",
+                "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+                "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+            },
+            "USER_HOBBIES_PICTURES" : {
+                "HOBBY_ID": "text REFERENCES USER_HOBBIES (HOBBY_ID)",
+                "PICTURE_ID": "text PRIMARY KEY",
+                "PICTURE_MAIN": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             },
@@ -37,8 +56,8 @@ class Queries:
             },
             "TUTORING_SESSION" : {
                 "SESSION_ID": "text PRIMARY KEY",
-                "USER_TUTOR_ID": "text REFERENCES USER_ACCOUNTS (USER_EMAIL)",
-                "USER_STUDENT_ID": "text REFERENCES USER_ACCOUNTS (USER_EMAIL)",
+                "USER_TUTOR_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+                "USER_STUDENT_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
                 "SESSION_HOBBY": "text",
                 "SESSION_MODE": "text",
                 "SESSION_SCHEDULED_START_TIME": "TIMESTAMP",
@@ -48,7 +67,7 @@ class Queries:
             },
             "TUTORING_SESSION_REVIEWS" : {
                 "REVIEW_ID": "text PRIMARY KEY",
-                "USER_EMAIL": "text REFERENCES USER_ACCOUNTS (USER_EMAIL)",
+                "USER_EMAIL": "text REFERENCES USER_ACCOUNTS (USER_ID)",
                 "SESSION_ID": "text REFERENCES TUTORING_SESSION (SESSION_ID)",
                 "SESSION_REVIEW_TEXT": "text",
                 "SESSION_RATING": "integer"

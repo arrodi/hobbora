@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earn&Educate</title>
+    <title>Earn&Educate - Hobbies</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/account/profile-edit.css') }}">
 </head>
+
 <body>
 
     <!-- Header Section -->
@@ -19,28 +23,21 @@
                 <li><a href="/account">My Account</a></li>
             </ul>
         </nav>
-        
+
         <!-- User Profile Section -->
         <div class="user-profile">
-            <!-- Profile Button linking to account page -->
             <a href="/account" class="profile-button">
                 <span>{{ user.USER_NAME if user.USER_NAME else 'Sign In' }}</span>
             </a>
         </div>
     </header>
-
-    <!-- Main Content Section -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Welcome to Earn&Educate</h1>
-            <p>Find the perfect tutor or offer your tutoring services to others!</p>
-            <div class="button-container"> <!-- New button container -->
-                <a href="/catalog" class="cta-button">Browse Tutors</a>
-                <a href="/sign-up" class="cta-button">Become a Tutor</a>
-            </div>
-        </section>
-    </main>
-
+    <h1>Upload Your Photo</h1>
+    <form action="/account/profile/edit" method="POST" enctype="multipart/form-data">
+        <label for="file">Choose a photo:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <br><br>
+        <button type="submit">Upload</button>
+    </form>
 </body>
+
 </html>

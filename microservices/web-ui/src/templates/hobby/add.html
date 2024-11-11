@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earn&Educate - My Account</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/hobby/add.css') }}">
 </head>
 <body>
 
@@ -14,7 +15,7 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/tutor-catalog">Tutoring Catalog</a></li>
+                <li><a href="/catalog">Tutoring Catalog</a></li>
                 <li><a href="/account">My Account</a></li>
             </ul>
         </nav>
@@ -23,7 +24,7 @@
         <div class="user-profile">
             <!-- Profile Button linking to account page -->
             <a href="/account" class="profile-button">
-                <span>{{ session.USER_NAME if session.USER_NAME else 'SIGN IN' }}</span>
+                <span>{{ user.USER_NAME if user.USER_NAME else 'Sign In' }}</span>
             </a>
         </div>
     </header>
@@ -32,11 +33,10 @@
     <main>
         <!-- Hobbies Section -->
         <section class="hobbies-section">
-            <h2>Your Hobbies</h2>
-            
-            <!-- Hobby Input Form -->
+            <h2 class="hobby-title">Add A Hobby</h2> <!-- Updated Position -->
+    
             <div class="add-hobby">
-                <form action="/add-hobby" method="post" class="add-hobby-form">
+                <form action="/account/hobbies/hobby/add" method="post" class="add-hobby-form">
                     <div class="input-group">
                         <label for="hobby-name">Hobby Name</label>
                         <input type="text" id="hobby-name" name="HOBBY_NAME" required>
@@ -61,10 +61,10 @@
                         <label for="experience-months">Experience (Months)</label>
                         <input type="number" id="experience-months" name="EXPERIENCE_MONTHS" min="0" max="11" required>
                     </div>
-                    <button type="submit" class="submit-button">Add Hobby</button>
+                    <button type="submit" class="submit-button">Add Hobby!</button>
                 </form>
             </div>
         </section>
-    </main>
+    </main>    
 </body>
 </html>

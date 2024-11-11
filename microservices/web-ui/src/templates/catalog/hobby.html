@@ -41,23 +41,6 @@
                 {% endfor %}
             </div>
         </section>
-        <section class="hobby-title-section">
-            <h1>{{ hobby.HOBBY_NAME }}</h1>
-            <div class="action-buttons-container">
-                <!-- Edit Hobby Button -->
-                <a href="/account/hobbies/hobby/pictures/{{ hobby.HOBBY_ID }}" class="edit-pictures-hobby-button">Edit Pictures</a>
-                <a href="/account/hobbies/hobby/edit/{{ hobby.HOBBY_ID }}" class="edit-hobby-button">Edit Hobby</a>
-                <!-- Conditionally Display Tutor Hobby Button -->
-                {% if not hobby.HOBBY_TUTORING %}
-                <a href="/account/hobbies/hobby/tutor/{{ hobby.HOBBY_ID }}" class="tutoring-indicator-active">Tutor Hobby</a>
-                {% endif %}
-                {% if hobby.HOBBY_TUTORING %}
-                <a href="/account/hobbies/hobby/stop-tutor/{{ hobby.HOBBY_ID }}" class="tutoring-indicator-not-active">Stop Tutoring Hobby</a>
-                {% endif %}
-            </div>
-        </section>
-        
-    
         <!-- Hobby Description, Tutor Section and Upcoming Sessions Section -->
         <div class="lower-section">
             <!-- Hobby Description and Tutor Section -->
@@ -76,16 +59,7 @@
             {% if hobby.HOBBY_TUTORING %}
             <!-- Scheduled Tutoring Sessions -->
             <section class="upcoming-sessions-section">
-                <h3>Upcoming Tutoring Sessions</h3>
-                {% if hobby.UPCOMING_SESSIONS %}
-                <ul>
-                    {% for session in hobby.UPCOMING_SESSIONS %}
-                    <li>{{ session.date }} - {{ session.time }} with {{ session.student_name }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>No upcoming sessions.</p>
-                {% endif %}
+                
             </section>
             {% endif %}
         </div>

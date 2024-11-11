@@ -5,9 +5,13 @@ class Settings:
         self.app_port=int(os.environ["APP_PORT"])
         self.app_host=os.environ["APP_HOST"]
         
-        self.api_url=os.environ["API_URL"]
+        self.db_api_url=os.environ["DB_API_URL"]
+        self.picture_api_url=os.environ["PICTURE_API_URL"]
 
-        self.default_pictures_urls = self._get_all_paths_in_folder("static/images/default_hobbies")
+        try:
+            self.default_pictures_urls = self._get_all_paths_in_folder("static/images/default_hobbies")
+        except:
+            self.default_pictures_urls = self._get_all_paths_in_folder("microservices\\web-ui\\src\\static\\images\\default_hobbies")
 
     def _get_all_paths_in_folder(self, directory):
         file_urls = []

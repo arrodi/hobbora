@@ -67,7 +67,7 @@ main {
     padding: .75rem;
 }
 .account-details h1 {
-    font-size: 2rem;
+    font-size: clamp(.75rem, 2vw, 1.5rem); /* Dynamic scaling */
     font-weight: bold;
     color: #4CAF50;
     margin: .25rem 0;
