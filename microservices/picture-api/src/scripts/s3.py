@@ -1,14 +1,53 @@
+# STL IMPORTS
+import logging
+import io
+
+# EXT IMPORTS
 import boto3
+from botocore.exceptions import BotoCoreError, ClientError
+
+# LOGGING CONFIG
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class S3:
     def __init__(self, access_key, secret_key, endpoint):
-        self.client = boto3.client( 's3',
-                                    aws_access_key_id=access_key,
-                                    aws_secret_access_key=secret_key,
-                                    endpoint_url=endpoint,
-                                    verify=False)
-        
-    def get_objects(self, bucket_nm, prefix=""):
-        object_lst = [object for object in self.client.get_paginator('list_objects_v2').paginate(Bucket=bucket_nm, Prefix=prefix)]
-        print(object_lst)
-        return object_lst
+        try:
+            self.client = boto3.client(
+                's3',
+                aws_access_key_id=access_key,
+                aws_secret_access_key=secret_key,
+                endpoint_url=endpoint,
+                verify=False
+            )
+            logger.info("S3 client initialized successfully.")
+        except BotoCoreError as e:
+            logger.error(f"Failed to initialize S3 client: {e}", exc_info=True)
+            raise
+
+    def upload_file(self, file, bucket, filename):
+        """Uploads a file to the specified S3 bucket."""
+        try:
+            self.client.upload_fileobj(
+                file,
+                bucket,
+                filename,
+                ExtraArgs={"ContentType": file.content_type}
+            )
+            return {"message": f"File '{filename}' uploaded successfully to S3!"}, 200
+        except ClientError as e:
+            logger.error(f"Failed to upload file: {e}", exc_info=True)
+            return {"error": "Failed to upload the file."}, 500
+
+    def retrieve_image(self, bucket, key):
+        """Retrieves an image from S3 and returns it as a BytesIO stream or an error response."""
+        try:
+            response = self.client.get_object(Bucket=bucket, Key=key)
+            image_data = response['Body'].read()
+            return io.BytesIO(image_data)
+        except self.client.exceptions.NoSuchKey:
+            logger.warning(f"Image not found in S3: {key}")
+            return {"error": "Image not found."}, 404
+        except (BotoCoreError, ClientError) as e:
+            logger.error(f"Failed to retrieve image: {e}", exc_info=True)
+            return {"error": "Image retrieval failed."}, 500

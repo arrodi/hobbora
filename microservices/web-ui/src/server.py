@@ -101,7 +101,7 @@ def account_profile():
         user_id["USER_ID"] = session.get('user').get('USER_ID')
         
         print(user_id)
-        api_return = api.post_get_content(settings.picture_api_url, f"profile_picture/get_picture", user_id)
+        api_return = api.post_get_content(settings.picture_api_url, f"get_picture/profile_picture", user_id)
         if api_return:
             encoded_image = base64.b64encode(api_return).decode('utf-8')
             default_image= ''
@@ -123,7 +123,7 @@ def account_profile_edit():
             file = request.files['file']
             user_data = api.post(settings.db_api_url, f"/user_accounts/get_user/email", session.get('user'))
             files = {'file': (file.filename, file.stream, file.content_type)}
-            api.post_file(settings.picture_api_url, f"profile_picture/upload_picture/{user_id}", files=files)
+            api.post_file(settings.picture_api_url, f"upload_picture/profile_picture/{user_id}", files=files)
             return redirect(url_for('account_profile'))
         if request.method == 'GET':
             return render_template("account/profile-edit.html", user = session.get('user'))
@@ -137,7 +137,7 @@ def account_hobbies():
         user_id = {}
         user_id["USER_ID"] = session.get('user').get('USER_ID')
         
-        api_return = api.post_get_content(settings.picture_api_url, f"profile_picture/get_picture", user_id)
+        api_return = api.post_get_content(settings.picture_api_url, f"get_picture/profile_picture", user_id)
         if api_return:
             print("IMAGE RETURN")
             encoded_image = base64.b64encode(api_return).decode('utf-8')
@@ -266,7 +266,7 @@ def pictures_hobby(hobby_id):
             for _hobby in hobby_data:
                 user_id = {}
                 request_dict["HOBBY_ID"] = _hobby['USER_ID']
-                api_return = api.post_get_content(settings.picture_api_url, f"hobby_picture/get_picture", user_id)
+                api_return = api.post_get_content(settings.picture_api_url, f"get_picture/hobby_picture", user_id)
             return render_template('hobby/pictures.html', user = session.get('user'), hobby = hobby_data)
         if request.method == 'POST':
             user_id = session.get('user').get('USER_ID')
@@ -275,7 +275,7 @@ def pictures_hobby(hobby_id):
 
             print("UPLOADING A PICTURE")
 
-            api_return = api.post_file(settings.picture_api_url, f"hobby_picture/upload_picture/{user_id}/{hobby_id}", files=files)
+            api_return = api.post_file(settings.picture_api_url, f"upload_picture/hobby_picture/{user_id}/{hobby_id}", files=files)
 
             request_dict = {}
             request_dict["HOBBY_ID"] = hobby_id
@@ -338,7 +338,7 @@ def catalog_page():
     for _hobby in hobby_data:
         user_id = {}
         user_id['USER_ID'] = _hobby['USER_ID']
-        api_return = api.post_get_content(settings.picture_api_url, f"profile_picture/get_picture", user_id)
+        api_return = api.post_get_content(settings.picture_api_url, f"get_picture/profile_picture", user_id)
         user_data = api.post(settings.db_api_url, f"/user_accounts/get_user/user_id", user_id)
         if api_return:
             _hobby['USER_PICTURE'] = base64.b64encode(api_return).decode('utf-8')
