@@ -324,6 +324,31 @@ def get_tutored_hobbies():
         request_data["DATA"] = []
 
     return jsonify(request_data)
+
+
+@app.route("/user_sessions/get_sessions", methods=['POST'])
+def get_sessions():
+
+    request_data = request.get_json()
+    request_user_id = request_data["USER_ID"]
+    sql_context = queries.select_table("TUTORING_SESSION", queries.table_schemas["TUTORING_SESSION"].keys(), f"USER_TUTOR_ID = '{request_user_id}'")
+    query_return = postgres.execute_query(sql_context, fetch=True)
+
+    print(query_return)
+    
+    if len(query_return) > 0:
+        query_return_lst = []
+        for _record in query_return:
+            _temp_dict = {}
+            for _index, _column in enumerate(queries.table_schemas["USER_HOBBIES"].keys()):
+                _temp_dict[_column] = _record[_index]
+            query_return_lst.append(_temp_dict)
+    else:
+        query_return_lst = query_return
+
+    request_data["DATA"] = query_return_lst
+    return jsonify(request_data)
+
 #########################
 ##### SERVER BEGIN! #####
 #########################

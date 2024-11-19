@@ -1,0 +1,17 @@
+.logout-button {
+    flex-grow: 1; /* Allow buttons to grow and take up available space */
+    flex-shrink: 1; /* Allow buttons to shrink when there's not enough space */
+    flex-basis: 150px; /* Reduce the base size of the buttons */
+    padding: 0.8em 1.6em; /* Smaller padding */
+    background-color: #a72121; /* Neon green */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem; /* Smaller font size */
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-align: center; /* Center the text inside the button */
+    white-space: nowrap; /* Prevent text from wrapping inside the button */
+}
+.logout-button:hover {
+    background-color: #7c1212;
+}

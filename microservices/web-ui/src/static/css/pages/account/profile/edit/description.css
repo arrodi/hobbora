@@ -1,0 +1,94 @@
+.description-section {
+    flex-basis: 70%; /* Takes up 70% of the width */
+    margin-left: 2%; /* Space between sibling sections */
+    margin-right: 5%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+}
+
+/* Description About Section */
+.description-about {
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(30, 30, 30, 0.9); /* Matches box styles */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.description-about .input-group {
+    margin-bottom: 15px;
+}
+
+.description-about label {
+    font-size: 16px;
+    color: #e0e0e0; /* Neon green */
+    margin-bottom: 5px;
+    display: block;
+}
+
+.description-about input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    background: #141414; /* Slightly lighter background */
+    color: #757575;
+}
+
+/* Description Info Section */
+.description-info {
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(30, 30, 30, 0.9); /* Matches box styles */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.description-info .input-group {
+    margin-bottom: 15px;
+}
+
+.description-info label {
+    font-size: 16px;
+    color: #e0e0e0; /* Neon green for labels */
+    margin-bottom: 5px;
+    display: block;
+}
+
+.description-info input[type="text"],
+.description-info input[type="email"],
+.description-info select {
+    width: 90%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    background: #141414; /* Slightly lighter background */
+    color: #757575;
+}
+
+.description-info select {
+    appearance: none;
+}
+
+.description-info input[readonly] {
+    background: #141414; /* Darker background for read-only */
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .description-section {
+        flex-basis: 100%;
+        margin: 0 auto 20px; /* Centered on small screens */
+        width: 100%;
+        padding: 15px;
+    }
+
+    .description-info,
+    .description-about {
+        margin-bottom: 20px;
+    }
+}

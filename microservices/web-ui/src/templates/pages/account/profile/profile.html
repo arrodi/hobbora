@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% include 'components/account.html' %}
+
+<div class="profile-section">
+    <div class="profile-header">
+        <h2>About</h2>
+        {{ buttons.redirect('/account/profile/edit/picture', 'Edit Picture') }}
+        {{ buttons.redirect('/account/profile/edit/description', 'Edit Description') }}
+    </div>
+    <div class="profile-about">
+        <p>{{ user.USER_ABOUT if user.USER_ABOUT else 'No information available' }}</p>
+    </div>
+    <h2>User Profile Details</h3>
+    <div class="profile-info">
+        <p><strong>Username:</strong> {{ user.USER_NAME if user.USER_NAME else 'N/A' }}</p>
+        <p><strong>User Email:</strong> {{ user.USER_EMAIL if user.USER_EMAIL else 'N/A' }}</p>
+        <p><strong>First Name:</strong> {{ user.USER_FIRST_NAME if user.USER_FIRST_NAME else 'N/A' }}</p>
+        <p><strong>Last Name:</strong> {{ user.USER_LAST_NAME if user.USER_LAST_NAME else 'N/A' }}</p>
+        <p><strong>Member Since:</strong> {{ user.CRT_DT if user.CRT_DT else 'N/A' }}</p>
+        <p><strong>Account Type:</strong> {% if user.USER_TUTOR %}Tutor{% else %}Student{% endif %}</p>
+    </div>
+</div>
+
+{% endblock %}

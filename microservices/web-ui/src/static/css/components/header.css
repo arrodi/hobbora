@@ -1,0 +1,117 @@
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(30, 30, 30, 0.8);
+    padding: 15px 30px;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 40px; /* Adjust as needed */
+    margin-bottom: 0;
+}
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+    margin-right: 30px;
+    color: #4CAF50; /* Neon Green */
+}
+/* Navigation Styles */
+.top-nav {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-right: 5%;
+}
+
+.top-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+    align-items: center; /* Center items vertically */
+}
+
+.top-nav ul li {
+    position: relative;
+}
+
+.top-nav ul li a {
+    text-decoration: none;
+    color: #e0e0e0;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: color 0.3s, background-color 0.3s, padding 0.3s ease;
+    display: block; /* Make the link take up full area */
+    border-left: 3px solid transparent; /* Subtle highlight style */
+}
+
+/* Hover effect for nav links */
+.top-nav ul li a:hover {
+    background-color: #333; /* Darker background on hover */
+    color: #4CAF50; /* Bright green text on hover */
+    border-left: 3px solid #4CAF50; /* Green accent on hover */
+    padding-left: 25px; /* Smooth padding increase for a modern effect */
+}
+
+/* Active nav link styling */
+.top-nav ul li.active a {
+    background-color: #2a2a2a; /* Slightly darker background for active state */
+    color: #4CAF50; /* Bright green text for active link */
+    font-weight: bold;
+    border-left: 3px solid #4CAF50; /* Green accent for active link */
+    padding-left: 25px; /* Match the hover padding effect */
+}
+
+/* --------------- Profile Button ---------------------- */
+.profile-button {
+    text-decoration: none;
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.profile-button:hover {
+    background: #388e3c; /* Darker Green */
+}
+
+/* --------------- Standard Button ---------------------- */
+button, .submit-button {
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+button:hover, .submit-button:hover {
+    background: #388e3c; /* Darker Green */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------- Links ---------------------- */
+.standard-link :link, 
+.standard-link:visited {
+    color: #4CAF50; /* Neon Green for unvisited and visited links */
+    text-decoration: none;
+}
+
+.standard-link:hover {
+    color: #388e3c; /* Darker green on hover */
+    text-decoration: underline; /* Optional: Add underline on hover */
+}

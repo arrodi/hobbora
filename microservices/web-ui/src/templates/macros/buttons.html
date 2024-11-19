@@ -1,0 +1,17 @@
+{% macro redirect(href, text) %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons/standard.css') }}">
+    <!-- Header Section -->
+    <a href="{{ href }}" class="button">{{ text }}</a>
+{% endmacro %}
+
+{% macro logout() %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons/logout.css') }}">
+    <!-- Header Section -->
+    <a href="/logout" class="logout-button">Log Out</a>
+{% endmacro %}
+
+{% macro submit(text) %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons/standard.css') }}">
+    <!-- Header Section -->
+    <button type="submit" class="button">{{ text }}</button>
+{% endmacro %}

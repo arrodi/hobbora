@@ -2,6 +2,7 @@
 import uuid
 import logging
 import io
+import json
 
 # EXT IMPORTS
 from flask import Flask, jsonify, request, send_file
@@ -42,7 +43,7 @@ def handle_exception(e):
 @app.route("/get_picture/hobby_picture", methods=['POST'])
 def get_picture():
     # Handles image retrieval for both profile and hobby pictures.
-    request_data = request.get_json()
+    request_data = json.loads(request.get_json())
     user_id = request_data.get("USER_ID")
     hobby_id = request_data.get("HOBBY_ID")
     picture_id = request_data.get("PICTURE_ID")

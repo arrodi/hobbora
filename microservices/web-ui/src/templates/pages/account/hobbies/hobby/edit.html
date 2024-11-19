@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/edit.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hobbies Section -->
+<div class="hobby-section">
+    <h2>Edit Your Hobby</h2>
+
+    <!-- Hobby Input Form -->
+    <div class="edit-hobby">
+        <form action="/account/hobbies/hobby/edit/{{ hobby_id }}" method="post" class="edit-hobby-form">
+            <div class="input-group">
+                <label for="hobby-name">Hobby Name</label>
+                <input type="text" id="hobby-name" name="HOBBY_NAME" value="{{ hobby.HOBBY_NAME }}" required>
+            </div>
+            <div class="input-group">
+                <label for="hobby-description">Hobby Description</label>
+                <textarea id="hobby-description" name="HOBBY_DESCRIPTION" rows="4"
+                    required>{{ hobby.HOBBY_DESCRIPTION }}</textarea>
+            </div>
+            <div class="input-group">
+                <label for="hobby-proficiency">Hobby Proficiency</label>
+                <select id="hobby-proficiency" name="HOBBY_PROFICIENCY" required>
+                    <option value="Beginner" {% if hobby.proficiency=='Beginner' %}selected{% endif %}>Beginner
+                    </option>
+                    <option value="Intermediate" {% if hobby.proficiency=='Intermediate' %}selected{% endif %}>
+                        Intermediate</option>
+                    <option value="Expert" {% if hobby.proficiency=='Expert' %}selected{% endif %}>Expert
+                    </option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="experience-years">Experience (Years)</label>
+                <input type="number" id="experience-years" name="EXPERIENCE_YEARS" value="{{ hobby.EXPERIENCE_YEARS }}"
+                    min="0" required>
+            </div>
+            <div class="input-group">
+                <label for="experience-months">Experience (Months)</label>
+                <input type="number" id="experience-months" name="EXPERIENCE_MONTHS"
+                    value="{{ hobby.EXPERIENCE_MONTHS }}" min="0" max="11" required>
+            </div>
+            {% if hobby.HOBBY_TUTORING %}
+            <div class="input-group">
+                <label for="tutor-rate">Hourly Rate</label>
+                <input type="number" id="tutor-rate" name="TUTORING_HOURLY_RATE" required>
+            </div>
+
+            <div class="input-group">
+                <h4>Select Tutoring Mode (choose one)</h4>
+                <div>
+                    <label>
+                        <input type="radio" name="TUTORING_MODE_LIVE_CALL" value=true>
+                        Tutoring Mode: Live Call
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio" name="TUTORING_MODE_PUBLIC_IN_PERSON" value=true>
+                        Tutoring Mode: Public In-Person
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio" name="TUTORING_MODE_PRIVATE_IN_PERSON" value=true>
+                        Tutoring Mode: Private In-Person
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="tutor-description">Additional Information</label>
+                <textarea id="tutor-description" name="TUTORING_DESCRIPTION" rows="6"
+                    placeholder="Enter additional details here..." required></textarea>
+            </div>
+            {% endif %}
+            <button type="submit" class="submit-button">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

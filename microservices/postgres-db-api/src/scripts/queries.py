@@ -84,7 +84,7 @@ class Queries:
 
         sql = f"""
                 CREATE TABLE IF NOT EXISTS {table_nm}
-                    ({data_str})
+                ({data_str})
                 """
         
         return sql
@@ -117,9 +117,9 @@ class Queries:
         value_str = ", ".join(value_lst)
 
         sql_context =f"""
-        INSERT INTO
-            {table_nm} ({column_str})
-            VALUES ({value_str});
+        INSERT INTO {table_nm}
+        ({column_str})
+        VALUES ({value_str});
         """
         
         return sql_context
@@ -127,12 +127,9 @@ class Queries:
     def select_table(self, table_nm, table_columns_lst, where_clause):
         table_columns_str = ", ".join(table_columns_lst)
         sql_context =f"""
-            SELECT 
-                {table_columns_str}
-            FROM 
-                {table_nm}
-            WHERE
-                {where_clause}
+            SELECT {table_columns_str}
+            FROM {table_nm}
+            WHERE {where_clause}
             """
         
         return sql_context
@@ -144,27 +141,18 @@ class Queries:
 
         if where_clause:
             sql_context =f"""
-            SELECT 
-                {table_columns_str}
-            FROM 
-                {table_nm_1} a
-            INNER JOIN
-                {table_nm_2} b
-            ON
-                {join_clause}
-            WHERE
-                {where_clause}
+            SELECT {table_columns_str}
+            FROM {table_nm_1} a
+            INNER JOIN {table_nm_2} b
+            ON {join_clause}
+            WHERE {where_clause}
             """
         else:
             sql_context =f"""
-            SELECT 
-                {table_columns_str}
-            FROM 
-                {table_nm_1} a
-            INNER JOIN
-                {table_nm_2} b
-            ON
-                {join_clause}
+            SELECT {table_columns_str}
+            FROM {table_nm_1} a
+            INNER JOIN {table_nm_2} b
+            ON {join_clause}
             """
         
         return sql_context

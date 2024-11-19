@@ -1,0 +1,255 @@
+/* Main Section Styles */
+.hobby-main-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%; /* Ensure the main section stretches to full width */
+}
+
+/* Hobby Pictures Section Styles */
+.hobby-pictures-section {
+    margin: 0 auto;
+    width: 100%; /* Remove the max-width to allow it to stretch across the container */
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pictures-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Ensure 5 columns are shown */
+    grid-auto-rows: minmax(150px, auto); /* Ensure the rows expand based on the content */
+    gap: 10px; /* Add some spacing between the images */
+    width: 100%;
+}
+
+.picture-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ensure images keep a square ratio */
+    overflow: hidden; /* Hide anything that overflows */
+    border-radius: 10px;
+}
+
+.picture-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure images fully cover their containers without distortion */
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1000px) {
+    .hobby-main-section {
+        padding-left: 20px;
+        padding-right: 20px; /* Maintain padding on the right */
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .pictures-gallery {
+        grid-template-columns: repeat(3, 1fr); /* Show 3 pictures per row on smaller screens */
+    }
+    .lower-section {
+        grid-template-columns: 1fr;
+        margin-bottom: 10%;
+    }
+}
+@media screen and (max-width: 600px) {
+    .pictures-gallery {
+        grid-template-columns: repeat(2, 1fr); /* Show 2 pictures per row on very small screens */
+    }
+}
+
+/* Hobby Title Section */
+.hobby-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.hobby-title-section h1 {
+    font-size: 32px;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.action-buttons-container {
+    display: flex;
+    gap: 10px; /* Add some space between buttons */
+}
+
+/* Styling for Edit Hobby Button */
+.edit-hobby-button {
+    text-decoration: none;
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.edit-hobby-button:hover {
+    background: #388e3c; /* Darker Green */
+}
+
+/* Styling for Active Tutoring Button */
+.tutoring-indicator-active {
+    text-decoration: none;
+    background: #4CAF50; /* Neon Green */
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.tutoring-indicator-active:hover {
+    background: #388e3c; /* Darker Green */
+}
+
+/* Styling for Inactive Tutoring Button */
+.tutoring-indicator-not-active {
+    text-decoration: none;
+    background: #d41111; /* Red Background for not active */
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.tutoring-indicator-not-active:hover {
+    background: #8a0202; /* Darker red */
+}
+
+.no-pictures-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin: 0;
+}
+
+/* Lower Section Layout */
+.lower-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+/* Hobby Description and Tutor Section Styles */
+.hobby-description-section {
+    background-color: rgba(30, 30, 30, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tutor-section {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 8px;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    font-size: 24px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+/* Upcoming Sessions Section Styles */
+.upcoming-sessions-section {
+    background-color: rgba(30, 30, 30, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-sessions-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.upcoming-sessions-section ul li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-upcoming-sessions {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+}
+/* Reviews Section Styles */
+.reviews-section {
+    background-color: rgba(30, 30, 30, 0.9); /* Slightly transparent background */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.reviews-section h3 {
+    font-size: 24px; /* Font size for the section header */
+    color: #4CAF50; /* Neon green color */
+    margin-bottom: 15px; /* Space below the header */
+}
+
+.reviews-section ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.reviews-section li {
+    background: rgba(60, 60, 60, 0.8); /* Darker background for reviews */
+    padding: 15px; /* Padding inside each review item */
+    border-radius: 5px; /* Slight rounding of corners */
+    margin-bottom: 10px; /* Space between review items */
+    transition: background 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.reviews-section li:hover {
+    background: rgba(80, 80, 80, 0.9); /* Darker background on hover */
+}
+
+.reviews-section p {
+    margin: 5px 0; /* Space above and below each paragraph */
+    color: #e0e0e0; /* Text color for review text */
+}
+
+.reviews-section strong {
+    color: #4CAF50; /* Highlighted text color for names and ratings */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1000px) {
+    .hobby-main-section {
+        padding: 20px;
+    }
+
+    .lower-section {
+        grid-template-columns: 1fr;
+        margin-bottom: 10%;
+    }
+}

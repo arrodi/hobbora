@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/pages/authentication.css')}}">
+{% endblock %}
+
+{% block content %}
+<!-- Sign In Section -->
+<main class="authentication-section">
+    <div class="input-box">
+        <h2>Sign Up for {{ config.name }}</h2>
+        <form action="/sign-up" method="POST">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="USER_NAME" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="USER_EMAIL" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="USER_PASS" required>
+            </div>
+            {{ buttons.submit('Sign Up') }}
+            <!-- Error message -->
+            {% if error_message %}
+                <div class="error-message">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+        </form>
+        <p>Already have an account? <a class="standard-link" href="/sign-in">Sign In</a></p>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,130 @@
+/* Catalog Section */
+.catalog {
+    margin: 20px 2%;
+    padding: 20px;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #e0e0e0;
+}
+
+/* Filter Section */
+.filter {
+    margin-bottom: 20px;
+}
+
+.filter label {
+    font-weight: bold;
+    color: #4CAF50; /* Neon green for consistency */
+}
+
+/* Hobbies Section Styling */
+.hobbies-section {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hobbies List (grid layout, centered) */
+.hobbies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Grid with dynamic columns */
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px; /* Limit the maximum width of the grid */
+    justify-content: center; /* Center the tiles initially */
+    justify-items: center; /* Center the content inside each tile */
+    grid-auto-flow: dense; /* Ensure new tiles flow outwards in a dense layout */
+    position: relative;
+}
+
+/* Hobby Tile Styling */
+.hobby-tile {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    color: #4CAF50; /* Neon green for consistency */
+    width: 100%;
+    max-width: 200px;
+}
+
+/* Hobby Title Styling */
+.hobby-tile h3 {
+    font-size: clamp(1rem, 2vw, 1.5rem); /* Dynamically adjust font size */
+    margin-bottom: 10px;
+    font-weight: bold;
+    overflow: hidden; /* Hide overflow if the text is too long */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis (...) if text is too long */
+    max-width: 100%;
+}
+
+.hobby-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Hobby Picture Styling */
+.hobby-picture {
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.hobby-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hobby Tile Text Styling */
+.hobby-tile p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+}
+
+.hobby-tile strong {
+    color: #e0e0e0;
+}
+
+/* Tutoring Modes Section */
+.hobby-tile h3 + p {
+    margin-top: 10px;
+}
+
+.hobby-tile p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hobbies-list {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust column size for medium screens */
+        justify-content: center; /* Keep it centered on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .hobby-tile {
+        padding: 15px;
+    }
+
+    .hobby-tile h3 {
+        font-size: 1.3rem;
+    }
+    
+    .hobby-tile p {
+        font-size: 0.85rem;
+    }
+}

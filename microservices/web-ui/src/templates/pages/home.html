@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Main Content Section -->
+<main>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Welcome to {{ config.name }}</h1>
+        <p>Find the perfect tutor or offer your tutoring services to others!</p>
+        
+        <div class="button-container"> <!-- New button container -->
+            {{ buttons.redirect('/catalog', 'Browse Tutors') }}
+            {{ buttons.redirect('/sign-up', 'Become a Tutor') }}
+        </div>
+    </section>
+</main>
+{% endblock %}

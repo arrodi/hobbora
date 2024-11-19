@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/header.css') }}">
+<!-- Header Section -->
+<header>
+    <div class="logo">{{ config.name }}</div>
+    <nav class="top-nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/catalog">Tutoring Catalog</a></li>
+            <li><a href="/account">My Account</a></li>
+        </ul>
+    </nav>
+    <div class="profile-icon">
+        <!-- Profile Button linking to account page -->
+        <a href="/account" class="profile-button">
+            <span>{{ user.USER_NAME if user.USER_NAME else 'Sign In' }}</span>
+        </a>
+    </div>
+</header>

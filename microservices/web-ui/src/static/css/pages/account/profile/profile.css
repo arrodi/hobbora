@@ -1,0 +1,92 @@
+.profile-section {
+    flex-basis: 70%; /* Take 45% of the width */
+    margin-left: 2%; /* Space between profile and account */
+    margin-right: 5%;
+    border-radius: 10px;
+    color: #e0e0e0; /* Text color */
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Profile Section Styles */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile-header h2 {
+    padding: 5px 0px;
+    font-size: 24px;
+    color: #4CAF50; /* Neon green */
+    margin: 0px;
+}
+.edit-account-button {
+    padding: 5px 20px;
+    background-color: #4CAF50; /* Neon green */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.edit-account-button:hover {
+    background-color: #388e3c;
+}
+
+.profile-section h2 {
+    padding: 5px 0px;
+    font-size: 24px;
+    color: #4CAF50; /* Neon green */
+    margin: 0px;
+}
+/* Profile About Section */
+.profile-about {
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-about p {
+    font-size: 16px;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* Profile Info Section */
+.profile-info {
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info h2 {
+    font-size: 24px;
+    color: #4CAF50; /* Neon green title */
+}
+
+.profile-info p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.profile-info strong {
+    color: #4CAF50; /* Highlighted text in neon green */
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    .profile-section {
+        flex-basis: 100%;
+        margin: 0 auto 20px; /* Center sections on small screens */
+        width: 100%;
+    }
+}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/edit/picture.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Main Content Section -->
+{% include 'components/account.html' %}
+
+<!-- Sub Content Section -->
+<div class="image-upload-section">
+    <h1>Upload Your Photo</h1>
+    <form class="image-upload" action="/account/profile/edit/picture" method="POST" enctype="multipart/form-data">
+        <label for="file">Choose a photo:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <br><br>
+        {{ buttons.submit('Upload') }}
+    </form>
+</div>
+
+{% endblock %}

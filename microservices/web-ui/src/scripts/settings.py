@@ -13,6 +13,8 @@ class Settings:
         except:
             self.default_pictures_urls = self._get_all_paths_in_folder("microservices\\web-ui\\src\\static\\images\\default_hobbies")
 
+        self.config = {"name":"Hobborra"}
+
     def _get_all_paths_in_folder(self, directory):
         file_urls = []
         for filename in os.listdir(directory):
