@@ -4,7 +4,6 @@ metadata:
   name: otel-collector-config
 data:
   config.yaml: |
-  otel-collector-config: |
     receivers:
       otlp:
         protocols:
