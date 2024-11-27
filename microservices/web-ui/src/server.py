@@ -13,7 +13,6 @@ import scripts.picture_handler as picture_handler
 import scripts.encrypt as encrypt
 from scripts.api import API
 from scripts.settings import Settings
-from scripts.otel_logger import setup_otlp_logging
 
 import json
 from datetime import timedelta
@@ -21,7 +20,6 @@ from datetime import timedelta
 print("WEB PORTAL STARTED")
 settings = Settings()
 db_api = API(settings.db_api_url)
-logger = setup_otlp_logging(settings.otel_collector_url)
 
 # FLASK INIT
 app = Flask(__name__)
@@ -29,7 +27,7 @@ app.config['SECRET_KEY'] = os.urandom(24) # Required to encrypt session cookies
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session timeout
 
 def render_with_user(page, **kwargs):
-    logger.info(f"Rendering page: {page}")
+    # logger.info(f"Rendering page: {page}")
     if session.get('user'):
         kwargs['encoded_image'] = picture_handler.get_profile_pic(session)
         kwargs['config'] = settings.config
