@@ -24,7 +24,7 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Delete Previous Namespace minio
+      - name: Delete Previous Namespace otel-collector
         continue-on-error: true
         run: |
           kubectl delete namespace otel-collector
@@ -55,8 +55,8 @@ jobs:
       
       - name: Deploy Deployment - otel-collector
         run: |
-          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/otel_collector/deployment.yaml
+          kubectl -n otel-collector apply -f ${{ github.workspace }}/kubernetes/otel_collector/deployment.yaml
 
       - name: Deploy Service - otel-collector-service
         run: |
-          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/otel_collector/service.yaml
+          kubectl -n otel-collector apply -f ${{ github.workspace }}/kubernetes/otel_collector/service.yaml
