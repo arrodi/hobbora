@@ -1,0 +1,62 @@
+name: k8s-otel-collector
+
+on:
+  workflow_dispatch
+  
+jobs:
+  set-up:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Delete Previous Namespace minio
+        continue-on-error: true
+        run: |
+          kubectl delete namespace otel-collector
+
+      - name: Create Namespace otel-collector
+        run: kubectl apply -f ${{ github.workspace }}/kubernetes/otel_collector/namespace.yaml
+
+
+  deploy:
+    needs: set-up
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+      
+      - name: Deploy Deployment - otel-collector
+        run: |
+          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/otel_collector/deployment.yaml
+
+      - name: Deploy Service - otel-collector-service
+        run: |
+          kubectl -n minio apply -f ${{ github.workspace }}/kubernetes/otel_collector/service.yaml
