@@ -40,7 +40,7 @@ prepare_db()
 
 # FLASK INIT                 
 app = Flask(__name__)
-print("API INITIALIZED")
+print("API HAS BEEN INITIALIZED")
 
 #########################
 ##### SERVER ROUTES #####
