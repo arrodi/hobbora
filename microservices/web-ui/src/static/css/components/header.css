@@ -71,47 +71,21 @@ header {
     padding-left: 25px; /* Match the hover padding effect */
 }
 
-/* --------------- Profile Button ---------------------- */
-.profile-button {
-    text-decoration: none;
-    background: #4CAF50; /* Neon Green */
-    color: #e0e0e0;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 500;
-    transition: background 0.3s, box-shadow 0.3s;
+/* Profile Icon */
+.profile-icon {
+    margin-top: 7px;
+    right: 30px; /* Align to the right with padding */
 }
 
-.profile-button:hover {
-    background: #388e3c; /* Darker Green */
+.profile-icon img {
+    width: 40px; /* Fixed size for the profile icon */
+    height: 40px;
+    border-radius: 50%; /* Makes the image circular */
+    border: 2px solid #4CAF50; /* Optional: Green border for accent */
+    object-fit: cover; /* Ensures the image fits well inside the circle */
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* --------------- Standard Button ---------------------- */
-button, .submit-button {
-    background: #4CAF50; /* Neon Green */
-    color: #e0e0e0;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s;
-}
-
-button:hover, .submit-button:hover {
-    background: #388e3c; /* Darker Green */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* --------------- Links ---------------------- */
-.standard-link :link, 
-.standard-link:visited {
-    color: #4CAF50; /* Neon Green for unvisited and visited links */
-    text-decoration: none;
-}
-
-.standard-link:hover {
-    color: #388e3c; /* Darker green on hover */
-    text-decoration: underline; /* Optional: Add underline on hover */
+.profile-icon img:hover {
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.6); /* Neon glow effect */
 }

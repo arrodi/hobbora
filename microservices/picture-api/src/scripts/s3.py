@@ -31,8 +31,7 @@ class S3:
             self.client.upload_fileobj(
                 file,
                 bucket,
-                filename,
-                ExtraArgs={"ContentType": file.content_type}
+                filename
             )
             return {"message": f"File '{filename}' uploaded successfully to S3!"}, 200
         except ClientError as e:
@@ -40,7 +39,6 @@ class S3:
             return {"error": "Failed to upload the file."}, 500
 
     def retrieve_image(self, bucket, key):
-        """Retrieves an image from S3 and returns it as a BytesIO stream or an error response."""
         try:
             response = self.client.get_object(Bucket=bucket, Key=key)
             image_data = response['Body'].read()

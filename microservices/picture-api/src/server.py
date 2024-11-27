@@ -5,8 +5,9 @@ import io
 import json
 
 # EXT IMPORTS
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, current_app
 from waitress import serve
+from io import BytesIO
 
 # AUTHORED IMPORTS
 from scripts.settings import Settings
@@ -27,12 +28,25 @@ logger.info("API INITIALIZED")
 #########################
 ##### SERVER ROUTES #####
 #########################
+def upload_default_pfp():
+    logger.info(f"Uploading default profile picture to S3")
+    with open(settings.default_pic_path, "rb") as img_file:
+        file_obj = BytesIO(img_file.read())
+    filename = "profile_pictures/default.webp"
+    response, status_code = s3.upload_file(file_obj, settings.picture_bucket, filename)
+    logger.info(f"Uploading to S3 response: {response}")
+    logger.info(f"Uploading to S3 status: {status_code}")
 
 def generate_filename(user_id, hobby_id=None, picture_id=None):
     # Generates S3 key based on user, hobby, and picture identifiers.
     if hobby_id and picture_id:
         return f"hobby_pictures/{user_id}/{hobby_id}/{picture_id}.webp"
     return f"profile_pictures/{user_id}.webp"
+
+#########################
+###### APP STARTUP ######
+#########################
+upload_default_pfp()
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -49,7 +63,9 @@ def get_picture():
     picture_id = request_data.get("PICTURE_ID")
     
     filename = generate_filename(user_id, hobby_id, picture_id)
+    logger.info(f"Fetching from S3: {filename}")
     response = s3.retrieve_image(settings.picture_bucket, filename)
+    logger.info(f"S3 Return of type {type(response)} and value of {str(response)}")
 
     if isinstance(response, io.BytesIO):
         return send_file(response, mimetype='image/webp')
@@ -60,6 +76,7 @@ def get_picture():
 def upload_picture(user_id, hobby_id=None):
     # Handles image uploads for both profile and hobby pictures.
     file = request.files.get('file')
+    
     
     if hobby_id:
         picture_id = uuid.uuid4().hex[:6]

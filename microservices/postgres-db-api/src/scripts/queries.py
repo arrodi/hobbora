@@ -11,7 +11,6 @@ class Queries:
                 "USER_ABOUT": "text",
                 "USER_PASS": "text",
                 "USER_TUTOR": "boolean",
-                "USER_BACKGROUND_CHECK": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             },
@@ -21,7 +20,6 @@ class Queries:
                 "TUTOR_RATING": "decimal",
                 "TUTOR_EXPERIENCE": "text",
                 "TUTOR_DESCRIPTION": "text",
-                "USER_BACKGROUND_CHECK": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             },

@@ -61,9 +61,9 @@ def get_customer_email():
         
         print(query_return)
 
-        response = {'USER_EXISTS': True}
+        response = {'USER_EXISTS': True, 'USER_INFO': {}}
         for i, key in enumerate(queries.table_schemas["USER_ACCOUNTS"].keys()):
-            response[key] = query_return[i]
+            response['USER_INFO'][key] = query_return[i]
         return jsonify(response)
     else:
         return jsonify({'USER_EXISTS': False})
@@ -126,6 +126,24 @@ def add_user():
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     
+@app.route("/user_accounts/edit_user", methods=['POST'])
+def edit_user():
+    request_data = request.get_json()
+    user_id = request_data["USER_ID"]
+    sql_context = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
+    query_return = postgres.execute_query(sql_context, fetch=False)
+    print(query_return)
+    if "QUERY SUCCESS" in query_return:
+        request_data["USER_ID"] = user_id
+        request_data["MODIFY"] = "SUCCESS"
+        request_data["MESSAGE"] = "Succesfully edit an account!"
+        return jsonify(request_data)
+    else:
+        request_data["USER_ID"] = user_id
+        request_data["MODIFY"] = "FAILURE"
+        request_data["MESSAGE"] = "Unknown failure!"
+        return jsonify(request_data)
+   
 @app.route("/user_accounts/become_tutor", methods=['POST'])
 def become_tutor():
     request_data = request.get_json()

@@ -10,9 +10,12 @@
         </ul>
     </nav>
     <div class="profile-icon">
-        <!-- Profile Button linking to account page -->
-        <a href="/account" class="profile-button">
-            <span>{{ user.USER_NAME if user.USER_NAME else 'Sign In' }}</span>
+        {% if encoded_image %}
+        <a href="/account/profile">
+            <img src="data:image/jpeg;base64,{{ encoded_image }}" alt="Image">
         </a>
+        {% else %}
+            {{ buttons.redirect('/account/profile', 'Sign In') }}
+        {% endif %}
     </div>
 </header>
