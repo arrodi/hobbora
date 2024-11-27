@@ -22,6 +22,11 @@ jobs:
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
+
+      - name: Delete Previous Namespace cert-manager
+        continue-on-error: true
+        run: |
+          kubectl delete namespace cert-manager
       
       - name: Create Namespace cert-manager
         run: kubectl apply -f ${{ github.workspace }}/kubernetes/cert_manager/namespace_cert-manager.yaml
