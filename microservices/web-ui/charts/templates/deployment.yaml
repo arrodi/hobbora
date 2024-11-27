@@ -30,3 +30,5 @@ spec:
           value: {{ .Values.app.api.db_url }}
         - name: PICTURE_API_URL
           value: {{ .Values.app.api.picture_url }}
+        - name: OTEL_COLLECTOR_URL
+          value: {{ .Values.app.otel.collector.endpoint }}
