@@ -1,6 +1,6 @@
 deployment:
   name: web-ui
-  domain: earnandeducate.com
+  domain: hobbora.com
   docker:
     image: artemek47/web-ui
     tag: latest
