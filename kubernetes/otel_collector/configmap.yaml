@@ -14,8 +14,7 @@ data:
       batch:
 
     exporters:
-      logging:
-        loglevel: debug
+      debug:
 
     service:
       pipelines:
