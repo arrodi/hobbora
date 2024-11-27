@@ -15,4 +15,5 @@ app:
   host: '0.0.0.0'
   port: 80
   api:
-    url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
+    db_url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
+    picture_url: "http://picture-api-service.minio.svc.cluster.local:3000"

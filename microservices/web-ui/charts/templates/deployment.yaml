@@ -26,5 +26,7 @@ spec:
           value: {{ .Values.app.port | quote }}
         - name: APP_HOST
           value: {{ .Values.app.host | quote }}
-        - name: API_URL
-          value: {{ .Values.app.api.url }}
+        - name: DB_API_URL
+          value: {{ .Values.app.api.db_url }}
+        - name: PICTURE_API_URL
+          value: {{ .Values.app.api.picture_url }}
