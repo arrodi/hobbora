@@ -41,6 +41,8 @@ def render_with_user(page, **kwargs):
         kwargs['user'] = {}
     return render_template(page, **kwargs)
 
+print("commit")
+
 #########################
 ##### SERVER ROUTES #####
 #########################
