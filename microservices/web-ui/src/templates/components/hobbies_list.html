@@ -1,0 +1,34 @@
+<div class="hobbies-list">
+    {% if hobbies|selectattr('HOBBY_TUTORING', 'equalto', tutoring) | list | length == 0 %}
+    <div class="no-hobbies-message">
+        <p>No hobbies yet</p>
+    </div>
+    {% else %}
+    {% for hobby in hobbies %}
+    {% if hobby.HOBBY_TUTORING == tutoring %}
+    <a href="/account/hobbies/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
+        <div class="hobby-tile-content">
+            <h3>{{ hobby.HOBBY_NAME }}</h3>
+            {% if tutoring %}
+            <div class="hobby-picture">
+                <img src="data:image/jpeg;base64,{{ hobby.HOBBY_PICTURE | default('') }}" 
+                     alt="Image for {{ hobby.HOBBY_NAME }}" />
+            </div>
+            <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>
+            {% endif %}
+            <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
+            <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{hobby.EXPERIENCE_MONTHS }} months</p>
+            {% if tutoring %}
+            <p><strong>Hourly Rate:</strong> {{ hobby.TUTORING_HOURLY_RATE }}</p>
+            <h3>Tutoring Modes</h3>
+            <p><strong>Live Calls:</strong> {{ hobby.TUTORING_MODE_LIVE_CALL }}</p>
+            <p><strong>Private:</strong> {{ hobby.TUTORING_MODE_PRIVATE_IN_PERSON }}</p>
+            <p><strong>Public:</strong> {{ hobby.TUTORING_MODE_PUBLIC_IN_PERSON }}</p>
+            {% endif %}
+        </div>
+        
+    </a>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</div>

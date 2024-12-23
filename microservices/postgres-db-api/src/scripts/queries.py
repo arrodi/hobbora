@@ -26,19 +26,13 @@ class Queries:
             "USER_HOBBIES" : {
                 "HOBBY_ID": "text PRIMARY KEY",
                 "USER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+                "HOBBY_MAIN_PICTURE_ID": "text", 
                 "HOBBY_NAME": "text",
                 "HOBBY_DESCRIPTION": "text",
                 "HOBBY_PROFICIENCY": "text",
                 "HOBBY_TUTORING": "boolean",
                 "EXPERIENCE_YEARS": "integer",
                 "EXPERIENCE_MONTHS": "integer",
-                "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
-                "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
-            },
-            "USER_HOBBIES_PICTURES" : {
-                "HOBBY_ID": "text REFERENCES USER_HOBBIES (HOBBY_ID)",
-                "PICTURE_ID": "text PRIMARY KEY",
-                "PICTURE_MAIN": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             },
@@ -87,21 +81,23 @@ class Queries:
         
         return sql
     
-    def modify_record(self, table_nm, record_data, record_condition):
+    def modify_record(self, table_nm, table_data, record_condition):
 
-        record_data_lst = []
-        for _key, _value in record_data.items():
-            record_data_lst.append(f"{_key} = '{_value}'")
+        column_lst = []
+        value_lst = []
+        for _column_nm, _column_value in table_data.items():
+            column_lst.append(f"{_column_nm} = %s")
+            value_lst.append(_column_value)
 
-        record_data_str = ", ".join(record_data_lst)
+        record_data_str = ", ".join(column_lst)
 
-        sql_context = f"""
+        sql_query = f"""
                 UPDATE {table_nm}
                 SET {record_data_str}
                 WHERE {record_condition};
                 """
         
-        return sql_context
+        return sql_query, value_lst
     
     def insert_into_table(self, table_nm, table_data):
         
@@ -109,18 +105,18 @@ class Queries:
         value_lst = []
         for _column_nm, _column_value in table_data.items():
              column_lst.append(_column_nm)
-             value_lst.append(f"'{_column_value}'")
+             value_lst.append(_column_value)
 
         column_str = ", ".join(column_lst)
-        value_str = ", ".join(value_lst)
+        value_str = ", ".join(['%s'] * len(value_lst))
 
-        sql_context =f"""
+        sql_query =f"""
         INSERT INTO {table_nm}
         ({column_str})
         VALUES ({value_str});
         """
         
-        return sql_context
+        return sql_query, value_lst
     
     def select_table(self, table_nm, table_columns_lst, where_clause):
         table_columns_str = ", ".join(table_columns_lst)

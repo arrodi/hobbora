@@ -9,8 +9,6 @@ class Settings:
         self.picture_api_url=os.environ["PICTURE_API_URL"]
         self.config = {"name":"Hobbora"}
 
-        self.otel_collector_url=os.environ["OTEL_COLLECTOR_URL"]
-
     # def _get_all_paths_in_folder(self, directory):
     #     file_urls = []
     #     for filename in os.listdir(directory):

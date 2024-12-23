@@ -26,13 +26,12 @@ class API:
             raise
 
     def post_get_content(self, api_endpoint, json_data):
-        json_data = json.dumps(json_data)
         full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST request to: {full_url} with data: {json_data}")
+        logger.info(f"POST request to: {full_url} with data: {json_data} of  type {str(type(json_data))}")
         try:
             response = requests.post(full_url, json=json_data)
             logger.info(f"POST response status: {response.status_code}")
-            logger.info(f"POST response of type {type(response)} and value of {str(response)}")
+            logger.info(f"POST response of type {type(response.content)} and value of {str(response.content)}")
             if response.status_code != 200:
                 return response.json()
             else:
@@ -44,11 +43,11 @@ class API:
         
     def post(self, api_endpoint, json_data):
         full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST request to: {full_url} with data: {json_data}")
+        logger.info(f"POST request to: {full_url} with data: {json_data} of  type {str(type(json_data))}")
         try:
             response = requests.post(full_url, json=json_data)
             logger.info(f"POST response status: {response.status_code}")
-            logger.info(f"POST response of type {type(response)} and value of {str(response)}")
+            logger.info(f"POST response of type {type(response.content)} and value of {str(response.content)}")
             return response.json()
         except requests.RequestException as e:
             logger.error(f"Error during POST request to {full_url}: {e}")

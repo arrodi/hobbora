@@ -11,8 +11,10 @@
 <div class="profile-section">
     <div class="profile-header">
         <h2>About</h2>
-        {{ buttons.redirect('/account/profile/edit/picture', 'Edit Picture') }}
-        {{ buttons.redirect('/account/profile/edit/description', 'Edit Description') }}
+        <div class="buttons">
+            {{ buttons.redirect('/account/profile/edit/picture', 'Edit Picture') }}
+            {{ buttons.redirect('/account/profile/edit/description', 'Edit Description') }}
+        </div>
     </div>
     <div class="profile-about">
         <p>{{ user.USER_ABOUT if user.USER_ABOUT else 'No information available' }}</p>

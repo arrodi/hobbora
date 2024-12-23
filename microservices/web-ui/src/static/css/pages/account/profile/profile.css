@@ -12,15 +12,21 @@
 /* Profile Section Styles */
 .profile-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between the h2 and the buttons */
     align-items: center;
 }
+
 .profile-header h2 {
-    padding: 5px 0px;
+    margin: 0;
     font-size: 24px;
     color: #4CAF50; /* Neon green */
-    margin: 0px;
 }
+
+.profile-header .buttons {
+    display: flex;
+    gap: 10px; /* Adds spacing between the buttons */
+}
+
 .edit-account-button {
     padding: 5px 20px;
     background-color: #4CAF50; /* Neon green */

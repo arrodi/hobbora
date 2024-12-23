@@ -10,12 +10,12 @@ class Postgres:
     def __init__(self, database, user, password, host, port):
         self.connection = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
 
-    def execute_query(self, query_str, fetch=False):
+    def execute_query(self, sql_query, sql_values='', fetch=False):
         try:
             with self.connection.cursor() as cursor:
-                logger.info('EXECUTING:' + query_str)
+                logger.info('EXECUTING:' + sql_query)
                 
-                cursor.execute(query_str)
+                cursor.execute(sql_query, sql_values)
                 
                 # Log PostgreSQL notices if any
                 if self.connection.notices:

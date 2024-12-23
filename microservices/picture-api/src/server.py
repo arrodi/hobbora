@@ -53,11 +53,24 @@ def handle_exception(e):
     logger.error(f"Unexpected error occurred: {e}", exc_info=True)
     return jsonify({"error": "An internal error occurred."}), 500
 
+@app.route("/get_picture_id/hobby", methods=['POST'])
+def get_picture_id():
+    # Handles image retrieval for both profile and hobby pictures.
+    request_data = request.get_json()
+    print(type(request_data))
+    user_id = request_data.get("USER_ID")
+    hobby_id = request_data.get("HOBBY_ID")
+    folder_path = f"hobby_pictures/{user_id}/{hobby_id}/"
+    file_paths = s3.retrieve_file_paths(settings.picture_bucket, folder_path)
+
+    return jsonify([_path.split("/")[-1].split(".")[0] for _path in file_paths])
+
 @app.route("/get_picture/profile_picture", methods=['POST'])
 @app.route("/get_picture/hobby_picture", methods=['POST'])
 def get_picture():
     # Handles image retrieval for both profile and hobby pictures.
-    request_data = json.loads(request.get_json())
+    request_data = request.get_json()
+    print(type(request_data))
     user_id = request_data.get("USER_ID")
     hobby_id = request_data.get("HOBBY_ID")
     picture_id = request_data.get("PICTURE_ID")

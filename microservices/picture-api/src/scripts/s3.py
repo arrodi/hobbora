@@ -49,3 +49,12 @@ class S3:
         except (BotoCoreError, ClientError) as e:
             logger.error(f"Failed to retrieve image: {e}", exc_info=True)
             return {"error": "Image retrieval failed."}, 500
+    
+    def retrieve_file_paths(self, bucket, prefix):
+        file_paths = []
+        paginator = self.client.get_paginator('list_objects_v2')
+        for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+            for obj in page.get('Contents', []):
+                file_paths.append(obj['Key'])
+
+        return file_paths

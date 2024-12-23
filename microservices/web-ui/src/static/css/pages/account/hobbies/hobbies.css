@@ -22,19 +22,6 @@
     color: #4CAF50; /* Neon green */
     margin: 0px;
 }
-.add-hobby-button {
-    padding: 5px 20px;
-    background-color: #4CAF50; /* Neon green */
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background 0.3s ease;
-}
-
-.add-hobby-button:hover {
-    background-color: #388e3c;
-}
 /* Hobbies List Grid */
 .hobbies-list {
     display: grid;

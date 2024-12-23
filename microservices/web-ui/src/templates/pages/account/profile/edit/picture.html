@@ -12,12 +12,13 @@
 <!-- Sub Content Section -->
 <div class="image-upload-section">
     <h1>Upload Your Photo</h1>
-    <form class="image-upload" action="/account/profile/edit/picture" method="POST" enctype="multipart/form-data">
-        <label for="file">Choose a photo:</label>
-        <input type="file" id="file" name="file" accept="image/*" required>
-        <br><br>
-        {{ buttons.submit('Upload') }}
-    </form>
+    <div id="upload-area">
+        <p>Drag and drop an image here or click to upload</p>
+        <input type="file" id="file-input" accept="image/*" multiple>
+    </div>
+    <button id="upload-button" disabled>Upload</button>
+    <script src="{{ url_for('static', filename='js/upload_box.js') }}"></script>    
+
 </div>
 
 {% endblock %}

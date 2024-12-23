@@ -110,8 +110,8 @@ def add_user():
             request_data["MESSAGE"] = "This email is already in use!"
             return jsonify(request_data)
         else:
-            sql_context = queries.insert_into_table("USER_ACCOUNTS", request_data)
-            query_return = postgres.execute_query(sql_context, fetch=False)
+            sql_query, sql_values = queries.insert_into_table("USER_ACCOUNTS", request_data)
+            query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
 
     if "QUERY SUCCESS" in query_return:
         request_data["INSERT"] = "SUCCESS"
@@ -130,8 +130,8 @@ def add_user():
 def edit_user():
     request_data = request.get_json()
     user_id = request_data["USER_ID"]
-    sql_context = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
-    query_return = postgres.execute_query(sql_context, fetch=False)
+    sql_query, sql_values = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
     print(query_return)
     if "QUERY SUCCESS" in query_return:
         request_data["USER_ID"] = user_id
@@ -169,8 +169,8 @@ def add_hobby():
     request_data = request.get_json()
     request_data["HOBBY_ID"] = str(uuid.uuid4().hex[:6])
     request_data["HOBBY_TUTORING"] = False
-    sql_context = queries.insert_into_table("USER_HOBBIES", request_data)
-    query_return = postgres.execute_query(sql_context, fetch=False)
+    sql_query, sql_values = queries.insert_into_table("USER_HOBBIES", request_data)
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
 
     if "QUERY SUCCESS" in query_return:
         request_data["INSERT"] = "SUCCESS"
@@ -190,9 +190,8 @@ def add_hobby_picture():
 
     request_data = request.get_json()
     request_data["PICTURE_MAIN"] = False
-    sql_context = queries.insert_into_table("USER_HOBBIES_PICTURES", request_data)
-    print(sql_context)
-    query_return = postgres.execute_query(sql_context, fetch=False)
+    sql_query, sql_values = queries.insert_into_table("USER_HOBBIES_PICTURES", request_data)
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
 
     if "QUERY SUCCESS" in query_return:
         request_data["INSERT"] = "SUCCESS"
@@ -279,8 +278,8 @@ def tutor_hobby():
 
     print(query_return)
     
-    sql_context = queries.insert_into_table("USER_HOBBIES_TUTORING", request_data)
-    query_return = postgres.execute_query(sql_context, fetch=False)
+    sql_query, sql_values = queries.insert_into_table("USER_HOBBIES_TUTORING", request_data)
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
 
     print(query_return)
 

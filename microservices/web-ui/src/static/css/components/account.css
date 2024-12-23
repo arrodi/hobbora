@@ -22,7 +22,7 @@ main {
     border-radius: 10px;
     background-color: rgba(30, 30, 30, 0.9);
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom:10%;
+    margin-bottom:20px;
 }
 /* Profile Picture Styling */
 .profile-picture-reg, .profile-picture-tutor {

@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24) # Required to encrypt session cookies
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session timeout
 
-def render_with_user(page, **kwargs):
+def render_with_kwargs(page, **kwargs):
     # logger.info(f"Rendering page: {page}")
     if session.get('user'):
         kwargs['encoded_image'] = picture_handler.get_profile_pic(session)
@@ -45,7 +45,7 @@ print("commit")
 #########################
 @app.route("/", methods=['GET'])
 def home_page():
-    return render_with_user("pages/home.html")
+    return render_with_kwargs("pages/home.html")
 
 @app.route("/sign-in", methods=['GET', 'POST'])
 def signin_page():
@@ -59,9 +59,9 @@ def signin_page():
         }
 
         api_return = db_api.post(f"/user_accounts/get_user/email", dict_payload)
-        user_data = api_return["USER_INFO"]
-
+        
         if api_return["USER_EXISTS"]:
+            user_data = api_return["USER_INFO"]
             if encrypt.check_password(dict_payload["USER_PASS"], user_data["USER_PASS"]):
                 session["user"] = user_data
                 session.modified = True
@@ -71,9 +71,9 @@ def signin_page():
         else:
             error_message = "No Email Found! Try Again or Sign Up!"
         
-        return render_with_user("pages/signin.html", error_message=error_message)
+        return render_with_kwargs("pages/signin.html", error_message=error_message)
 
-    return render_with_user("pages/signin.html")
+    return render_with_kwargs("pages/signin.html")
     
 @app.route("/sign-up", methods=['GET', 'POST'])
 def signup_page():
@@ -97,9 +97,9 @@ def signup_page():
             return redirect(url_for('home_page'))
         
         error_message = query_response.get("MESSAGE", "Unknown error. Please try again!")
-        return render_with_user("pages/signup.html", error_message=error_message)
+        return render_with_kwargs("pages/signup.html", error_message=error_message)
 
-    return render_with_user("pages/signup.html")
+    return render_with_kwargs("pages/signup.html")
 
 @app.route("/account", methods=['GET'])
 def account():
@@ -111,14 +111,9 @@ def account_profile():
         return redirect(url_for('signin_page'))
     
     api_return = db_api.post(f"/user_accounts/get_user/email", session.get('user'))
-    print("######################")
-    print("######################")
-    print(api_return)
-    print("######################")
-    print("######################")
     user_data = api_return['USER_INFO']
-    user_data.update(session.get('user'))
-    return render_with_user("pages/account/profile/profile.html", user=user_data)
+    session.get('user').update(user_data)
+    return render_with_kwargs("pages/account/profile/profile.html", user=user_data)
     
 @app.route("/account/profile/edit/picture", methods=['GET', 'POST'])
 def account_profile_edit_picture():
@@ -133,7 +128,7 @@ def account_profile_edit_picture():
         return redirect(url_for('account_profile'))
 
     if request.method == 'GET':
-        return render_with_user("pages/account/profile/edit/picture.html")
+        return render_with_kwargs("pages/account/profile/edit/picture.html")
     
 @app.route("/account/profile/edit/description", methods=['GET', 'POST'])
 def account_profile_edit_description():
@@ -143,22 +138,20 @@ def account_profile_edit_description():
     if request.method == 'POST':
 
         dict_payload = request.form.to_dict()
-        print(dict_payload)
-
         session.get('user').update(dict_payload)
-        print(session.get('user'))
         # PUT CHANGING THE DESCRIPTION API CALLS HERE
         print("PUT CHANGING THE DESCRIPTION API CALLS HERE")
         user_data = db_api.post(f"/user_accounts/edit_user", session.get('user'))
         print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         print(user_data)
         print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        print(session.get('user'))
         return redirect(url_for('account_profile'))
 
     if request.method == 'GET':
         api_return = db_api.post(f"/user_accounts/get_user/email", session.get('user'))
         user_data = api_return['USER_INFO']
-        return render_with_user("pages/account/profile/edit/description.html", user=user_data)
+        return render_with_kwargs("pages/account/profile/edit/description.html", user=user_data)
     
 @app.route('/account/become-tutor', methods=['GET', 'POST'])
 def become_tutor():
@@ -190,7 +183,7 @@ def user_agreement():
         else:
             return redirect(url_for('home_page'))
     
-    return render_with_user("user_agreement.html")
+    return render_with_kwargs("user_agreement.html")
     
 @app.route("/account/hobbies", methods=['GET'])
 def account_hobbies():
@@ -198,7 +191,14 @@ def account_hobbies():
         return redirect(url_for('signin_page'))
     
     hobby_data = db_api.post(f"/user_hobbies/get_hobbies", session.get('user'))["DATA"]
-    return render_with_user("pages/account/hobbies/hobbies.html", hobbies=hobby_data)
+
+    print(hobby_data)
+
+    hobby_data_pic = []
+    for _hobby in hobby_data:
+        hobby_data_pic.append(picture_handler.attach_hobby_main_pictures(_hobby))
+
+    return render_with_kwargs("pages/account/hobbies/hobbies.html", hobbies=hobby_data_pic)
 
 @app.route('/account/hobbies/hobby/<hobby_id>', methods=['GET', 'POST'])
 def view_hobby(hobby_id):
@@ -211,7 +211,7 @@ def view_hobby(hobby_id):
     user_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
     picture_urls = settings.default_pictures_urls
 
-    return render_with_user('pages/account/hobbies/hobby/view.html', hobby=user_data["DATA"][0], picture_urls=picture_urls)
+    return render_with_kwargs('pages/account/hobbies/hobby/view.html', hobby=user_data["DATA"][0], picture_urls=picture_urls)
 
     
 @app.route("/account/hobbies/hobby/add", methods=['GET', 'POST'])
@@ -222,14 +222,13 @@ def add_hobby():
 
             dict_payload = dict(request.form)
             dict_payload["USER_ID"] = session.get('user').get("USER_ID")
-
             print(dict_payload)
 
             db_api.post(f"/user_hobbies/add_hobby", dict_payload)
 
             return redirect(url_for('account_hobbies'))
         else:
-            return render_template('pages/account/hobbies/hobby/add.html',user = session.get('user'), encoded_image=encoded_image)
+            return render_with_kwargs('pages/account/hobbies/hobby/add.html',user = session.get('user'), encoded_image=encoded_image)
     else:
         return redirect(url_for('signin_page'))
     
@@ -248,7 +247,7 @@ def edit_hobby(hobby_id):
             # Update hobby logic here
             return redirect(url_for('account'))
         
-        return render_template('pages/account/hobbies/hobby/edit.html', user = session.get('user'), hobby=user_data["DATA"][0], encoded_image=encoded_image)
+        return render_with_kwargs('pages/account/hobbies/hobby/edit.html', user = session.get('user'), hobby=user_data["DATA"][0], encoded_image=encoded_image)
     else:
         return redirect(url_for('signin_page'))
 
@@ -260,7 +259,7 @@ def pictures_hobby(hobby_id):
             request_dict = dict(session.get('user'))
             request_dict["HOBBY_ID"] = str(hobby_id)
 
-            hobby_data = db_api.post(settings.db_api_url, f"/user_hobbies/get_hobby", request_dict)
+            hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
 
             print(hobby_data)
 
@@ -269,7 +268,7 @@ def pictures_hobby(hobby_id):
                 user_id = {}
                 request_dict["HOBBY_ID"] = _hobby['USER_ID']
                 api_return = db_api.post_get_content(f"get_picture/hobby_picture", user_id)
-            return render_template('hobby/pictures.html', user = session.get('user'), hobby = hobby_data)
+            return render_with_kwargs('hobby/pictures.html', user = session.get('user'), hobby = hobby_data)
         if request.method == 'POST':
             user_id = session.get('user').get('USER_ID')
             file = request.files['file']
@@ -285,7 +284,7 @@ def pictures_hobby(hobby_id):
 
             print(request_dict)
 
-            hobby_data = db_api.post(settings.db_api_url, f"/user_hobbies/add_picture", request_dict)
+            hobby_data = db_api.post(f"/user_hobbies/add_picture", request_dict)
 
             return redirect(url_for('pictures_hobby', hobby_id = hobby_id))
     else:
@@ -304,13 +303,13 @@ def tutor_hobby(hobby_id):
                 request_dict = dict(session.get('user'))
                 request_dict["HOBBY_ID"] = str(hobby_id)
 
-                user_data = db_api.post(settings.db_api_url, f"/user_hobbies/get_hobby", request_dict)
+                user_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
 
                 print("----------------------API---------------------")
                 print(user_data)
                 print("----------------------------------------------")
 
-                return render_template('hobby/tutor.html', user = session.get('user'), hobby=user_data["DATA"][0])
+                return render_with_kwargs('hobby/tutor.html', user = session.get('user'), hobby=user_data["DATA"][0])
 
             if request.method == 'POST':
 
@@ -321,7 +320,7 @@ def tutor_hobby(hobby_id):
 
                 print(request_form_dict)
 
-                db_api.post(settings.db_api_url, f"/user_hobbies/tutor_hobby", request_form_dict)
+                db_api.post(f"/user_hobbies/tutor_hobby", request_form_dict)
                 return redirect(url_for('account_hobbies'))
         else:
             print("HERE 3")
@@ -346,9 +345,9 @@ def account_sessions():
             encoded_image=''
             default_image = 'images/default_pfp.jpg'
 
-        sessions_data = db_api.post(settings.db_api_url, f"/user_sessions/get_sessions", session.get('user'))["DATA"]
+        sessions_data = db_api.post(f"/user_sessions/get_sessions", session.get('user'))["DATA"]
 
-        return render_template("account/sessions.html", user = session.get('user'), sessions=sessions_data, default_image=default_image, encoded_image=encoded_image)
+        return render_with_kwargs("account/sessions.html", user = session.get('user'), sessions=sessions_data, default_image=default_image, encoded_image=encoded_image)
     else:
         return redirect(url_for('signin_page'))
 
@@ -356,7 +355,7 @@ def account_sessions():
 def catalog_page():
     print("catalog")
     print(f"{request.remote_addr} visited Tutor-Catalog!")
-    hobby_data = db_api.post(settings.db_api_url, f"/user_hobbies/get_tutored_hobbies", dict(session))
+    hobby_data = db_api.post(f"/user_hobbies/get_tutored_hobbies", dict(session))
     hobby_data = hobby_data["DATA"]
 
 
@@ -364,7 +363,7 @@ def catalog_page():
         user_id = {}
         user_id['USER_ID'] = _hobby['USER_ID']
         api_return = db_api.post_get_content(f"get_picture/profile_picture", user_id)
-        user_data = db_api.post(settings.db_api_url, f"/user_accounts/get_user/user_id", user_id)
+        user_data = db_api.post(f"/user_accounts/get_user/user_id", user_id)
         if api_return:
             _hobby['USER_PICTURE'] = base64.b64encode(api_return).decode('utf-8')
         if user_data:
@@ -372,8 +371,8 @@ def catalog_page():
 
     if session.get('user'):
 
-        return render_template("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
-    return render_template("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
+        return render_with_kwargs("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
+    return render_with_kwargs("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
 
 @app.route("/catalog/hobby/<hobby_id>", methods=['GET'])
 def catalog_hobby(hobby_id):
@@ -388,14 +387,14 @@ def catalog_hobby(hobby_id):
         else:
             picture_urls = settings.default_pictures_urls
 
-        hobby_data = db_api.post(settings.db_api_url, f"/user_hobbies/get_hobby", request_dict)['DATA'][0]
+        hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)['DATA'][0]
 
         print(hobby_data)
 
         user_id = {}
         user_id['USER_ID'] = hobby_data['USER_ID']
         api_return = db_api.post_get_content(f"get_picture/profile_picture", user_id)
-        user_data = db_api.post(settings.db_api_url, f"/user_accounts/get_user/user_id", user_id)
+        user_data = db_api.post(f"/user_accounts/get_user/user_id", user_id)
         if api_return:
             hobby_data['USER_PICTURE'] = base64.b64encode(api_return).decode('utf-8')
         if user_data:
@@ -404,7 +403,7 @@ def catalog_hobby(hobby_id):
         if session.get('user').get('USER_ID') == hobby_data["USER_ID"]:
             return redirect(url_for('view_hobby', hobby_id = hobby_id))
         else:
-            return render_template("pages/catalog/hobby/view.html", user = session.get('user'), hobby = hobby_data, picture_urls=picture_urls)
+            return render_with_kwargs("pages/catalog/hobby/view.html", user = session.get('user'), hobby = hobby_data, picture_urls=picture_urls)
     else:
            return redirect(url_for('signin_page'))
 
