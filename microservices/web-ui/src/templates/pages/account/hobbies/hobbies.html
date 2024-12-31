@@ -1,30 +1,20 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/profile.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobbies.css') }}">
 {% endblock %}
 {% block content %}
 <!-- Main Content Section -->
 {% include 'components/account.html' %}
 
-<!-- Profile Section -->
+
 <div class="hobbies-section">
-    <!-- Tutored Hobbies Section -->
+
     <div class="tutored-hobbies">
         <div class="hobbies-header">
-            <h2>Tutored Hobbies</h2>
-        </div>
-        {% set tutoring = true %}
-        {% include 'components/hobbies_list.html' %}
-    </div>
-    <!-- Non-Tutored Hobbies Section -->
-    <div class="non-tutored-hobbies">
-        <div class="hobbies-header">
-            <h2>My Hobbies</h2>
+            <h2>Hobbies</h2>
             {{ buttons.redirect('/account/hobbies/hobby/add', 'Add a Hobby') }}
         </div>
-        {% set tutoring = false %}
         {% include 'components/hobbies_list.html' %}
     </div>
 </div>

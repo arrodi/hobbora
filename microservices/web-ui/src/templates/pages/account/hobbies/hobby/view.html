@@ -10,26 +10,29 @@
     <!-- Collage of Hobby Pictures -->
     <section class="hobby-pictures-section">
         <div class="pictures-gallery">
-            {% for url in picture_urls %}
+            {% for picture in hobby.HOBBY_SECONDARY_PICTURES %}
             <div class="picture-item">
-                <img src="{{ url_for('static', filename=url) }}" alt="Pictures of hobbies">
+                <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
+                alt="Image for {{ hobby.HOBBY_NAME }}" />
             </div>
             {% endfor %}
         </div>
     </section>
     <section class="hobby-title-section">
-        <h1>{{ hobby.HOBBY_NAME }}</h1>
+        <h2>{{ hobby.HOBBY_NAME }}</h2>
         <div class="action-buttons-container">
+            {% set path = '/account/hobbies/hobby/pictures/' ~ hobby.HOBBY_ID %}
             <!-- Edit Hobby Button -->
-            <a href="/account/hobbies/hobby/pictures/{{ hobby.HOBBY_ID }}" class="edit-pictures-hobby-button">Edit Pictures</a>
-            <a href="/account/hobbies/hobby/edit/{{ hobby.HOBBY_ID }}" class="edit-hobby-button">Edit Hobby</a>
+            {{ buttons.redirect('/account/hobbies/hobby/pictures/' ~ hobby.HOBBY_ID, 'Edit Pictures') }}
+            {{ buttons.redirect('/account/hobbies/hobby/edit/' ~ hobby.HOBBY_ID, 'Edit Hobby') }}
             <!-- Conditionally Display Tutor Hobby Button -->
             {% if not hobby.HOBBY_TUTORING %}
-            <a href="/account/hobbies/hobby/tutor/{{ hobby.HOBBY_ID }}" class="tutoring-indicator-active">Tutor Hobby</a>
+            {{ buttons.redirect('/account/hobbies/hobby/tutor/' ~ hobby.HOBBY_ID, 'Tutor Hobby') }}
             {% endif %}
             {% if hobby.HOBBY_TUTORING %}
-            <a href="/account/hobbies/hobby/stop-tutor/{{ hobby.HOBBY_ID }}" class="tutoring-indicator-not-active">Stop Tutoring Hobby</a>
+            {{ buttons.redirect('/account/hobbies/hobby/stop-tutor/' ~ hobby.HOBBY_ID, 'Stop Tutoring Hobby') }}
             {% endif %}
+            {{ buttons.redirect('/account/hobbies/hobby/delete/' ~ hobby.HOBBY_ID, 'Delete Hobby') }}
         </div>
     </section>
     
@@ -40,7 +43,7 @@
         <section class="hobby-description-section">
             <h3>Description</h3>
             <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>
-            <p><strong>Proficiency:</strong> {{ hobby.PROFICIENCY }}</p>
+            <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
             <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months
             </p>
             {% if hobby.HOBBY_TUTORING %}
@@ -49,10 +52,10 @@
             <p><strong>Total Hours Tutored:</strong> {{ hobby.TOTAL_HOURS_TUTORED }}</p>
             {% endif %}
         </section>
-        {% if hobby.HOBBY_TUTORING %}
         <!-- Scheduled Tutoring Sessions -->
         <section class="upcoming-sessions-section">
             <h3>Upcoming Tutoring Sessions</h3>
+            {% if hobby.HOBBY_TUTORING %}
             {% if hobby.UPCOMING_SESSIONS %}
             <ul>
                 {% for session in hobby.UPCOMING_SESSIONS %}
@@ -60,15 +63,18 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p>No upcoming sessions.</p>
+            <p class="greyed-out">No upcoming sessions.</p>
+            {% endif %}
+            {% else %}
+            <p class="greyed-out">You are not tutoring this hobby yet!</p>
             {% endif %}
         </section>
-        {% endif %}
     </div>
     <!-- Reviews Section -->
-    {% if hobby.HOBBY_TUTORING %}
+    
     <div class="reviews-section">
         <h3>Reviews</h3>
+        {% if hobby.HOBBY_TUTORING %}
         {% if hobby.REVIEWS and hobby.REVIEWS|length > 0 %}
         <ul>
             {% for review in hobby.REVIEWS %}
@@ -79,10 +85,13 @@
             {% endfor %}
         </ul>
         {% else %}
-        <p>No reviews for this hobby yet.</p>
+        <p class="greyed-out">No reviews for this hobby yet.</p>
+        {% endif %}
+        {% else %}
+        <p class="greyed-out">You are not tutoring this hobby yet!</p>
         {% endif %}
     </div>
-    {% endif %}
+    
 </div>
 
 {% endblock %}

@@ -86,14 +86,17 @@ def get_picture():
 
 @app.route("/upload_picture/profile_picture/<user_id>", methods=['POST'])
 @app.route("/upload_picture/hobby_picture/<user_id>/<hobby_id>", methods=['POST'])
-def upload_picture(user_id, hobby_id=None):
+@app.route("/upload_picture/hobby_picture/<user_id>/<hobby_id>/<picture_id>", methods=['POST'])
+def upload_picture(user_id, hobby_id=None, picture_id=None):
     # Handles image uploads for both profile and hobby pictures.
     file = request.files.get('file')
     
-    
     if hobby_id:
-        picture_id = uuid.uuid4().hex[:6]
-        filename = generate_filename(user_id, hobby_id, picture_id)
+        if picture_id:
+            filename = generate_filename(user_id, hobby_id, picture_id)
+        else:
+            picture_id = uuid.uuid4().hex[:6]
+            filename = generate_filename(user_id, hobby_id, picture_id)
     else:
         picture_id = None
         filename = generate_filename(user_id)

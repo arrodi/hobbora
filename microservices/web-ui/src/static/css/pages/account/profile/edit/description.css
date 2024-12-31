@@ -12,7 +12,7 @@
 .description-about {
     padding: 20px;
     border-radius: 8px;
-    background: rgba(30, 30, 30, 0.9); /* Matches box styles */
+    background: rgba(30, 30, 30, 0.65); /* Matches box styles */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
@@ -42,7 +42,7 @@
 .description-info {
     padding: 20px;
     border-radius: 8px;
-    background: rgba(30, 30, 30, 0.9); /* Matches box styles */
+    background: rgba(30, 30, 30, 0.65); /* Matches box styles */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }

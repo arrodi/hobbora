@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/pictures.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Main Content Section -->
+<div class="pictures-gallery">
+    {% for picture in hobby.HOBBY_SECONDARY_PICTURES %}
+    <div class="picture-item">
+        <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
+            alt="Image for {{ hobby.HOBBY_NAME }}" />
+        <div class="hover-actions">
+            <button 
+                class="replace-button" 
+                data-hobby-id="{{ hobby.HOBBY_ID }}" 
+                data-picture-id="{{ picture.id }}">Replace Picture</button>
+            <button class="delete-button">Delete Picture</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Popup Modal -->
+<div id="upload-modal" class="modal hidden" data-hobby-id="" data-picture-id="">
+    <div class="modal-content">
+        <h2>Replace Picture</h2>
+        <p>Drag and drop a new picture or click to upload.</p>
+        <input type="file" id="file-upload" accept="image/*" />
+        <button class="file-upload-button">Replace</button>
+        <button class="close-modal">Cancel</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/picture_editor.js') }}"></script>
+{% endblock %}

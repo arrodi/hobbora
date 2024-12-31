@@ -14,54 +14,26 @@ class API:
 
     def get(self, api_endpoint):
         full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"GET request to: {full_url}")
+        logger.info(f"get: GET request to: {full_url}")
         try:
             response = requests.get(full_url)
-            logger.info(f"GET response status: {response.status_code}")
-            logger.info(f"GET response of type {type(response)} and value of {str(response)}")
+            logger.info(f"get: GET response status: {response.status_code}, of type {type(response.content)}")
             response.raise_for_status()
             return response
         except requests.RequestException as e:
-            logger.error(f"Error during GET request to {full_url}: {e}")
+            logger.error(f"get: Error during GET request to {full_url}: {e}")
             raise
 
-    def post_get_content(self, api_endpoint, json_data):
+    def post(self, api_endpoint, json_data=None, files=None):
         full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST request to: {full_url} with data: {json_data} of  type {str(type(json_data))}")
-        try:
-            response = requests.post(full_url, json=json_data)
-            logger.info(f"POST response status: {response.status_code}")
-            logger.info(f"POST response of type {type(response.content)} and value of {str(response.content)}")
-            if response.status_code != 200:
-                return response.json()
-            else:
-                return response.content
-        except requests.RequestException as e:
-            logger.error(f"Error during POST request to {full_url}: {e}")
-            raise
-
-        
-    def post(self, api_endpoint, json_data):
-        full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST request to: {full_url} with data: {json_data} of  type {str(type(json_data))}")
-        try:
-            response = requests.post(full_url, json=json_data)
-            logger.info(f"POST response status: {response.status_code}")
-            logger.info(f"POST response of type {type(response.content)} and value of {str(response.content)}")
-            return response.json()
-        except requests.RequestException as e:
-            logger.error(f"Error during POST request to {full_url}: {e}")
-            raise
-
-    def post_file(self, api_endpoint, files):
-        full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST file upload request to: {full_url} with files: {files.keys()}")
-        try:
+        logger.info(f"post_request: POST request to {full_url} with JSON: {type(json_data)}, Files: {type(files)}")
+        if files:
             response = requests.post(full_url, files=files)
-            logger.info(f"POST file response status: {response.status_code}")
-            logger.info(f"POST file response of type {type(response)} and value of {str(response)}")
-            response.raise_for_status()
+        else:
+            response = requests.post(full_url, json=json_data)
+        
+        logger.info(f"post_request: POST response status: {response.status_code}, Content-Type: {response.headers.get('Content-Type')}")
+        response.raise_for_status()
+        if "application/json" in response.headers.get("Content-Type", ""):
             return response.json()
-        except requests.RequestException as e:
-            logger.error(f"Error during POST file upload to {full_url}: {e}")
-            raise
+        return response.content

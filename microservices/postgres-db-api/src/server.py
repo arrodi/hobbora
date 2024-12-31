@@ -185,27 +185,6 @@ def add_hobby():
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     
-@app.route("/user_hobbies/add_picture", methods=['POST'])
-def add_hobby_picture():
-
-    request_data = request.get_json()
-    request_data["PICTURE_MAIN"] = False
-    sql_query, sql_values = queries.insert_into_table("USER_HOBBIES_PICTURES", request_data)
-    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
-
-    if "QUERY SUCCESS" in query_return:
-        request_data["INSERT"] = "SUCCESS"
-        request_data["MESSAGE"] = "Succesfully added the hobby!"
-        return jsonify(request_data)
-    elif "INSERT ERROR" in query_return:
-        request_data["INSERT"] = "INSERT ERROR"
-        request_data["MESSAGE"] = query_return
-        return jsonify(request_data)
-    else:
-        request_data["INSERT"] = "UNKOWN ERROR"
-        request_data["MESSAGE"] = query_return
-        return jsonify(request_data)
-    
 @app.route("/user_hobbies/get_hobbies", methods=['POST'])
 def get_hobbies():
 
@@ -230,7 +209,6 @@ def get_hobbies():
     return jsonify(request_data)
 
 @app.route("/user_hobbies/get_hobby", methods=['POST'])
-#Returns all information on a single hobby
 def get_hobby():
     print("/user_hobbies/get_hobby")
     request_data = request.get_json()
@@ -252,15 +230,30 @@ def get_hobby():
             query_return_lst.append(_temp_dict)
 
         request_data["DATA"] = query_return_lst
-
-    for _hobby in query_return_lst:
-        _hobby["HOBBY_ID"]
-        sql_context = queries.select_table("USER_HOBBIES_PICTURES", queries.table_schemas["USER_HOBBIES_PICTURES"].keys(), f"HOBBY_ID = '{hobby_id}'")
-        print(sql_context)
-        query_return = postgres.execute_query(sql_context, fetch=True)
-    
+    else:
+        request_data["DATA"] = ""
 
     return jsonify(request_data)
+
+@app.route("/user_hobbies/edit_hobby", methods=['POST'])
+def edit_hobby():
+    request_data = request.get_json()
+    hobby_id = request_data["HOBBY_ID"]
+
+    sql_query, sql_values = queries.modify_record("USER_HOBBIES", request_data, f"HOBBY_ID = '{hobby_id}'")
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
+    print(query_return)
+    if "QUERY SUCCESS" in query_return:
+        request_data["HOBBY_ID"] = hobby_id
+        request_data["MODIFY"] = "SUCCESS"
+        request_data["MESSAGE"] = "Succesfully edit a hobby!"
+        return jsonify(request_data)
+    else:
+        request_data["HOBBY_ID"] = hobby_id
+        request_data["MODIFY"] = "FAILURE"
+        request_data["MESSAGE"] = "Unknown failure!"
+        return jsonify(request_data)
+
 
 @app.route("/user_hobbies/tutor_hobby", methods=['POST'])
 def tutor_hobby():
@@ -290,6 +283,25 @@ def tutor_hobby():
     elif "INSERT ERROR" in query_return:
         request_data["INSERT"] = "INSERT ERROR"
         request_data["MESSAGE"] = query_return
+        return jsonify(request_data)
+    else:
+        request_data["INSERT"] = "UNKOWN ERROR"
+        request_data["MESSAGE"] = query_return
+        return jsonify(request_data)
+    
+@app.route("/user_hobbies/delete_hobby", methods=['POST'])
+def delete_hobby():
+    print("/user_hobbies/delete_hobby")
+
+    request_data = request.get_json()
+    hobby_id = request_data["HOBBY_ID"]
+
+    sql_query, sql_values = queries.delete_record("USER_HOBBIES", f"HOBBY_ID = '{hobby_id}'")
+    query_return = postgres.execute_query(sql_query, fetch=False)
+
+    if "QUERY SUCCESS" in query_return:
+        request_data["INSERT"] = "SUCCESS"
+        request_data["MESSAGE"] = "Succesfully deleted the hobby!"
         return jsonify(request_data)
     else:
         request_data["INSERT"] = "UNKOWN ERROR"

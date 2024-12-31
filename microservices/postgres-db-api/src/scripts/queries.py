@@ -99,6 +99,17 @@ class Queries:
         
         return sql_query, value_lst
     
+    def delete_record(self, table_nm, record_condition):
+
+        value_lst = []
+
+        sql_query = f"""
+                DELETE FROM {table_nm}
+                WHERE {record_condition};
+                """
+        
+        return sql_query, value_lst
+    
     def insert_into_table(self, table_nm, table_data):
         
         column_lst = []

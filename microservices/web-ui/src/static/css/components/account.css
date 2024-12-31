@@ -6,10 +6,10 @@ main {
 }
 /* Account Section Styles */
 .account-section {
-    flex-basis: 20%; /* Take 45% of the width */
-    max-width: 300px;
-    margin-right: 2%; /* Add space between account and profile */
-    margin-left: 5%; /* Add space between account and profile */
+
+    width: 300px;
+    margin-right: 50px; /* Add space between account and profile */
+    margin-left: 50px; /* Add space between account and profile */
     border-radius: 10px;
     position: relative;
     height: 80vh;
@@ -20,7 +20,7 @@ main {
 /* Account Section Styles */
 .account-profile-section {
     border-radius: 10px;
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(30, 30, 30, 0.75);
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
     margin-bottom:20px;
 }
@@ -41,7 +41,7 @@ main {
     height: auto; /* Maintain aspect ratio */
     aspect-ratio: 1 / 1; /* Make the image a square */
     object-fit: cover; /* Ensure the image fills the container while maintaining its aspect ratio */
-    border-bottom: 3px solid #4CAF50; /* Neon Green Border for regular users */
+    border-bottom: 3px solid #4CAF50;
 }
 
 .profile-picture-tutor img {
@@ -81,7 +81,7 @@ main {
 
 /* Menu Styles */
 .menu {
-    background-color: #1a1a1a; /* Darker, flat background for a modern look */
+    background-color: rgba(30, 30, 30, 0.75);
     border-radius: 12px; /* Softer rounded corners */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
     margin-bottom: 20px;

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/delete.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hobbies Section -->
+<div class="hobbies-section">
+    <h2 class="hobby-title">Delete Hobby: {{ hobby.HOBBY_NAME }}</h2> <!-- Updated Position -->
+    <form action="" method="POST">
+        {{ buttons.submit('Confirm deletion!') }}
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,184 @@
+/* Hobbies List Grid */
+.hobbies-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 2 columns of equal width */
+    gap: 20px; /* Space between tiles */
+    justify-content: center; /* Center-align the grid */
+    margin: 0 auto;
+    grid-auto-rows: 1fr; /* Ensure all rows have equal height */
+}
+
+/* Hobby Tile Layout */
+.hobby-tile {
+    display: flex;
+    flex-direction: column; /* Arrange content vertically by default */
+    justify-content: flex-start;
+    background: rgba(22, 22, 22, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Ensure the tile spans the full width of the grid cell */
+    max-width: 500px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+    min-height: 100%; /* Make sure all tiles are equal height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hobby Tile Hover Effect */
+.hobby-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+    text-decoration: none; /* Ensure no underline on hover */
+}
+
+a:visited.hobby-tile {
+    color: inherit; /* Prevent purple color for visited links */
+    text-decoration: none; /* No underline for visited links */
+}
+
+/* Layout for Left and Right Sections */
+.hobby-tile-content {
+    display: flex;
+    flex-direction: column; /* Stack everything vertically */
+}
+
+/* Hobby Picture with 4:3 aspect ratio */
+.hobby-picture {
+    width: 100%; /* Ensure the picture fills the width of its container */
+    position: relative;
+    aspect-ratio: 16 / 9; /* Maintain a 4:3 aspect ratio */
+    overflow: hidden; /* Prevent image from spilling out of the container */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 3px solid #4CAF50;
+}
+
+/* Hobby Picture */
+.hobby-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Hobby Header (Name + Hourly Rate) */
+.hobby-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: rgba(30, 30, 30, 0.65);
+}
+
+/* Hobby Name Styling */
+.hobby-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin: 0;
+    padding: 10px;
+    text-align: left;
+    flex-grow: 2; /* Allow name to take the available space */
+}
+
+/* Hourly Rate Styling */
+.hourly-rate {
+    color: #777;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+    flex-grow: 1; /* Allow name to take the available space */
+}
+
+.hobby-description {
+    font-size: 14px;
+    padding: 10px;
+    min-height: 75px;
+}
+
+.hobby-description p{
+    font-size: 14px;
+    margin: 0px;
+    text-align: left;
+}
+
+/* Hobby Attributes - Side by Side */
+.hobby-attributes {
+    display: flex; /* Use flexbox to arrange items side by side */
+    justify-content: space-between; /* Distribute space evenly between items */
+    gap: 15px; /* Space between the two elements */
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px; /* Adjust font size if needed */
+    color: #777; /* Light text for better contrast */
+}
+
+.hobby-attributes p {
+    margin: 0; /* Remove default margin */
+}
+
+/* Tutoring Modes Row */
+.tutoring-modes {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: rgba(30, 30, 30, 0.65);
+}
+
+/* Tutoring Mode Text */
+.tutoring-mode {
+    font-size: 14px;
+}
+
+.tutoring-mode.true {
+    color: #4CAF50; /* Green for true */
+}
+
+.tutoring-mode.false {
+    color: #888888; /* Grey for false */
+}
+
+/* Separator Styling */
+.separator {
+    color: #888888; /* Set color for the separator */
+    margin: 0 5px; /* Space around the separator */
+}
+
+/* No Hobbies Message */
+.no-hobbies-message {
+    padding: 20px;
+    text-align: center;
+    font-size: clamp(1rem, 1.5vw, 2rem); /* Responsive font size */
+    color: rgba(30, 30, 30, 0.65);
+    font-weight: bold;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    max-height: clamp(150px, 15vh, 250px); /* Scales dynamically */
+    box-sizing: border-box;
+}
+/* Media Queries for Responsive Grid */
+@media (max-width: 1700px) {
+    .hobbies-list {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+    }
+}
+
+@media (max-width: 1300px) {
+    .hobbies-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+    }
+}
+
+@media (max-width: 1000px) {
+    .hobbies-list {
+        grid-template-columns: 1fr; /* 1 column for very small screens */
+    }
+}

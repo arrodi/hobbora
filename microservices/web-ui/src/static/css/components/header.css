@@ -3,7 +3,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30, 0.65);
     padding: 15px 30px;
     color: #e0e0e0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -19,7 +19,7 @@ header {
     font-size: 30px;
     font-weight: 700;
     margin-right: 30px;
-    color: #4CAF50; /* Neon Green */
+    color: #4CAF50;
 }
 /* Navigation Styles */
 .top-nav {
@@ -49,7 +49,6 @@ header {
     font-weight: 500;
     padding: 10px 20px;
     border-radius: 5px;
-    transition: color 0.3s, background-color 0.3s, padding 0.3s ease;
     display: block; /* Make the link take up full area */
     border-left: 3px solid transparent; /* Subtle highlight style */
 }
@@ -57,17 +56,14 @@ header {
 /* Hover effect for nav links */
 .top-nav ul li a:hover {
     background-color: #333; /* Darker background on hover */
-    color: #4CAF50; /* Bright green text on hover */
-    border-left: 3px solid #4CAF50; /* Green accent on hover */
-    padding-left: 25px; /* Smooth padding increase for a modern effect */
 }
 
 /* Active nav link styling */
 .top-nav ul li.active a {
     background-color: #2a2a2a; /* Slightly darker background for active state */
-    color: #4CAF50; /* Bright green text for active link */
+    color: #4CAF50;
     font-weight: bold;
-    border-left: 3px solid #4CAF50; /* Green accent for active link */
+    border-left: 3px solid #4CAF50;
     padding-left: 25px; /* Match the hover padding effect */
 }
 
@@ -81,11 +77,11 @@ header {
     width: 40px; /* Fixed size for the profile icon */
     height: 40px;
     border-radius: 50%; /* Makes the image circular */
-    border: 2px solid #4CAF50; /* Optional: Green border for accent */
+    border: 2px solid #4CAF50;
     object-fit: cover; /* Ensures the image fits well inside the circle */
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .profile-icon img:hover {
-    box-shadow: 0 0 8px rgba(0, 255, 0, 0.6); /* Neon glow effect */
+    box-shadow: 0 0 8px #4CAF50;
 }
