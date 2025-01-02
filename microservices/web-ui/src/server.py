@@ -328,7 +328,18 @@ def edit_hobby_pictures_replace(hobby_id, picture_id):
         picture_id = None
     picture_handler.upload_hobby_picture(files, user_id, hobby_id, picture_id)
     
-    return jsonify({"message": "ok gamer", "status": 200})
+    return jsonify(success=True, message="Picture replaced successfully!")
+
+@app.route('/account/hobbies/hobby/pictures/<hobby_id>/delete/<picture_id>', methods=['GET'])
+def delete_hobby_pictures(hobby_id, picture_id):
+    logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/PICTURES/{hobby_id}/delete/{picture_id} ------- ")
+    user_id = session.get('user').get('USER_ID')
+    if 'default' not in picture_id:
+        picture_handler.delete_hobby_picture(user_id, hobby_id, picture_id)
+        message="Picture deleted successfully!"
+    else:
+        message="The default picture cannot be deleted!"
+    return jsonify(success=True, message=message)
 
 @app.route('/account/hobbies/hobby/tutor/<hobby_id>', methods=['GET', 'POST'])
 def tutor_hobby(hobby_id):

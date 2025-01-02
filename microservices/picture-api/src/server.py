@@ -108,6 +108,14 @@ def upload_picture(user_id, hobby_id=None, picture_id=None):
         response["PICTURE_ID"] = picture_id
     return jsonify(response), status_code
 
+@app.route("/delete_picture/hobby_picture/<user_id>/<hobby_id>/<picture_id>", methods=['GET'])
+def delete_picture(user_id, hobby_id=None, picture_id=None):
+    if hobby_id:
+        if picture_id:
+            filename = generate_filename(user_id, hobby_id, picture_id)
+            api_return = s3.delete_file(settings.picture_bucket, filename)
+            return api_return
+
 #########################
 ##### SERVER BEGIN! #####
 #########################

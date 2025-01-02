@@ -16,7 +16,10 @@
                 class="replace-button" 
                 data-hobby-id="{{ hobby.HOBBY_ID }}" 
                 data-picture-id="{{ picture.id }}">Replace Picture</button>
-            <button class="delete-button">Delete Picture</button>
+            <button
+                class="delete-button"
+                data-hobby-id="{{ hobby.HOBBY_ID }}" 
+                data-picture-id="{{ picture.id }}">Delete Picture</button>
         </div>
     </div>
     {% endfor %}

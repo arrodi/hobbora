@@ -26,7 +26,6 @@ class S3:
             raise
 
     def upload_file(self, file, bucket, filename):
-        """Uploads a file to the specified S3 bucket."""
         try:
             self.client.upload_fileobj(
                 file,
@@ -37,6 +36,19 @@ class S3:
         except ClientError as e:
             logger.error(f"Failed to upload file: {e}", exc_info=True)
             return {"error": "Failed to upload the file."}, 500
+        
+    
+    def delete_file(self, bucket, filename):
+        try:
+            self.client.delete_object(Bucket=bucket, Key=filename)
+            logger.info(f"File '{filename}' deleted successfully from bucket '{bucket}'.")
+            return {"message": f"File '{filename}' deleted successfully from S3!"}, 200
+        except self.client.exceptions.NoSuchKey:
+            logger.warning(f"File not found in S3: {filename}")
+            return {"error": "File not found."}, 404
+        except (BotoCoreError, ClientError) as e:
+            logger.error(f"Failed to delete file: {e}", exc_info=True)
+            return {"error": "Failed to delete the file."}, 500
 
     def retrieve_image(self, bucket, key):
         try:

@@ -57,6 +57,11 @@ def upload_hobby_picture(files, user_id, hobby_id, picture_id):
 
     return api_return
 
+def delete_hobby_picture(user_id, hobby_id, picture_id):
+    logger.info(f"upload_hobby_picture: Deleting hobby picture with hobby id: {hobby_id} and picture id: {picture_id}")
+    picture_api.get(f"delete_picture/hobby_picture/{user_id}/{hobby_id}/{picture_id}")
+
+
 def get_hobby_pictures(_hobby):
     logger.info(f"get_hobby_pictures: Attaching pictures to hobby {_hobby.get('HOBBY_ID')}")
     hobby_id_lst = picture_api.post("get_picture_id/hobby", _hobby)
