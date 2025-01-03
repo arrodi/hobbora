@@ -196,7 +196,7 @@ def user_agreement():
         else:
             return redirect(url_for('home_page'))
     
-    return render_with_kwargs("user_agreement.html")
+    return render_with_kwargs('pages/account/profile/user_agreement.html')
     
 @app.route("/account/hobbies", methods=['GET'])
 def account_hobbies():

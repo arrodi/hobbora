@@ -149,8 +149,8 @@ def become_tutor():
     request_data = request.get_json()
     user_id = request_data.pop("USER_ID")
     request_data = {"USER_TUTOR": request_data["USER_TUTOR"]}
-    sql_context = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
-    query_return = postgres.execute_query(sql_context, fetch=False)
+    sql_query, sql_values = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
+    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
     print(query_return)
     if "QUERY SUCCESS" in query_return:
         request_data["USER_ID"] = user_id

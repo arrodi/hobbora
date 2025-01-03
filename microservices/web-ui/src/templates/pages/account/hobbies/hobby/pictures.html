@@ -6,23 +6,27 @@
 
 {% block content %}
 <!-- Main Content Section -->
-<div class="pictures-gallery">
-    {% for picture in hobby.HOBBY_SECONDARY_PICTURES %}
-    <div class="picture-item">
-        <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
-            alt="Image for {{ hobby.HOBBY_NAME }}" />
-        <div class="hover-actions">
-            <button 
-                class="replace-button" 
-                data-hobby-id="{{ hobby.HOBBY_ID }}" 
-                data-picture-id="{{ picture.id }}">Replace Picture</button>
-            <button
-                class="delete-button"
-                data-hobby-id="{{ hobby.HOBBY_ID }}" 
-                data-picture-id="{{ picture.id }}">Delete Picture</button>
+<div class="hobby-main-section">
+    <section class="hobby-pictures-section">
+        <div class="pictures-gallery">
+            {% for picture in hobby.HOBBY_SECONDARY_PICTURES %}
+            <div class="picture-item">
+                <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
+                    alt="Image for {{ hobby.HOBBY_NAME }}" />
+                <div class="hover-actions">
+                    <button 
+                        class="replace-button" 
+                        data-hobby-id="{{ hobby.HOBBY_ID }}" 
+                        data-picture-id="{{ picture.id }}">Replace Picture</button>
+                    <button
+                        class="delete-button"
+                        data-hobby-id="{{ hobby.HOBBY_ID }}" 
+                        data-picture-id="{{ picture.id }}">Delete Picture</button>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </div>
-    {% endfor %}
+    </section>
 </div>
 
 <!-- Popup Modal -->

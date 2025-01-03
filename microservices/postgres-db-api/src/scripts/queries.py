@@ -74,12 +74,12 @@ class Queries:
 
         data_str = ", ".join(data_lst)
 
-        sql = f"""
+        sql_query = f"""
                 CREATE TABLE IF NOT EXISTS {table_nm}
                 ({data_str})
                 """
         
-        return sql
+        return sql_query
     
     def modify_record(self, table_nm, table_data, record_condition):
 
