@@ -1,0 +1,102 @@
+/* Hobbies Section */
+.hobbies-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Add Hobby Title */
+.hobby-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+/* Hobby Form Container */
+.all-hobby {
+    background: rgba(30, 30, 30, 0.65);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.edit-hobby {
+    width: 100%;
+    justify-content: center;
+}
+.tutor-hobby {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Centering the Form and Input Groups */
+.add-hobby-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px; /* Consistent max width */
+}
+
+/* Input Group Styling */
+.input-group {
+    width: 100%; /* Takes full width of the form */
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Label Styling */
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #e0e0e0;
+}
+
+/* Consistent Input, Textarea, and Select Box Styling */
+.input-group input,
+.input-group textarea,
+.input-group select {
+    width: 100%; /* Take full width of the input group container */
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(60, 60, 60, 0.8);
+    color: #e0e0e0;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+/* Focus Effect */
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Submit Button Styling */
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+/* Hover Effect for Submit Button */
+.submit-button:hover {
+    background-color: #45a049;
+}

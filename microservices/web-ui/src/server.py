@@ -65,7 +65,7 @@ def signin_page():
         }
 
         logger.info(f"Attempting to fetch user data for email: {user_email}")
-        api_return = db_api.post(f"/user_accounts/get_user/email", dict_payload)
+        api_return = db_api.post(f"/user/get/email", dict_payload)
         
         if api_return.get("USER_EXISTS"):
             logger.info(f"User found for email: {user_email}")
@@ -104,7 +104,7 @@ def signup_page():
             "USER_TUTOR": False
         }
 
-        query_response = db_api.post(f"/user_accounts/add_user", dict_payload)
+        query_response = db_api.post(f"/user/add", dict_payload)
         
         if query_response["INSERT"] == "SUCCESS":
             session["user"] = dict_payload
@@ -127,7 +127,7 @@ def account_profile():
         return redirect(url_for('signin_page'))
     
     logger.info("Fetching user data for profile display.")
-    api_return = db_api.post(f"/user_accounts/get_user/email", session.get('user'))
+    api_return = db_api.post(f"/user/get/email", session.get('user'))
     user_data = api_return['USER_INFO']
     session.get('user').update(user_data)
 
@@ -158,11 +158,11 @@ def account_profile_edit_description():
 
         dict_payload = request.form.to_dict()
         session.get('user').update(dict_payload)
-        user_data = db_api.post(f"/user_accounts/edit_user", session.get('user'))
+        user_data = db_api.post(f"/user/edit", session.get('user'))
         return redirect(url_for('account_profile'))
 
     if request.method == 'GET':
-        api_return = db_api.post(f"/user_accounts/get_user/email", session.get('user'))
+        api_return = db_api.post(f"/user/get/email", session.get('user'))
         user_data = api_return['USER_INFO']
         return render_with_kwargs("pages/account/profile/edit/description.html", user=user_data)
     
@@ -187,7 +187,7 @@ def user_agreement():
     if request.method == 'POST':
         request_dict = dict(session.get('user'))
         request_dict["USER_TUTOR"] = True
-        query_response = db_api.post(f"/user_accounts/become_tutor", request_dict)
+        query_response = db_api.post(f"/user/tutor/become", request_dict)
 
         if query_response["MODIFY"] == "SUCCESS":
             session["user"]['USER_TUTOR'] = True
@@ -208,7 +208,7 @@ def account_hobbies():
     
     try:
         logger.info("Fetching hobbies data for user.")
-        hobby_data = db_api.post(f"/user_hobbies/get_hobbies", session.get('user')).get("DATA", [])
+        hobby_data = db_api.post(f"/user/hobbies/get", session.get('user')).get("DATA", [])
         
         if not hobby_data:
             logger.warning("No hobbies data found for the user.")
@@ -239,11 +239,11 @@ def add_hobby():
             dict_payload = dict(request.form)
             dict_payload["USER_ID"] = session.get('user').get("USER_ID")
 
-            db_api.post(f"/user_hobbies/add_hobby", dict_payload)
+            db_api.post(f"/user/hobbies/add", dict_payload)
 
             return redirect(url_for('account_hobbies'))
         else:
-            return render_with_kwargs('pages/account/hobbies/hobby/add.html',user = session.get('user'), encoded_image=encoded_image)
+            return render_with_kwargs('pages/account/hobbies/hobby/add.html', encoded_image=encoded_image)
     else:
         return redirect(url_for('signin_page'))
 
@@ -257,7 +257,7 @@ def view_hobby(hobby_id):
     request_dict = session.get('user')
     request_dict["HOBBY_ID"] = str(hobby_id)
 
-    hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
+    hobby_data = db_api.post(f"/hobby/get", request_dict)
     hobby_data = picture_handler.get_hobby_pictures(hobby_data["DATA"][0])
 
     return render_with_kwargs('pages/account/hobbies/hobby/view.html', hobby=hobby_data)
@@ -271,16 +271,16 @@ def edit_hobby(hobby_id):
             request_dict = dict(session.get('user'))
             request_dict["HOBBY_ID"] = str(hobby_id)
 
-            hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
+            hobby_data = db_api.post(f"/hobby/get", request_dict)
 
-            return render_with_kwargs('pages/account/hobbies/hobby/edit.html', user = session.get('user'), hobby=hobby_data["DATA"][0])
+            return render_with_kwargs('pages/account/hobbies/hobby/edit.html', hobby=hobby_data["DATA"][0])
 
         if request.method == 'POST':
             logger.info(f" ------- POST: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
             dict_payload = dict(request.form)
             dict_payload["HOBBY_ID"] = hobby_id
             
-            hobby_data = db_api.post(f"/user_hobbies/edit_hobby", dict_payload)
+            hobby_data = db_api.post(f"/hobby/edit", dict_payload)
 
             ##ADD VALIDATION THAT THE HOBBY HAS BEEN UPDATED SUCCESFULLY
 
@@ -297,10 +297,10 @@ def edit_hobby_pictures(hobby_id):
             request_dict = dict(session.get('user'))
             request_dict["HOBBY_ID"] = str(hobby_id)
 
-            hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
+            hobby_data = db_api.post(f"/hobby/get", request_dict)
             hobby_data = picture_handler.get_hobby_pictures(hobby_data["DATA"][0])
 
-            return render_with_kwargs('pages/account/hobbies/hobby/pictures.html', user = session.get('user'), hobby = hobby_data)
+            return render_with_kwargs('pages/account/hobbies/hobby/pictures.html', hobby = hobby_data)
         if request.method == 'POST':
             user_id = session.get('user').get('USER_ID')
             file = request.files['file']
@@ -350,15 +350,32 @@ def tutor_hobby(hobby_id):
                 request_dict = dict(session.get('user'))
                 request_dict["HOBBY_ID"] = str(hobby_id)
 
-                user_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
+                user_data = db_api.post(f"/hobby/get", request_dict)
 
-                return render_with_kwargs('hobby/tutor.html', user = session.get('user'), hobby=user_data["DATA"][0])
+                return render_with_kwargs('pages/account/hobbies/hobby/tutor.html', hobby=user_data["DATA"][0])
 
             if request.method == 'POST':
 
-                request_form_dict = dict(request.form)
-                request_form_dict["HOBBY_ID"] = str(hobby_id)
-                db_api.post(f"/user_hobbies/tutor_hobby", request_form_dict)
+                request_dict = {
+                    "USER_HOBBIES":{
+                        "HOBBY_ID" : str(hobby_id),
+                        "HOBBY_NAME": request.form.get("HOBBY_NAME"),
+                        "HOBBY_DESCRIPTION": request.form.get("HOBBY_DESCRIPTION"),
+                        "HOBBY_PROFICIENCY": request.form.get("HOBBY_PROFICIENCY"),
+                        "EXPERIENCE_YEARS": request.form.get("EXPERIENCE_YEARS"),
+                        "EXPERIENCE_MONTHS": request.form.get("EXPERIENCE_MONTHS")
+                    },
+                    "USER_HOBBIES_TUTORING":{
+                        "HOBBY_ID" : str(hobby_id),
+                        "TUTORING_MODE_LIVE_CALL": request.form.get("TUTORING_MODE_LIVE_CALL"),
+                        "TUTORING_MODE_PUBLIC_IN_PERSON": request.form.get("TUTORING_MODE_PUBLIC_IN_PERSON"),
+                        "TUTORING_MODE_PRIVATE_IN_PERSON": request.form.get("TUTORING_MODE_PRIVATE_IN_PERSON"),
+                        "TUTORING_HOURLY_RATE": request.form.get("TUTORING_HOURLY_RATE")
+                    }
+                }
+                
+                db_api.post(f"/hobby/tutor", request_dict["USER_HOBBIES"])
+                db_api.post(f"/hobby/tutored/edit", request_dict["USER_HOBBIES_TUTORING"])
                 return redirect(url_for('account_hobbies'))
         else:
             return redirect(url_for('view_hobby', hobby_id = hobby_id))
@@ -374,7 +391,7 @@ def delete_hobby(hobby_id):
         request_dict = dict(session.get('user'))
         request_dict["HOBBY_ID"] = str(hobby_id)
 
-        hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)
+        hobby_data = db_api.post(f"/hobby/get", request_dict)
         if request.method == 'GET':
             logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
 
@@ -388,31 +405,10 @@ def delete_hobby(hobby_id):
             logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
             if hobby_data["USER_ID"] == session.get('user').get("USER_ID"):
                 hobby_data = hobby_data["DATA"]
-                hobby_data = db_api.post(f"/user_hobbies/delete_hobby", hobby_data[0])
+                hobby_data = db_api.post(f"/hobby/delete", hobby_data[0])
                 return redirect(url_for('account_hobbies'))
             else:
                 return redirect(url_for('signin_page'))
-            
-@app.route('/account/sessions', methods=['GET', 'POST'])
-def account_sessions():
-    if session.get('user'):
-        dict_payload = {
-            "USER_ID":session.get('user').get('USER_ID')
-        }
-        
-        api_return = db_api.post_get_content(f"get_picture/profile_picture", dict_payload)
-        if api_return:
-            encoded_image = base64.b64encode(api_return).decode('utf-8')
-            default_image= ''
-        else:
-            encoded_image=''
-            default_image = 'images/default_pfp.jpg'
-
-        sessions_data = db_api.post(f"/user_sessions/get_sessions", session.get('user'))["DATA"]
-
-        return render_with_kwargs("account/sessions.html", user = session.get('user'), sessions=sessions_data, default_image=default_image, encoded_image=encoded_image)
-    else:
-        return redirect(url_for('signin_page'))
 
 @app.route("/catalog", methods=['GET'])
 def catalog_page():
@@ -448,7 +444,7 @@ def catalog_hobby(hobby_id):
         else:
             picture_urls = settings.default_pictures_urls
 
-        hobby_data = db_api.post(f"/user_hobbies/get_hobby", request_dict)['DATA'][0]
+        hobby_data = db_api.post(f"/hobby/get", request_dict)['DATA'][0]
 
         user_id = {}
         user_id['USER_ID'] = hobby_data['USER_ID']
