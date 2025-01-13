@@ -108,27 +108,6 @@ class Queries:
                 """
         return sql
     
-    def tutoring_mode_function(self, function_nm):
-
-        sql = f"""
-                CREATE OR REPLACE FUNCTION {function_nm}()
-                RETURNS TRIGGER AS $$
-                BEGIN
-                    IF NEW.TUTORING_MODE_LIVE_CALL IS NULL THEN
-                        NEW.TUTORING_MODE_LIVE_CALL := false;
-                    END IF;
-                    IF NEW.TUTORING_MODE_PUBLIC_IN_PERSON IS NULL THEN
-                        NEW.TUTORING_MODE_PUBLIC_IN_PERSON := false;
-                    END IF;
-                    IF NEW.TUTORING_MODE_PRIVATE_IN_PERSON IS NULL THEN
-                        NEW.TUTORING_MODE_PRIVATE_IN_PERSON := false;
-                    END IF;
-                    RETURN NEW;
-                END;
-                $$ LANGUAGE plpgsql;
-                """
-        return sql
-    
     def upd_dt_function_trigger(self, table_nm, function_nm):
         sql = f"""
         CREATE TRIGGER {table_nm}_TRIGGER_{function_nm}

@@ -7,12 +7,13 @@
 {% block content %}
 <!-- Main Content Section -->
 <div class="hobby-main-section">
+    {{ buttons.back('/account/hobbies/hobby/' ~ hobby.HOBBY_ID, 'Back to hobby') }}
     <section class="hobby-pictures-section">
         <div class="pictures-gallery">
-            {% for picture in hobby.HOBBY_SECONDARY_PICTURES %}
+            {% for picture in hobby.GRID_PICTURES %}
             <div class="picture-item">
                 <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
-                    alt="Image for {{ hobby.HOBBY_NAME }}" />
+                    alt="Image for {{ hobby.NAME }}" />
                 <div class="hover-actions">
                     <button 
                         class="replace-button" 

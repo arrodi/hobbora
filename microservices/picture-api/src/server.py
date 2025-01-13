@@ -53,20 +53,26 @@ def handle_exception(e):
     logger.error(f"Unexpected error occurred: {e}", exc_info=True)
     return jsonify({"error": "An internal error occurred."}), 500
 
-@app.route("/get_picture_id/hobby", methods=['POST'])
+@app.route("/id/hobby/get", methods=['POST'])
 def get_picture_id():
-    # Handles image retrieval for both profile and hobby pictures.
     request_data = request.get_json()
-    print(type(request_data))
     user_id = request_data.get("USER_ID")
     hobby_id = request_data.get("HOBBY_ID")
     folder_path = f"hobby_pictures/{user_id}/{hobby_id}/"
     file_paths = s3.retrieve_file_paths(settings.picture_bucket, folder_path)
+    if file_paths:
+        request_data["SUCCESS"] = True
+        request_data["MESSAGE"] = "Succesfully found list of pictures!"
+        request_data["DATA"] = [_path.split("/")[-1].split(".")[0] for _path in file_paths]
+    else:
+        request_data["SUCCESS"] = True
+        request_data["MESSAGE"] = "Unable to find any pictures!"
+        request_data["DATA"] = []
 
-    return jsonify([_path.split("/")[-1].split(".")[0] for _path in file_paths])
+    return jsonify(request_data)
 
-@app.route("/get_picture/profile_picture", methods=['POST'])
-@app.route("/get_picture/hobby_picture", methods=['POST'])
+@app.route("/picture/profile/get", methods=['POST'])
+@app.route("/picture/hobby/get", methods=['POST'])
 def get_picture():
     # Handles image retrieval for both profile and hobby pictures.
     request_data = request.get_json()
@@ -77,12 +83,11 @@ def get_picture():
     
     filename = generate_filename(user_id, hobby_id, picture_id)
     logger.info(f"Fetching from S3: {filename}")
-    response = s3.retrieve_image(settings.picture_bucket, filename)
-    logger.info(f"S3 Return of type {type(response)} and value of {str(response)}")
+    status, file, message = s3.retrieve_image(settings.picture_bucket, filename)
 
-    if isinstance(response, io.BytesIO):
-        return send_file(response, mimetype='image/webp')
-    return jsonify(response[0]), response[1]
+    if isinstance(file, io.BytesIO):
+        return send_file(file, mimetype='image/webp')
+    return jsonify(message), 200
 
 @app.route("/upload_picture/profile_picture/<user_id>", methods=['POST'])
 @app.route("/upload_picture/hobby_picture/<user_id>/<hobby_id>", methods=['POST'])
@@ -102,19 +107,38 @@ def upload_picture(user_id, hobby_id=None, picture_id=None):
         filename = generate_filename(user_id)
 
     logger.info(f"Uploading to S3: {filename}")
-    response, status_code = s3.upload_file(file, settings.picture_bucket, filename)
+    status, message = s3.upload_file(file, settings.picture_bucket, filename)
 
-    if picture_id and status_code == 200:
+    response = {}
+    if status:
+        response["SUCCESS"] = True
+        response["MESSAGE"] = message
         response["PICTURE_ID"] = picture_id
-    return jsonify(response), status_code
+    else:
+        response["SUCCESS"] = False
+        response["MESSAGE"] = message
+        response["PICTURE_ID"] = ""
+    return jsonify(response), 200
 
 @app.route("/delete_picture/hobby_picture/<user_id>/<hobby_id>/<picture_id>", methods=['GET'])
 def delete_picture(user_id, hobby_id=None, picture_id=None):
     if hobby_id:
         if picture_id:
             filename = generate_filename(user_id, hobby_id, picture_id)
-            api_return = s3.delete_file(settings.picture_bucket, filename)
-            return api_return
+            status, message = s3.delete_file(settings.picture_bucket, filename)
+
+            response = {}
+            if status:
+                response["SUCCESS"] = True
+                response["MESSAGE"] = message
+                response["PICTURE_ID"] = picture_id
+            else:
+                response["SUCCESS"] = False
+                response["MESSAGE"] = message
+                response["PICTURE_ID"] = ""
+
+            return jsonify(response), 200
+        
 
 #########################
 ##### SERVER BEGIN! #####

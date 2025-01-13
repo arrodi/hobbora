@@ -46,7 +46,7 @@ a:visited.hobby-tile {
 }
 
 /* Hobby Picture with 4:3 aspect ratio */
-.hobby-picture {
+.hobby-picture-reg {
     width: 100%; /* Ensure the picture fills the width of its container */
     position: relative;
     aspect-ratio: 16 / 9; /* Maintain a 4:3 aspect ratio */
@@ -55,9 +55,20 @@ a:visited.hobby-tile {
     border-top-right-radius: 10px;
     border-bottom: 3px solid #4CAF50;
 }
+/* Hobby Picture with 4:3 aspect ratio */
+.hobby-picture-tutor {
+    width: 100%; /* Ensure the picture fills the width of its container */
+    position: relative;
+    aspect-ratio: 16 / 9; /* Maintain a 4:3 aspect ratio */
+    overflow: hidden; /* Prevent image from spilling out of the container */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 3px solid #e4d509;
+}
 
 /* Hobby Picture */
-.hobby-picture img {
+.hobby-picture-reg img,
+.hobby-picture-tutor img{
     width: 100%;
     height: 100%;
     object-fit: cover;

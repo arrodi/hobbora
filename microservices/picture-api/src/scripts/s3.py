@@ -32,35 +32,35 @@ class S3:
                 bucket,
                 filename
             )
-            return {"message": f"File '{filename}' uploaded successfully to S3!"}, 200
+            return True, "Uploaded file"
         except ClientError as e:
             logger.error(f"Failed to upload file: {e}", exc_info=True)
-            return {"error": "Failed to upload the file."}, 500
+            return False , "Failed to upload file"
         
     
     def delete_file(self, bucket, filename):
         try:
             self.client.delete_object(Bucket=bucket, Key=filename)
             logger.info(f"File '{filename}' deleted successfully from bucket '{bucket}'.")
-            return {"message": f"File '{filename}' deleted successfully from S3!"}, 200
+            return True, "Deleted successfully"
         except self.client.exceptions.NoSuchKey:
             logger.warning(f"File not found in S3: {filename}")
-            return {"error": "File not found."}, 404
+            return False, "File not found in S3: {filename}"
         except (BotoCoreError, ClientError) as e:
             logger.error(f"Failed to delete file: {e}", exc_info=True)
-            return {"error": "Failed to delete the file."}, 500
+            return False, "Failed to delete file"
 
     def retrieve_image(self, bucket, key):
         try:
             response = self.client.get_object(Bucket=bucket, Key=key)
             image_data = response['Body'].read()
-            return io.BytesIO(image_data)
+            return True, io.BytesIO(image_data), "Image Found"
         except self.client.exceptions.NoSuchKey:
             logger.warning(f"Image not found in S3: {key}")
-            return {"error": "Image not found."}, 404
+            return True, b"", "Image not found."
         except (BotoCoreError, ClientError) as e:
             logger.error(f"Failed to retrieve image: {e}", exc_info=True)
-            return {"error": "Image retrieval failed."}, 500
+            return False, b"", "Image retrieval failed."
     
     def retrieve_file_paths(self, bucket, prefix):
         file_paths = []

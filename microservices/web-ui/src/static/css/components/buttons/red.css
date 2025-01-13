@@ -1,4 +1,4 @@
-.logout-button {
+.red-button {
     flex-grow: 1; /* Allow buttons to grow and take up available space */
     flex-shrink: 1; /* Allow buttons to shrink when there's not enough space */
     flex-basis: 150px; /* Reduce the base size of the buttons */
@@ -11,7 +11,9 @@
     transition: background 0.3s ease, transform 0.3s ease;
     text-align: center; /* Center the text inside the button */
     white-space: nowrap; /* Prevent text from wrapping inside the button */
+    max-width: 150px; /* Limit the maximum width */
+    max-height: 50px;
 }
-.logout-button:hover {
+.red-button:hover {
     background-color: #7c1212;
 }

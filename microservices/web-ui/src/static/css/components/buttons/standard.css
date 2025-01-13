@@ -12,6 +12,7 @@
     text-align: center; /* Center the text inside the button */
     white-space: nowrap; /* Prevent text from wrapping inside the button */
     max-width: 150px; /* Limit the maximum width */
+    max-height: 50px;
 }
 .button:hover {
     background-color: #388e3c;

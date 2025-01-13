@@ -15,16 +15,16 @@
             <div class="edit-hobby">
                 <div class="input-group">
                     <label for="hobby-name">Hobby Name</label>
-                    <input type="text" id="hobby-name" name="HOBBY_NAME" value="{{ hobby.HOBBY_NAME }}" required>
+                    <input type="text" id="hobby-name" name="NAME" value="{{ hobby.NAME }}" required>
                 </div>
                 <div class="input-group">
                     <label for="hobby-description">Hobby Description</label>
-                    <textarea id="hobby-description" name="HOBBY_DESCRIPTION" rows="4"
-                    required>{{ hobby.HOBBY_DESCRIPTION }}</textarea>
+                    <textarea id="hobby-description" name="DESCRIPTION" rows="4"
+                    required>{{ hobby.DESCRIPTION }}</textarea>
                 </div>
                 <div class="input-group">
                     <label for="hobby-proficiency">Hobby Proficiency</label>
-                    <select id="hobby-proficiency" name="HOBBY_PROFICIENCY" value="{{ hobby.HOBBY_PROFICIENCY }}" required>
+                    <select id="hobby-proficiency" name="PROFICIENCY" value="{{ hobby.PROFICIENCY }}" required>
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Expert">Expert</option>
@@ -44,15 +44,15 @@
             <div class="tutor-hobby">
                 <div class="input-group">
                     <label for="tutoring-mode">Tutoring Mode</label>
-                    <div id="tutoring-mode" required>
-                        Live Call<input type="radio" name="TUTORING_MODE_LIVE_CALL" value="true" required>
-                        Public In Person<input type="radio" name="TUTORING_MODE_PUBLIC_IN_PERSON" value="true">
-                        Private In Person<input type="radio" name="TUTORING_MODE_PRIVATE_IN_PERSON" value="true">
+                    <div id="tutoring-mode">
+                        Live Call<input type="checkbox" name="MODE_LIVE_CALL" value="true">
+                        Public In Person<input type="checkbox" name="MODE_PUBLIC_IN_PERSON" value="true">
+                        Private In Person<input type="checkbox" name="MODE_PRIVATE_IN_PERSON" value="true">
                     </div>
                 </div>
                 <div class="input-group">
                     <label for="hourly-rate">Hourly Rate</label>
-                    <input type="text" id="hobby-name" name="TUTORING_HOURLY_RATE" required>
+                    <input type="text" id="hobby-name" name="HOURLY_RATE" required>
                 </div>
             </div>
             {{ buttons.submit('Tutor Hobby') }}

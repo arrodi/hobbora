@@ -23,17 +23,17 @@
         <!-- Hobby Description and Tutor Section -->
         <section class="hobby-description-section">
             <h3>Description</h3>
-            <p><strong>Description:</strong> {{ hobby.HOBBY_DESCRIPTION }}</p>
+            <p><strong>Description:</strong> {{ hobby.DESCRIPTION }}</p>
             <p><strong>Proficiency:</strong> {{ hobby.PROFICIENCY }}</p>
             <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months
             </p>
-            {% if hobby.HOBBY_TUTORING %}
+            {% if hobby.TUTORING %}
             <p><strong>Completed Sessions:</strong> {{ hobby.COMPLETED_SESSIONS }}</p>
             <p><strong>Average Rating:</strong> {{ hobby.AVERAGE_RATING }}/5</p>
             <p><strong>Total Hours Tutored:</strong> {{ hobby.TOTAL_HOURS_TUTORED }}</p>
             {% endif %}
         </section>
-        {% if hobby.HOBBY_TUTORING %}
+        {% if hobby.TUTORING %}
         <!-- Scheduled Tutoring Sessions -->
         <section class="upcoming-sessions-section">
             
@@ -41,7 +41,7 @@
         {% endif %}
     </div>
     <!-- Reviews Section -->
-    {% if hobby.HOBBY_TUTORING %}
+    {% if hobby.TUTORING %}
     <div class="reviews-section">
         <h3>Reviews</h3>
         {% if hobby.REVIEWS and hobby.REVIEWS|length > 0 %}

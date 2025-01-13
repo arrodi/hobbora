@@ -9,10 +9,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from waitress import serve
 
 # AUTHORED IMPORTS
-import scripts.picture_handler as picture_handler
-import scripts.encrypt as encrypt
-from scripts.api import API
-from scripts.settings import Settings
+from scripts.util.api import API
+from scripts.util.settings import Settings
+from scripts.objects.user import User
+from scripts.objects.hobby import Hobby
 
 import json
 from datetime import timedelta
@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 settings = Settings()
 db_api = API(settings.db_api_url)
+picture_api = API(settings.picture_api_url)
 
 # FLASK INIT
 app = Flask(__name__)
@@ -30,10 +31,12 @@ app.config['SECRET_KEY'] = os.urandom(24) # Required to encrypt session cookies
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session timeout
 
 def render_with_kwargs(page, **kwargs):
+    logger.info(f"Rendering {page}")
     if session.get('user'):
-        kwargs['encoded_image'] = picture_handler.get_profile_picture(session.get('user').get('USER_ID'))
+        kwargs['encoded_image'] = current_user.get_profile_picture()
         kwargs['config'] = settings.config
-        kwargs['user'] = session.get('user')
+        print(current_user.get_json)
+        kwargs['user'] = current_user.get_json()
     else:
         kwargs['encoded_image'] = b''
         kwargs['config'] = settings.config
@@ -56,38 +59,40 @@ def signin_page():
         logger.info("User already signed in. Redirecting to the home page.")
         return redirect(url_for('home_page'))
     
+    if request.method == 'GET':
+        logger.info("Rendering sign-in page.")
+        return render_with_kwargs("pages/signin.html")
+    
     if request.method == 'POST':
         logger.info("Sign-in form submitted.")
-        user_email = request.form['USER_EMAIL']
-        dict_payload = {
-            "USER_EMAIL": user_email,
-            "USER_PASS": request.form['USER_PASS']
-        }
+        user_input_id = request.form['USER_INPUT']
+        user_input_pass = request.form['PASSWORD']
 
-        logger.info(f"Attempting to fetch user data for email: {user_email}")
-        api_return = db_api.post(f"/user/get/email", dict_payload)
-        
-        if api_return.get("USER_EXISTS"):
-            logger.info(f"User found for email: {user_email}")
-            user_data = api_return["USER_INFO"]
-            
-            if encrypt.check_password(dict_payload["USER_PASS"], user_data["USER_PASS"]):
-                logger.info(f"Password verified for user: {user_email}. Setting session.")
-                session["user"] = user_data
+        if len(user_input_id.split(".")) > 1:
+            auth_check = User.authenticate(user_input_pass, email = user_input_id)
+        else:
+            auth_check = User.authenticate(user_input_pass, username = user_input_id)
+
+        if auth_check["USER_EXISTS"]:
+            if auth_check["USER_AUTHENTICATED"]:
+                logger.info(f"Password verified for: {user_input_id}. Setting session.")
+                global current_user
+                if len(user_input_id.split(".")) > 1:
+                    current_user = User(email = user_input_id)
+                else:
+                    current_user = User(username = user_input_id)
+                session["user"] = current_user.get_json()
                 session.modified = True
-                return redirect(url_for('home_page'))
+                return redirect(url_for('account_profile'))
             else:
-                logger.warning(f"Password mismatch for user: {user_email}")
+                logger.warning(f"Password mismatch for: {user_input_id}")
                 error_message = "Incorrect password. Please try again!"
         else:
-            logger.warning(f"No user found for email: {user_email}")
+            logger.warning(f"No user found for: {user_input_id}")
             error_message = "No Email Found! Try Again or Sign Up!"
-        
+
         logger.info("Rendering sign-in page with error message.")
         return render_with_kwargs("pages/signin.html", error_message=error_message)
-
-    logger.info("Rendering sign-in page.")
-    return render_with_kwargs("pages/signin.html")
 
     
 @app.route("/sign-up", methods=['GET', 'POST'])
@@ -95,26 +100,21 @@ def signup_page():
     if session.get('user'):
         return redirect(url_for('home_page'))
     
+    if request.method == 'GET':
+        return render_with_kwargs("pages/signup.html")
+    
     if request.method == 'POST':
-        dict_payload = {
-            "USER_ID": str(uuid.uuid4().hex[:6]),
-            "USER_NAME": request.form['USER_NAME'],
-            "USER_EMAIL": request.form['USER_EMAIL'],
-            "USER_PASS": encrypt.hash_password(request.form['USER_PASS']),
-            "USER_TUTOR": False
-        }
-
-        query_response = db_api.post(f"/user/add", dict_payload)
+        create_response = User.create(request.form["USERNAME"], request.form["EMAIL"], request.form["PASSWORD"])
         
-        if query_response["INSERT"] == "SUCCESS":
-            session["user"] = dict_payload
+        if create_response["SUCCESS"]:
+            global current_user
+            current_user = User(username = request.form["USERNAME"])
+            session["user"] = current_user.get_json()
             session.modified = True
             return redirect(url_for('home_page'))
-        
-        error_message = query_response.get("MESSAGE", "Unknown error. Please try again!")
-        return render_with_kwargs("pages/signup.html", error_message=error_message)
-
-    return render_with_kwargs("pages/signup.html")
+        else:
+            error_message = create_response.get("MESSAGE", "Unknown error. Please try again!")
+            return render_with_kwargs("pages/signup.html", error_message=error_message)
 
 @app.route("/account", methods=['GET'])
 def account():
@@ -124,79 +124,84 @@ def account():
 def account_profile():
     logger.info(" ------- ACCOUNT/PROFILE ------- ")
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
-    
-    logger.info("Fetching user data for profile display.")
-    api_return = db_api.post(f"/user/get/email", session.get('user'))
-    user_data = api_return['USER_INFO']
-    session.get('user').update(user_data)
-
-    logger.info("Rendering profile.html with user data.")
-    return render_with_kwargs("pages/account/profile/profile.html", user=user_data)
+    else:
+        return render_with_kwargs("pages/account/profile/profile.html")
     
 @app.route("/account/profile/edit/picture", methods=['GET', 'POST'])
 def account_profile_edit_picture():
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
+    
+    if request.method == 'GET':
+        return render_with_kwargs("pages/account/profile/edit/picture.html")
 
     if request.method == 'POST':
         file = request.files['file']
         files = {'file': (file.filename, file.stream, file.content_type)}
-        picture_handler.upload_profile_picture(session.get('user').get('USER_ID'), files)
+        upload_status = current_user.upload_profile_picture(files)
         
-        return redirect(url_for('account_profile'))
-
-    if request.method == 'GET':
-        return render_with_kwargs("pages/account/profile/edit/picture.html")
+        if upload_status:
+            return redirect(url_for('account_profile'))
+        else:
+            return redirect(url_for('account_profile_edit_picture'))
     
 @app.route("/account/profile/edit/description", methods=['GET', 'POST'])
 def account_profile_edit_description():
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
     
-    if request.method == 'POST':
-
-        dict_payload = request.form.to_dict()
-        session.get('user').update(dict_payload)
-        user_data = db_api.post(f"/user/edit", session.get('user'))
-        return redirect(url_for('account_profile'))
-
     if request.method == 'GET':
-        api_return = db_api.post(f"/user/get/email", session.get('user'))
-        user_data = api_return['USER_INFO']
-        return render_with_kwargs("pages/account/profile/edit/description.html", user=user_data)
+        return render_with_kwargs("pages/account/profile/edit/description.html")
     
+    if request.method == 'POST':
+        
+        edit_user_return = current_user.edit(request.form.to_dict())
+        if edit_user_return["SUCCESS"]:
+            session["user"] = current_user.get_json()
+            session.modified = True
+            return redirect(url_for('account_profile'))
+        else:
+            return render_with_kwargs("pages/account/profile/edit/description.html")
+
 @app.route('/account/become-tutor', methods=['GET', 'POST'])
 def become_tutor():
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
 
-    if session.get('user').get("USER_TUTOR"):
+    if session.get('user').get("TUTOR_STATUS"):
         return redirect(url_for('account'))
+
+    if request.method == 'GET':
+        return redirect(url_for('user_agreement'))
 
     if request.method == 'POST':
         return redirect(url_for('account'))
-    
-    return redirect(url_for('user_agreement'))
     
 @app.route('/account/become-tutor/user_agreement', methods=['GET', 'POST'])
 def user_agreement():
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
     
-    if request.method == 'POST':
-        request_dict = dict(session.get('user'))
-        request_dict["USER_TUTOR"] = True
-        query_response = db_api.post(f"/user/tutor/become", request_dict)
-
-        if query_response["MODIFY"] == "SUCCESS":
-            session["user"]['USER_TUTOR'] = True
-            session.modified = True
-            return redirect(url_for('become_tutor'))
-        else:
-            return redirect(url_for('home_page'))
+    if request.method == 'GET':
+        return render_with_kwargs('pages/account/profile/user_agreement.html')
     
-    return render_with_kwargs('pages/account/profile/user_agreement.html')
+    if request.method == 'POST':
+        become_tutor_return = current_user.become_tutor()
+        session["user"] = current_user.get_json()
+        session.modified = True
+
+        if become_tutor_return["SUCCESS"]:
+            #TODO: ADD A SUCCESS MESSAGE
+            return redirect(url_for('account'))
+        else:
+            #TODO: ADD A FAILURE MESSAGE
+            return redirect(url_for('become_tutor'))
     
 @app.route("/account/hobbies", methods=['GET'])
 def account_hobbies():
@@ -207,208 +212,209 @@ def account_hobbies():
         return redirect(url_for('signin_page'))
     
     try:
-        logger.info("Fetching hobbies data for user.")
-        hobby_data = db_api.post(f"/user/hobbies/get", session.get('user')).get("DATA", [])
-        
-        if not hobby_data:
-            logger.warning("No hobbies data found for the user.")
-        
-        hobby_data_pic = []
-        for _hobby in hobby_data:
-            logger.info(f"Fetching pictures for hobby: {_hobby.get('HOBBY_ID', 'Unknown Hobby')}")
+        print(current_user.get_hobby_ids)
+        hobby_data = []
+        for _hobby_id in current_user.get_hobby_ids():
+            current_hobby = Hobby(_hobby_id)
+            hobby_dict = current_hobby.get_json()
             try:
-                hobby_with_pictures = picture_handler.get_hobby_pictures(_hobby)
-                hobby_data_pic.append(hobby_with_pictures)
+                hobby_dict.update(current_hobby.get_pictures())
+                hobby_data.append(hobby_dict)
             except Exception as e:
-                logger.exception(f"Error occurred while fetching pictures for hobby {_hobby.get('HOBBY_ID', 'Unknown Hobby')}: {str(e)}")
+                logger.exception(f"Error occurred while fetching pictures for hobby {current_hobby.id}: {str(e)}")
         
         logger.info("Successfully fetched hobbies data with pictures.")
 
-        return render_with_kwargs("pages/account/hobbies/hobbies.html", hobbies=hobby_data_pic)
+        return render_with_kwargs("pages/account/hobbies/hobbies.html", hobbies=hobby_data)
     except Exception as e:
         logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
-        return redirect(url_for('signin_page'))
+        return redirect(url_for('account_profile'))
 
 @app.route("/account/hobbies/hobby/add", methods=['GET', 'POST'])
 def add_hobby():
     logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/ADD ------- ")
-    encoded_image = picture_handler.get_profile_picture(session.get('user').get('USER_ID'))
-    if session.get('user'):
-        if request.method == 'POST':
-
-            dict_payload = dict(request.form)
-            dict_payload["USER_ID"] = session.get('user').get("USER_ID")
-
-            db_api.post(f"/user/hobbies/add", dict_payload)
-
-            return redirect(url_for('account_hobbies'))
-        else:
-            return render_with_kwargs('pages/account/hobbies/hobby/add.html', encoded_image=encoded_image)
-    else:
+    if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
+    
+    if request.method == 'GET':
+        return render_with_kwargs('pages/account/hobbies/hobby/add.html')
+    
+    if request.method == 'POST':
+        dict_payload = dict(request.form)
+        dict_payload["USER_ID"] = session.get('user').get("USER_ID")
 
+        logger.info(f"Adding a hobby with info: {dict_payload}")
+
+        create_response = Hobby.create(dict_payload)
+        current_user.get_hobby_ids().append(create_response['HOBBY_ID'])
+
+        if create_response["SUCCESS"]:
+            return redirect(url_for('account_hobbies'))    
+        else:
+            return render_with_kwargs('pages/account/hobbies/hobby/add.html') 
+
+        
 
 @app.route('/account/hobbies/hobby/<hobby_id>', methods=['GET', 'POST'])
 def view_hobby(hobby_id):
     logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/{hobby_id} ------- ")
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
 
-    request_dict = session.get('user')
-    request_dict["HOBBY_ID"] = str(hobby_id)
-
-    hobby_data = db_api.post(f"/hobby/get", request_dict)
-    hobby_data = picture_handler.get_hobby_pictures(hobby_data["DATA"][0])
+    if request.method == 'GET':
+        current_hobby = Hobby(hobby_id)
+        hobby_data = current_hobby.get_json()
+        hobby_data.update(current_hobby.get_pictures())
 
     return render_with_kwargs('pages/account/hobbies/hobby/view.html', hobby=hobby_data)
     
 @app.route('/account/hobbies/hobby/edit/<hobby_id>', methods=['GET', 'POST'])
 def edit_hobby(hobby_id):
-    logger.info(f" ------- GET: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
-    if session.get('user'):
-        if request.method == 'GET':
-
-            request_dict = dict(session.get('user'))
-            request_dict["HOBBY_ID"] = str(hobby_id)
-
-            hobby_data = db_api.post(f"/hobby/get", request_dict)
-
-            return render_with_kwargs('pages/account/hobbies/hobby/edit.html', hobby=hobby_data["DATA"][0])
-
-        if request.method == 'POST':
-            logger.info(f" ------- POST: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
-            dict_payload = dict(request.form)
-            dict_payload["HOBBY_ID"] = hobby_id
-            
-            hobby_data = db_api.post(f"/hobby/edit", dict_payload)
-
-            ##ADD VALIDATION THAT THE HOBBY HAS BEEN UPDATED SUCCESFULLY
-
-            return redirect(url_for('view_hobby', hobby_id=hobby_id))
-        
-    else:
+    
+    if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
+
+    if request.method == 'GET':
+        logger.info(f" ------- GET: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
+        current_hobby = Hobby(hobby_id)
+        hobby_data = current_hobby.get_json()
+
+        return render_with_kwargs('pages/account/hobbies/hobby/edit.html', hobby=hobby_data)
+
+    if request.method == 'POST':
+        logger.info(f" ------- POST: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
+        dict_payload = dict(request.form)
+
+        if not (dict_payload.get("MODE_LIVE_CALL", False) or dict_payload.get("MODE_PUBLIC_IN_PERSON", False) or dict_payload.get("MODE_PRIVATE_IN_PERSON", False)):
+            ## TODO: add notification message component
+            return redirect(url_for('edit_hobby', hobby_id=hobby_id))
+
+        current_hobby = Hobby(hobby_id)
+        
+        update_successs = current_hobby.edit_attributes(dict_payload)
+
+        if update_successs:
+            return redirect(url_for('view_hobby', hobby_id=hobby_id))
+        else:
+            ## TODO: add notification message component
+            return redirect(url_for('edit_hobby', hobby_id=hobby_id))
 
 @app.route('/account/hobbies/hobby/pictures/<hobby_id>', methods=['GET', 'POST'])
 def edit_hobby_pictures(hobby_id):
-    logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/PICTURES/{hobby_id} ------- ")
-    if session.get('user'):
-        if request.method == 'GET':
-            request_dict = dict(session.get('user'))
-            request_dict["HOBBY_ID"] = str(hobby_id)
+    
 
-            hobby_data = db_api.post(f"/hobby/get", request_dict)
-            hobby_data = picture_handler.get_hobby_pictures(hobby_data["DATA"][0])
-
-            return render_with_kwargs('pages/account/hobbies/hobby/pictures.html', hobby = hobby_data)
-        if request.method == 'POST':
-            user_id = session.get('user').get('USER_ID')
-            file = request.files['file']
-            files = {'file': (file.filename, file.stream, file.content_type)}
-
-            api_return = db_api.post_file(f"upload_picture/hobby_picture/{user_id}/{hobby_id}", files=files)
-
-            request_dict = {}
-            request_dict["HOBBY_ID"] = hobby_id
-            request_dict["PICTURE_ID"] = api_return["PICTURE_ID"]
-
-            hobby_data = db_api.post(f"/user_hobbies/add_picture", request_dict)
-
-            return redirect(url_for('pictures_hobby', hobby_id = hobby_id))
-    else:
+    if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
+
+    if request.method == 'GET':
+        logger.info(f" ------- GET: ACCOUNT/HOBBIES/HOBBY/PICTURES/{hobby_id} ------- ")
+        current_hobby = Hobby(hobby_id)
+        hobby_data = current_hobby.get_json()
+        hobby_data.update(current_hobby.get_pictures())
+
+        return render_with_kwargs('pages/account/hobbies/hobby/pictures.html', hobby = hobby_data)
+
+    if request.method == 'POST':
+        ##### PLACEHOLDER ######
+
+        return redirect(url_for('edit_hobby_pictures', hobby_id = hobby_id))
     
 @app.route('/account/hobbies/hobby/pictures/<hobby_id>/replace/<picture_id>', methods=['POST'])
 def edit_hobby_pictures_replace(hobby_id, picture_id):
     logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/PICTURES/{hobby_id}/replace/{picture_id} ------- ")
-    user_id = session.get('user').get('USER_ID')
     file = request.files.get('file')
     files = {'file': (file.filename, file.stream, file.content_type)}
-    if 'default' in picture_id:
-        picture_id = None
-    picture_handler.upload_hobby_picture(files, user_id, hobby_id, picture_id)
     
-    return jsonify(success=True, message="Picture replaced successfully!")
+    current_hobby = Hobby(hobby_id)
+    update_successs = current_hobby.edit_picture(files, picture_id)
+
+    if update_successs:  
+        return jsonify(success=True, message="Picture replaced successfully!")
+    else:
+        return jsonify(success=False, message="Error!")
 
 @app.route('/account/hobbies/hobby/pictures/<hobby_id>/delete/<picture_id>', methods=['GET'])
 def delete_hobby_pictures(hobby_id, picture_id):
     logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/PICTURES/{hobby_id}/delete/{picture_id} ------- ")
-    user_id = session.get('user').get('USER_ID')
-    if 'default' not in picture_id:
-        picture_handler.delete_hobby_picture(user_id, hobby_id, picture_id)
-        message="Picture deleted successfully!"
+    
+    current_hobby = Hobby(hobby_id)
+    update_successs, message = current_hobby.delete_picture(picture_id)
+
+    if update_successs:
+        return jsonify(success=True, message=message)
     else:
-        message="The default picture cannot be deleted!"
-    return jsonify(success=True, message=message)
+        return jsonify(success=False, message=message)
 
 @app.route('/account/hobbies/hobby/tutor/<hobby_id>', methods=['GET', 'POST'])
 def tutor_hobby(hobby_id):
-    logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/TUTOR/{hobby_id} ------- ")
-    if session.get('user'):
-        if session.get('user').get("USER_TUTOR"):
-            if request.method == 'GET':
-                request_dict = dict(session.get('user'))
-                request_dict["HOBBY_ID"] = str(hobby_id)
+    
 
-                user_data = db_api.post(f"/hobby/get", request_dict)
-
-                return render_with_kwargs('pages/account/hobbies/hobby/tutor.html', hobby=user_data["DATA"][0])
-
-            if request.method == 'POST':
-
-                request_dict = {
-                    "USER_HOBBIES":{
-                        "HOBBY_ID" : str(hobby_id),
-                        "HOBBY_NAME": request.form.get("HOBBY_NAME"),
-                        "HOBBY_DESCRIPTION": request.form.get("HOBBY_DESCRIPTION"),
-                        "HOBBY_PROFICIENCY": request.form.get("HOBBY_PROFICIENCY"),
-                        "EXPERIENCE_YEARS": request.form.get("EXPERIENCE_YEARS"),
-                        "EXPERIENCE_MONTHS": request.form.get("EXPERIENCE_MONTHS")
-                    },
-                    "USER_HOBBIES_TUTORING":{
-                        "HOBBY_ID" : str(hobby_id),
-                        "TUTORING_MODE_LIVE_CALL": request.form.get("TUTORING_MODE_LIVE_CALL"),
-                        "TUTORING_MODE_PUBLIC_IN_PERSON": request.form.get("TUTORING_MODE_PUBLIC_IN_PERSON"),
-                        "TUTORING_MODE_PRIVATE_IN_PERSON": request.form.get("TUTORING_MODE_PRIVATE_IN_PERSON"),
-                        "TUTORING_HOURLY_RATE": request.form.get("TUTORING_HOURLY_RATE")
-                    }
-                }
-                
-                db_api.post(f"/hobby/tutor", request_dict["USER_HOBBIES"])
-                db_api.post(f"/hobby/tutored/edit", request_dict["USER_HOBBIES_TUTORING"])
-                return redirect(url_for('account_hobbies'))
-        else:
-            return redirect(url_for('view_hobby', hobby_id = hobby_id))
-    else:
+    if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
+
+    if session.get('user').get("TUTOR_STATUS"):
+        current_hobby = Hobby(hobby_id)
+        
+        if request.method == 'GET':
+            logger.info(f" ------- GET: ACCOUNT/HOBBIES/HOBBY/TUTOR/{hobby_id} ------- ")
+            hobby_data = current_hobby.get_json()
+
+            return render_with_kwargs('pages/account/hobbies/hobby/tutor.html', hobby=hobby_data)
+
+        if request.method == 'POST':
+            logger.info(f" ------- POST: ACCOUNT/HOBBIES/HOBBY/TUTOR/{hobby_id} ------- ")
+            tutor_success = current_hobby.tutor(request.form)
+
+            ##TODO add status messages to user
+            if tutor_success:
+                message = ""
+            else:
+                message = ""
+            
+            return redirect(url_for('account_hobbies'))
+    else:
+        ##TODO add status messages to user
+        message = ""
+        return redirect(url_for('view_hobby', hobby_id = hobby_id))
     
 @app.route('/account/hobbies/hobby/delete/<hobby_id>', methods=['GET', 'POST'])
 def delete_hobby(hobby_id):
-    
+
     if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
-    else:
-        request_dict = dict(session.get('user'))
-        request_dict["HOBBY_ID"] = str(hobby_id)
 
-        hobby_data = db_api.post(f"/hobby/get", request_dict)
-        if request.method == 'GET':
-            logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
+    current_hobby = Hobby(hobby_id)
+    if request.method == 'GET':
+        logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
 
-            if hobby_data["USER_ID"] == session.get('user').get("USER_ID"):
-                hobby_data = hobby_data["DATA"]
-                return render_with_kwargs('pages/account/hobbies/hobby/delete.html', user = session.get('user'), hobby=hobby_data)
-            else:
-                return redirect(url_for('signin_page'))
-            
-        if request.method == 'POST':
-            logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
-            if hobby_data["USER_ID"] == session.get('user').get("USER_ID"):
-                hobby_data = hobby_data["DATA"]
-                hobby_data = db_api.post(f"/hobby/delete", hobby_data[0])
+        if current_hobby.user_id == session.get('user').get("USER_ID"):
+            return render_with_kwargs('pages/account/hobbies/hobby/delete.html', hobby=current_hobby.get_json())
+        else:
+            ##Incase the user manually enters the url to delete a hobby that doesnt belong to them
+            message = ""
+            session.clear()
+            return redirect(url_for('signin_page'))
+        
+    if request.method == 'POST':
+        logger.info(f" GET: ------- ACCOUNT/HOBBIES/HOBBY/DELETE/{hobby_id} ------- ")
+        if current_hobby.user_id == session.get('user').get("USER_ID"):
+            delete_status = current_hobby.delete()
+
+            if delete_status:
+                message = ""
                 return redirect(url_for('account_hobbies'))
             else:
-                return redirect(url_for('signin_page'))
+                message = ""
+                redirect(url_for('delete_hobby', hobby_id = hobby_id))
+        else:
+            message = ""
+            return redirect(url_for('signin_page'))
 
 @app.route("/catalog", methods=['GET'])
 def catalog_page():
