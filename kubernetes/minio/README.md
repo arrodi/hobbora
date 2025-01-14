@@ -12,7 +12,7 @@ docker volume create minio-data
 
 docker run -p 9000:9000 -p 9001:9001 --name minio \
   -v minio-data:/data \
-  -e "MINIO_ROOT_USER=admin123" \
-  -e "MINIO_ROOT_PASSWORD=admin123" \
+  -e "MINIO_ROOT_USER=minioadmin" \
+  -e "MINIO_ROOT_PASSWORD=super_secure_password_987" \
   minio/minio server /data --console-address ":9001"
 

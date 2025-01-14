@@ -14,17 +14,9 @@ docker volume create postgres-data
 docker run -p 5432:5432 --name postgres \
   -v postgres-data:/var/lib/postgresql/data \
   -e POSTGRES_USER=postgresadmin \
-  -e POSTGRES_PASSWORD=postgrespassword \
-  -e POSTGRES_DB=eande-db \
+  -e POSTGRES_PASSWORD=super_secure_password_987 \
+  -e POSTGRES_DB=hobbora-db \
   -d postgres:16.4
-
-4. Run pgadmin container to have an interface
-
-docker run --name pgadmin-container \
-  -e PGADMIN_DEFAULT_EMAIL=admin@example.com \
-  -e PGADMIN_DEFAULT_PASSWORD=admin123 \
-  -p 8080:80 \
-  -d dpage/pgadmin4
 
 ## Example of entering the pod and loggining into Postgres
 
