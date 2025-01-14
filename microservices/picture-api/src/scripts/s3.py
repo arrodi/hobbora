@@ -33,6 +33,9 @@ class S3:
                 filename
             )
             return True, "Uploaded file"
+        except self.client.exceptions.NoSuchBucket as e:
+            logger.error(f"Failed to upload file: {e}", exc_info=True)
+            return False , "NoSuchBucket"
         except ClientError as e:
             logger.error(f"Failed to upload file: {e}", exc_info=True)
             return False , "Failed to upload file"
@@ -70,3 +73,12 @@ class S3:
                 file_paths.append(obj['Key'])
 
         return file_paths
+    
+    def create_bucket(self, bucket_name):
+        try:
+            self.client.create_bucket(Bucket=bucket_name)
+            logger.info(f"Bucket '{bucket_name}' created successfully.")
+            return True, "Bucket created successfully."
+        except (BotoCoreError, ClientError) as e:
+            logger.error(f"Failed to create bucket: {e}", exc_info=True)
+            return False, "Failed to create bucket."
