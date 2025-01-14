@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/edit/picture.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Main Content Section -->
+{% include 'components/account.html' %}
+
+<!-- Sub Content Section -->
+<div class="image-upload-section">
+    <h1>Upload Your Photo</h1>
+    <div id="upload-area">
+        <p>Drag and drop an image here or click to upload</p>
+        <input type="file" id="file-input" accept="image/*" multiple>
+    </div>
+    <button id="upload-button" disabled>Upload</button>
+    <script src="{{ url_for('static', filename='js/upload_box.js') }}"></script>    
+
+</div>
+
+{% endblock %}

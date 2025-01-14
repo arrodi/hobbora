@@ -1,0 +1,19 @@
+deployment:
+  name: picture-api
+  docker:
+    image: artemek47/picture-api
+    tag: latest
+    secret: docker.secret
+  resources:
+    cpu: 100m
+    memory: 250Mi
+  repllicas: 1
+  port: 5000
+s3:
+  secret: minio-creds
+  host: minio-service
+  port: 9000
+
+app:
+  host: '0.0.0.0'
+  port: 5000

@@ -1,0 +1,22 @@
+.back-button {
+    flex-grow: 1; /* Allow buttons to grow and take up available space */
+    flex-shrink: 1; /* Allow buttons to shrink when there's not enough space */
+    color: #4CAF50;
+    text-decoration: none;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+    font-size: 0.9rem; /* Smaller font size */
+    text-align: left; /* Center the text inside the button */
+    white-space: nowrap; /* Prevent text from wrapping inside the button */
+    max-width: 150px; /* Limit the maximum width */
+}
+.back-button:hover {
+    color: #388e3c;
+}
+.back-button::before {
+    content: "←"; /* Left arrow */
+    margin-right: 8px; /* Space between arrow and text */
+    font-size: 16px; /* Adjust arrow size */
+    color: inherit; /* Matches text color */
+}

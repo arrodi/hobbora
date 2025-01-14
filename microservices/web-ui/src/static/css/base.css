@@ -1,0 +1,12 @@
+/* Global Styles */
+html, body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #e0e0e0;
+    background: linear-gradient(135deg, #0f0f0f, #0a1100);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure the body takes up the full height */
+    width: 100%;  /* Ensure the body takes up the full width */   
+}

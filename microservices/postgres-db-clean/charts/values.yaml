@@ -1,0 +1,11 @@
+deployment:
+  name: postgres-db-clean
+  schedule: "0 0 31 2 *"
+  docker:
+    image: artemek47/postgres-db-clean
+    tag: latest
+    secret: docker.secret
+database:
+  secret: postgres-creds
+  host: postgres-db-service
+  port: 5432

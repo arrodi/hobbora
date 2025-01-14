@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/profile/edit/description.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Account Section -->
+{% include 'components/account.html' %}
+<!-- Description Section -->
+<div class="description-section">
+    <form action="/account/profile/edit/description" method="POST">
+        <div class="description-about">
+            <div class="input-group">
+                <label for="about">About</label>
+                <input type="text" id="ABOUT" name="ABOUT" value="{{ user.ABOUT }}" required>
+            </div>
+        </div>
+        <div class="description-info">
+            <div class="input-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="FIRST_NAME" name="FIRST_NAME" value="{{ user.FIRST_NAME }}" required><br><br>
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="LAST_NAME" name="LAST_NAME" value="{{ user.LAST_NAME }}" required><br><br>
+
+            </div>
+        </div>
+        {{ buttons.submit('Save Changes') }}
+    </form>
+</div>
+
+{% endblock %}

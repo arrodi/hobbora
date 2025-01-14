@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/pages/account/profile/user_agreement.css')}}">
+{% endblock %}
+
+{% block content %}
+<!-- Sign In Section -->
+<main class="agreement-section">
+    <div class="input-box">
+        <h2>User Agreement for Hobbora</h2>
+        <form action="/account/become-tutor/user_agreement" method="POST">
+            <p>Click agree if you want to be a tutor.</p>
+            {{ buttons.submit('Agree') }}
+            <!-- Error message -->
+        </form>
+    </div>
+</main>
+{% endblock %}s

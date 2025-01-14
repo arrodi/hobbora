@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/catalog/catalog.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="hobbies-section">
+    <div class="hobbies-list">
+        {% for hobby in hobbies %}
+            <a href="/catalog/hobby/{{ hobby.HOBBY_ID }}" class="hobby-tile">
+                <div class="hobby-picture">
+                    <img src="data:image/jpeg;base64,{{ hobby.USER_PICTURE | default('') }}" 
+                         alt="Image for {{ hobby.HOBBY_NAME }}" />
+                </div>
+                <h3>{{ hobby.HOBBY_NAME }}</h3>
+                <p><strong>Provided by:</strong> {{ hobby.USER.USER_NAME | default('Unknown') }}</p>
+                <p><strong>Proficiency:</strong> {{ hobby.HOBBY_PROFICIENCY }}</p>
+                <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months</p>
+                <p><strong>Description:</strong> {{ hobby.TUTORING_DESCRIPTION }}</p>
+                <p><strong>Hourly Rate:</strong> {{ hobby.TUTORING_HOURLY_RATE }}</p>
+                <h3>Tutoring Modes</h3>
+                <p><strong>Live Calls:</strong> {{ hobby.TUTORING_MODE_LIVE_CALL }}</p>
+                <p><strong>Private:</strong> {{ hobby.TUTORING_MODE_PRIVATE_IN_PERSON }}</p>
+                <p><strong>Public:</strong> {{ hobby.TUTORING_MODE_PUBLIC_IN_PERSON }}</p>
+            </a>
+        {% endfor %}
+    </div>            
+</div>
+
+{% endblock %}

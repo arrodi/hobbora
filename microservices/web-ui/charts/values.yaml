@@ -1,6 +1,6 @@
 deployment:
   name: web-ui
-  domain: earnandeducate.com
+  domain: hobbora.com
   docker:
     image: artemek47/web-ui
     tag: latest
@@ -15,4 +15,8 @@ app:
   host: '0.0.0.0'
   port: 80
   api:
-    url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
+    db_url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
+    picture_url: "http://picture-api-service.minio.svc.cluster.local:3000"
+  otel:
+    collector:
+      endpoint: http://otel-collector-service.otel-collector.svc.cluster.local:4318
