@@ -77,7 +77,7 @@ def user_create():
         else:
             request_data["USER_ID"] = str(uuid.uuid4().hex[:6])
             request_data["PASSWORD"] = encrypt.hash_password(request_data["PASSWORD"]),
-            request_data["TUTOR_STATUS"] = False
+            request_data["TUTORING"] = False
             print(request_data)
             sql_query, sql_values = queries.insert_into_table("USER_ACCOUNTS", request_data)
             query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
@@ -199,20 +199,18 @@ def user_edit():
         return jsonify(request_data)
    
 @app.route("/user/tutor/become", methods=['POST'])
-def TUTOR_STATUS_become():
+def user_tutor_become():
     request_data = request.get_json()
-    user_id = request_data.pop("USER_ID")
-    request_data = {"TUTOR_STATUS": True}
+    user_id = request_data["USER_ID"]
+    request_data = {"TUTORING": True}
     sql_query, sql_values = queries.modify_record("USER_ACCOUNTS", request_data, f"USER_ID = '{user_id}'")
     query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
     print(query_return)
     if "QUERY SUCCESS" in query_return:
-        request_data["USER_ID"] = user_id
         request_data["SUCCESS"] = True
         request_data["MESSAGE"] = "Succesfully became a tutor!"
         return jsonify(request_data)
     else:
-        request_data["USER_ID"] = user_id
         request_data["SUCCESS"] = False
         request_data["MESSAGE"] = "Unknown failure!"
         return jsonify(request_data)
@@ -221,8 +219,8 @@ def TUTOR_STATUS_become():
 def get_hobbies():
 
     request_data = request.get_json()
-    request_user_id = request_data["USER_ID"]
-    sql_context = queries.select_table("USER_HOBBIES", schemas.table_schemas["USER_HOBBIES"].keys(), f"USER_ID = '{request_user_id}'")
+    user_id = request_data["USER_ID"]
+    sql_context = queries.select_table("USER_HOBBIES", schemas.table_schemas["USER_HOBBIES"].keys(), f"USER_ID = '{user_id}'")
     query_return = postgres.execute_query(sql_context, fetch=True)
 
     hobby_id_lst = []
@@ -290,12 +288,10 @@ def edit_hobby():
     query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
     print(query_return)
     if "QUERY SUCCESS" in query_return:
-        request_data["HOBBY_ID"] = hobby_id
         request_data["SUCCESS"] = True
         request_data["MESSAGE"] = "Succesfully edit a hobby!"
         return jsonify(request_data)
     else:
-        request_data["HOBBY_ID"] = hobby_id
         request_data["SUCCESS"] = False
         request_data["MESSAGE"] = "Unknown failure!"
         return jsonify(request_data)
@@ -317,17 +313,14 @@ def hobby_tutor():
 
     if "QUERY SUCCESS" in query_return:
         request_data["SUCCESS"] = True
-        request_data["INSERT"] = "SUCCESS"
         request_data["MESSAGE"] = "Succesfully added the tutored hobby!"
         return jsonify(request_data)
     elif "INSERT ERROR" in query_return:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "INSERT ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     else:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "UNKOWN ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     
@@ -351,7 +344,11 @@ def get_tutored_hobby():
             query_return_lst.append(_temp_dict)
 
         request_data["DATA"] = query_return_lst[0]
+        request_data["SUCCESS"] = True
+        request_data["SELECT"] = len(query_return_lst[0])
     else:
+        request_data["SUCCESS"] = True
+        request_data["SELECT"] = "EMPTY"
         request_data["DATA"] = {}
 
     return jsonify(request_data)
@@ -363,21 +360,18 @@ def add_tutored_hobby():
     request_data = request.get_json()
 
     sql_query, sql_values = queries.insert_into_table("USER_HOBBIES_TUTORING", request_data)
-    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
+    query_return = postgres.execute_query(sql_query, sql_values)
 
     if "QUERY SUCCESS" in query_return:
         request_data["SUCCESS"] = True
-        request_data["INSERT"] = "SUCCESS"
         request_data["MESSAGE"] = "Succesfully added the tutored hobby!"
         return jsonify(request_data)
     elif "INSERT ERROR" in query_return:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "INSERT ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     else:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "UNKOWN ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
 
@@ -388,15 +382,13 @@ def edit_tutored_hobby():
     hobby_id = request_data["HOBBY_ID"]
 
     sql_query, sql_values = queries.modify_record("USER_HOBBIES_TUTORING", request_data, f"HOBBY_ID = '{hobby_id}'")
-    query_return = postgres.execute_query(sql_query, sql_values, fetch=False)
+    query_return = postgres.execute_query(sql_query, sql_values)
     print(query_return)
     if "QUERY SUCCESS" in query_return:
-        request_data["HOBBY_ID"] = hobby_id
         request_data["SUCCESS"] = True
         request_data["MESSAGE"] = "Succesfully edited a hobby!"
         return jsonify(request_data)
     else:
-        request_data["HOBBY_ID"] = hobby_id
         request_data["SUCCESS"] = False
         request_data["MESSAGE"] = "Unknown failure!"
         return jsonify(request_data)
@@ -409,16 +401,14 @@ def delete_hobby():
     hobby_id = request_data["HOBBY_ID"]
 
     sql_query, sql_values = queries.delete_record("USER_HOBBIES", f"HOBBY_ID = '{hobby_id}'")
-    query_return = postgres.execute_query(sql_query, fetch=False)
+    query_return = postgres.execute_query(sql_query)
 
     if "QUERY SUCCESS" in query_return:
         request_data["SUCCESS"] = True
-        request_data["INSERT"] = "SUCCESS"
         request_data["MESSAGE"] = "Succesfully deleted the hobby!"
         return jsonify(request_data)
     else:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "UNKOWN ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
     
@@ -430,88 +420,89 @@ def delete_tutored_hobby():
     hobby_id = request_data["HOBBY_ID"]
 
     sql_query, sql_values = queries.delete_record("USER_HOBBIES_TUTORING", f"HOBBY_ID = '{hobby_id}'")
-    query_return = postgres.execute_query(sql_query, fetch=False)
+    query_return = postgres.execute_query(sql_query)
 
     if "QUERY SUCCESS" in query_return:
         request_data["SUCCESS"] = True
-        request_data["INSERT"] = "SUCCESS"
         request_data["MESSAGE"] = "Succesfully deleted the hobby!"
         return jsonify(request_data)
     else:
         request_data["SUCCESS"] = False
-        request_data["INSERT"] = "UNKOWN ERROR"
         request_data["MESSAGE"] = query_return
         return jsonify(request_data)
 
-@app.route("/user_hobbies/get_tutored_hobbies", methods=['POST'])
+@app.route("/catalog/hobbies/get", methods=['GET'])
 #Returns all information on a single hobby
-def get_tutored_hobbies():
+def catalog_hobbies_get():
+    print("/catalog/hobbies/get")
+    try: 
+        where_clause_string = ""
+        for key in ['type', 'experience_years', 'proficiency', 'hourly_rate', 'mode_live_call', 'mode_public_in_person', 'mode_private_in_person']:
+            value = request.args.get(key)
+            if value is not None:
+                if where_clause_string:  # Add a comma separator if the string already has content
+                    where_clause_string += " AND "
+                key = key.upper()
+                if key in list(schemas.table_schemas["USER_HOBBIES_TUTORING"].keys()):
+                    if "text" in schemas.table_schemas["USER_HOBBIES_TUTORING"][key]:
+                        where_clause_string += f"{key}='{value}'"
+                    else:
+                        where_clause_string += f'{key}={value}'
+                if key in list(schemas.table_schemas["USER_HOBBIES"].keys()):
+                    if "text" in schemas.table_schemas["USER_HOBBIES"][key]:
+                        where_clause_string += f"{key} = '{value}'"
+                    else:
+                        where_clause_string += f"{key} = {value}"
 
-    request_data = request.get_json()
+        if where_clause_string:
+            where_clause_string = "TUTORING = true AND " + where_clause_string
+        else:
+            where_clause_string = "TUTORING = true"
 
-    print(request_data)
+        USER_HOBBIES_TUTORING_lst = list(schemas.table_schemas["USER_HOBBIES_TUTORING"].keys())
+        USER_HOBBIES_lst = list(schemas.table_schemas["USER_HOBBIES"].keys())
 
-    USER_HOBBIES_TUTORING_lst = list(schemas.table_schemas["USER_HOBBIES_TUTORING"].keys())
-    USER_HOBBIES_lst = list(schemas.table_schemas["USER_HOBBIES"].keys())
+        USER_HOBBIES_TUTORING_lst.extend(USER_HOBBIES_lst)
 
-    USER_HOBBIES_TUTORING_lst.extend(USER_HOBBIES_lst)
+        for _index, _column in enumerate(USER_HOBBIES_TUTORING_lst):
+            if _column in USER_HOBBIES_lst:
+                USER_HOBBIES_TUTORING_lst[_index] = f"a.{_column}"
 
-    for _index, _column in enumerate(USER_HOBBIES_TUTORING_lst):
-        if _column in USER_HOBBIES_lst:
-            USER_HOBBIES_TUTORING_lst[_index] = f"a.{_column}"
+        USER_HOBBIES_COMBINED_SET = set(USER_HOBBIES_TUTORING_lst)
 
-    print("-USER_HOBBIES_COMBINED-")
-    print(USER_HOBBIES_TUTORING_lst)
+        request_columns = list(USER_HOBBIES_COMBINED_SET)
 
-    USER_HOBBIES_COMBINED_SET = set(USER_HOBBIES_TUTORING_lst)
-
-    request_columns = list(USER_HOBBIES_COMBINED_SET)
-
-    sql_context = queries.select_join_table("USER_HOBBIES", "USER_HOBBIES_TUTORING", request_columns, "HOBBY_ID", "HOBBY_TUTORING = true")
-    query_return = postgres.execute_query(sql_context, fetch=True)
-
-    request_columns = [_column.replace("a.", "") for _column in request_columns]
-
-    
-    if query_return:
-        query_return_lst = []
-        for _record in query_return:
-            _temp_dict = {}
-            for _index, _column in enumerate(request_columns):
-                _temp_dict[_column] = _record[_index]
-            query_return_lst.append(_temp_dict)
+        sql_query = queries.select_join_table("USER_HOBBIES", "USER_HOBBIES_TUTORING", request_columns, "HOBBY_ID", where_clause_string)
         
-        print("/user_hobbies/get_tutored_hobbies")
-        print(query_return_lst)
-        request_data["DATA"] = query_return_lst
-    else:
-        request_data["DATA"] = []
+        query_return = postgres.execute_query(sql_query, fetch=True)
+        
 
-    return jsonify(request_data)
+        request_columns = [_column.replace("a.", "") for _column in request_columns]
 
+        return_data = {}
+        if query_return:
+            query_return_lst = []
+            for _record in query_return:
+                _temp_dict = {}
+                for _index, _column in enumerate(request_columns):
+                    _temp_dict[_column] = _record[_index]
+                query_return_lst.append(_temp_dict)
+            
+            return_data["SUCCESS"] = True
+            return_data["MESSAGE"] = "Pulled: " + str(len(query_return_lst)) + " number of records."
+            return_data["DATA"] = query_return_lst
+        else:
+            return_data["SUCCESS"] = True
+            return_data["MESSAGE"] = "Query returned no results."
+            return_data["DATA"] = []
+        return jsonify(return_data)
 
-@app.route("/user_sessions/get_sessions", methods=['POST'])
-def get_sessions():
-
-    request_data = request.get_json()
-    request_user_id = request_data["USER_ID"]
-    sql_context = queries.select_table("TUTORING_SESSION", schemas.table_schemas["TUTORING_SESSION"].keys(), f"TUTOR_STATUS_ID = '{request_user_id}'")
-    query_return = postgres.execute_query(sql_context, fetch=True)
-
-    print(query_return)
-    
-    if len(query_return) > 0:
-        query_return_lst = []
-        for _record in query_return:
-            _temp_dict = {}
-            for _index, _column in enumerate(schemas.table_schemas["USER_HOBBIES"].keys()):
-                _temp_dict[_column] = _record[_index]
-            query_return_lst.append(_temp_dict)
-    else:
-        query_return_lst = query_return
-
-    request_data["DATA"] = query_return_lst
-    return jsonify(request_data)
+    #TODO fix this error handling
+    except FileNotFoundError as e:
+        return_data["SUCCESS"] = False
+        return_data["MESSAGE"] = str(e)
+        return_data["DATA"] = []
+        return jsonify(return_data)
 
 #########################
 ##### SERVER BEGIN! #####

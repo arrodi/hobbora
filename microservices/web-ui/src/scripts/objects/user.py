@@ -28,7 +28,7 @@ class User:
         self.first_name = api_return.get("DATA").get("FIRST_NAME")
         self.last_name = api_return.get("DATA").get("LAST_NAME")
         self.about = api_return.get("DATA").get("ABOUT")
-        self.tutor_status = api_return.get("DATA").get("TUTOR_STATUS")
+        self.tutoring = api_return.get("DATA").get("TUTORING")
         self.crt_dt = api_return.get("DATA").get("CRT_DT")
         self.upd_dt = api_return.get("DATA").get("UPD_DT")
 
@@ -50,7 +50,7 @@ class User:
         api_return = db_api.post(f"user/tutor/become", {"USER_ID": self.id})
         
         if api_return["SUCCESS"]:
-            self.tutor_status = True
+            self.tutoring = True
 
         return api_return
 
@@ -62,7 +62,7 @@ class User:
             "USERNAME": self.username,
             "FIRST_NAME": self.first_name,
             "LAST_NAME": self.last_name,
-            "TUTOR_STATUS": self.tutor_status,
+            "TUTORING": self.tutoring,
             "ABOUT": self.about,
             "CRT_DT": self.crt_dt,
             "UPD_DT": self.upd_dt,

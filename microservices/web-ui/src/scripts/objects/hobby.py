@@ -138,9 +138,9 @@ class Hobby:
             else:
                 logger.info(f"Default picture not found")
 
-        
-        if len(picture_dict['GRID_PICTURES']) < 10:
-            logger.info(f"GRID_PICTURES list is below 10 at {str(len(picture_dict["GRID_PICTURES"]))}. Adding default pictures")
+        grid_pic_len = len(picture_dict['GRID_PICTURES'])
+        if grid_pic_len < 10:
+            logger.info(f"GRID_PICTURES list is below 10 at {grid_pic_len}. Adding default pictures")
             if default_encoded_picture:
                 picture_dict['GRID_PICTURES'].extend([{"id": f"default{i}", "bytes": default_encoded_picture} for i in range(1, 11-len(picture_dict['GRID_PICTURES']))])
 
@@ -271,3 +271,9 @@ class Hobby:
             pass
 
         return api_return
+    @staticmethod
+    def get(filter_dict=None):
+        
+        api_return = db_api.get(f"/catalog/hobbies/get", filter_dict)
+
+        return api_return["DATA"]

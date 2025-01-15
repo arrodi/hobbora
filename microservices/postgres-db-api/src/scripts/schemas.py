@@ -11,7 +11,7 @@ class Schemas:
                 "LAST_NAME": "text",
                 "ABOUT": "text",
                 "PASSWORD": "text",
-                "TUTOR_STATUS": "boolean",
+                "TUTORING": "boolean",
                 "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
             },
@@ -40,6 +40,7 @@ class Schemas:
             "USER_HOBBIES_TUTORING" : {
                 "HOBBY_ID": "text REFERENCES USER_HOBBIES (HOBBY_ID)",
                 "HOURLY_RATE": "integer",
+                "LOCATION": "text",
                 "MODE_LIVE_CALL": "boolean",
                 "MODE_PUBLIC_IN_PERSON": "boolean",
                 "MODE_PRIVATE_IN_PERSON": "boolean",

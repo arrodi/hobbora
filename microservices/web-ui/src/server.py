@@ -173,7 +173,7 @@ def become_tutor():
         logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
 
-    if session.get('user').get("TUTOR_STATUS"):
+    if session.get('user').get("TUTORING"):
         return redirect(url_for('account'))
 
     if request.method == 'GET':
@@ -288,11 +288,12 @@ def edit_hobby(hobby_id):
         logger.info(f" ------- POST: ACCOUNT/HOBBIES/HOBBY/EDIT/{hobby_id} ------- ")
         dict_payload = dict(request.form)
 
-        if not (dict_payload.get("MODE_LIVE_CALL", False) or dict_payload.get("MODE_PUBLIC_IN_PERSON", False) or dict_payload.get("MODE_PRIVATE_IN_PERSON", False)):
-            ## TODO: add notification message component
-            return redirect(url_for('edit_hobby', hobby_id=hobby_id))
-
         current_hobby = Hobby(hobby_id)
+
+        if current_hobby.tutoring:
+            if not (dict_payload.get("MODE_LIVE_CALL", False) or dict_payload.get("MODE_PUBLIC_IN_PERSON", False) or dict_payload.get("MODE_PRIVATE_IN_PERSON", False)):
+                ## TODO: add notification message component
+                return redirect(url_for('edit_hobby', hobby_id=hobby_id))
         
         update_successs = current_hobby.edit_attributes(dict_payload)
 
@@ -357,7 +358,7 @@ def tutor_hobby(hobby_id):
         logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('signin_page'))
 
-    if session.get('user').get("TUTOR_STATUS"):
+    if current_user.tutoring:
         current_hobby = Hobby(hobby_id)
         
         if request.method == 'GET':
@@ -418,24 +419,29 @@ def delete_hobby(hobby_id):
 
 @app.route("/catalog", methods=['GET'])
 def catalog_page():
-    hobby_data = db_api.post(f"/user_hobbies/get_tutored_hobbies", dict(session))
-    hobby_data = hobby_data["DATA"]
+    logger.info(" ------- CATALOG ------- ")
+    
+    if not session.get('user'):
+        logger.warning("User session not found. Redirecting to sign-in page.")
+        return redirect(url_for('signin_page'))
+    
+    try:
+        hobby_data = []
+        for _hobby in Hobby.get():
+            current_hobby = Hobby(_hobby["HOBBY_ID"])
+            hobby_dict = current_hobby.get_json()
+            try:
+                hobby_dict.update(current_hobby.get_pictures())
+                hobby_data.append(hobby_dict)
+            except Exception as e:
+                logger.exception(f"Error occurred while fetching pictures for hobby {current_hobby.id}: {str(e)}")
+        
+        logger.info("Successfully fetched hobbies data with pictures.")
 
-
-    for _hobby in hobby_data:
-        user_id = {}
-        user_id['USER_ID'] = _hobby['USER_ID']
-        api_return = db_api.post_get_content(f"get_picture/profile_picture", user_id)
-        user_data = db_api.post(f"/user_accounts/get_user/user_id", user_id)
-        if api_return:
-            _hobby['USER_PICTURE'] = base64.b64encode(api_return).decode('utf-8')
-        if user_data:
-            _hobby['USER'] = user_data
-
-    if session.get('user'):
-
-        return render_with_kwargs("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
-    return render_with_kwargs("pages/catalog/catalog.html", user = session.get('user'), hobbies = hobby_data)
+        return render_with_kwargs("pages/catalog/catalog.html", hobbies=hobby_data)
+    except Exception as e:
+        logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
+        return redirect(url_for('account_profile'))
 
 @app.route("/catalog/hobby/<hobby_id>", methods=['GET'])
 def catalog_hobby(hobby_id):
@@ -470,6 +476,7 @@ def catalog_hobby(hobby_id):
 
 @app.route('/logout')
 def logout():
+    current_user.__del__()
     session.clear()
     return redirect(url_for('home_page'))
 

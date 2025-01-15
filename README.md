@@ -1,7 +1,7 @@
-# Lurnen
+# Hobbora
 
 ## Product Description
-Lurnen is a hobby project designed to create a platform where university students can either provide or consume tutoring services. The platform focuses on offering students additional, subject-specific tutoring from their peers, as well as allowing them to offer tutoring services to their classmates.
+Hobbora is a hobby project designed to create a platform where university students can either provide or consume tutoring services. The platform focuses on offering students additional, subject-specific tutoring from their peers, as well as allowing them to offer tutoring services to their classmates.
 
 ### Account Features
 - **Educational Institution:** The user’s current place of study.
@@ -12,7 +12,7 @@ Lurnen is a hobby project designed to create a platform where university student
 - **In-Person Location Options:** Available options for in-person sessions (School Library/Study Hall).
 
 ## Project Description
-Lurnen primarily runs on a Kubernetes Cluster.
+Hobbora primarily runs on a Kubernetes Cluster.
 
 ### Project Components
 - **Front-End:** A Python Flask app that renders HTML templates.

@@ -26,7 +26,7 @@
         <p><strong>First Name:</strong> {{ user.FIRST_NAME if user.FIRST_NAME else 'N/A' }}</p>
         <p><strong>Last Name:</strong> {{ user.LAST_NAME if user.LAST_NAME else 'N/A' }}</p>
         <p><strong>Member Since:</strong> {{ user.CRT_DT if user.CRT_DT else 'N/A' }}</p>
-        <p><strong>Account Type:</strong> {% if user.TUTOR_STATUS %}Tutor{% else %}Student{% endif %}</p>
+        <p><strong>Account Type:</strong> {% if user.TUTORING %}Tutor{% else %}Student{% endif %}</p>
     </div>
 </div>
 

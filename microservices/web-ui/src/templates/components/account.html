@@ -2,7 +2,7 @@
 <!-- Header Section -->
 <div class="account-section">
     <div class="account-profile-section">
-        <div class="profile-picture-reg {% if user.TUTOR_STATUS %}profile-picture-tutor{% endif %}">
+        <div class="profile-picture-reg {% if user.TUTORING %}profile-picture-tutor{% endif %}">
             {% if default_image %}
             <img src="{{ url_for('static', filename=default_image) }}" alt="Profile Picture">
             {% endif %}
@@ -28,9 +28,9 @@
         </ul>
     </div>
     <div class="account-actions">
-        {% if not user.TUTOR_STATUS %}
+        {% if not user.TUTORING %}
         {{ buttons.redirect('/account/become-tutor', 'Become Tutor') }}
         {% endif %}
-        {{ buttons.red('/log-out', 'Log Out') }}
+        {{ buttons.red('/logout', 'Log Out') }}
     </div>
 </div>
