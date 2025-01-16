@@ -1,5 +1,4 @@
 from os import environ
-import os
 
 class Settings:
     def __init__(self):

@@ -9,6 +9,7 @@ deployment:
     memory: 250Mi
   repllicas: 1
   port: 5000
+
 s3:
   secret: minio-creds
   host: minio-service
@@ -17,3 +18,10 @@ s3:
 app:
   host: '0.0.0.0'
   port: 5000
+  s3:
+    bucket:
+      picture: hobbora-pictures
+    default:
+      path:
+        profile: static/images/default_pfp.jpg
+        hobby: static/images/default_hobby.webp
