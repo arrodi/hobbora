@@ -35,7 +35,7 @@ spec:
               key: S3_PASS
               optional: false
         - name: S3_HOST
-          value: "{{ .Values.app.s3.bucket.host}}:{{ .Values.app.s3.bucket.port}}"
+          value: {{ .Values.s3.host  | quote }}:{{ .Values.s3.port  | quote }}
         - name: PICTURE_BUCKET
           value: {{ .Values.app.s3.bucket.picture  | quote }}
         - name: DEFAULT_PROFILE_PIC_PATH
