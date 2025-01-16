@@ -1,0 +1,77 @@
+name: app-deploy-picture_api
+
+on:
+  push:
+    paths:
+      - 'microservices/picture-api/**'
+      - '.github/workflows/apps/picture_db_api-pipeline.yml'
+
+env:
+  DOCKER_URL: artemek47/picture-api
+  DOCKER_TAG: latest
+  DIR_PATH: microservices/picture-api/
+  DEPLOYMENT_NAME: picture-api
+  DEPLOYMENT_VALUES_PATH: charts/values.yaml
+  DEPLOYMENT_NAMESPACE: minio
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+          
+      - name: Docker Login
+        uses: docker/login-action@v3.2.0
+        with:
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.DOCKER_URL }}
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ${{ github.workspace }}/${{ env.DIR_PATH }}/src/
+          file: ${{ github.workspace }}/${{ env.DIR_PATH }}/src/Dockerfile
+          push: true
+          tags: ${{ env.DOCKER_URL }}:${{ github.run_id }},${{ env.DOCKER_URL }}:${{ env.DOCKER_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
+    
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Kubeconfig
+        env:
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG}" > ~/.kube/config
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+  
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Uninstall Previous Deployment
+        continue-on-error: true
+        run: helm uninstall --namespace ${{ env.DEPLOYMENT_NAMESPACE }} ${{ env.DEPLOYMENT_NAME }}
+
+      - name: Install Deployment
+        run: helm upgrade --namespace ${{ env.DEPLOYMENT_NAMESPACE }} --install --values ${{ env.DIR_PATH }}/${{ env.DEPLOYMENT_VALUES_PATH }} ${{ env.DEPLOYMENT_NAME }} ${{ env.DIR_PATH }}/charts
