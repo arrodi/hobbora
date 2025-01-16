@@ -28,6 +28,11 @@ jobs:
         with:
           version: 'latest'
       
+      - name: Delete Previous Namespace nginx
+        continue-on-error: true
+        run: |
+          kubectl delete namespace nginx
+      
       - name: Create Namespace nginx
         run: kubectl apply -f ${{ github.workspace }}/kubernetes/nginx/namespace_nginx.yaml
 
