@@ -1,5 +1,7 @@
 from os import environ
 
+print("test")
+
 class Settings:
     def __init__(self):
         self.s3_host=environ["S3_ENDPOINT"]
