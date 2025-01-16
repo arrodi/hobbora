@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'microservices/picture-api/**'
-      - '.github/workflows/apps/picture_db_api-pipeline.yml'
 
 env:
   DOCKER_URL: artemek47/picture-api
