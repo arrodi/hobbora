@@ -1,5 +1,4 @@
 from os import environ
-import os
 
 class Settings:
     def __init__(self):
@@ -11,4 +10,5 @@ class Settings:
         self.app_port=environ["APP_PORT"]
 
         self.picture_bucket=environ["PICTURE_BUCKET"]
-        self.default_pic_path=environ["DEFAULT_PIC_PATH"]
+        self.default_profile_pic_path=environ["DEFAULT_PROFILE_PIC_PATH"]
+        self.default_hobby_pic_path=environ["DEFAULT_HOBBY_PIC_PATH"]

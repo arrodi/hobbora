@@ -12,14 +12,22 @@ class API:
         self.url = url
         logger.info(f"API initialized with base URL: {self.url}")
 
-    def get(self, api_endpoint):
-        full_url = f'{self.url}/{api_endpoint}'
+    def get(self, api_endpoint, params=None):
+        
+        if params:
+            params_str = "?"
+            for key, value in params.items():
+                params_str += f"{key}={value}&"
+            full_url = f'{self.url}/{api_endpoint}{params_str}'
+        else:        
+            full_url = f'{self.url}/{api_endpoint}'
+
         logger.info(f"get: GET request to: {full_url}")
         try:
             response = requests.get(full_url)
             logger.info(f"get: GET response status: {response.status_code}, of type {type(response.content)}")
             response.raise_for_status()
-            return response
+            return response.json()
         except requests.RequestException as e:
             logger.error(f"get: Error during GET request to {full_url}: {e}")
             raise

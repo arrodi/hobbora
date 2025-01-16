@@ -11,6 +11,7 @@
     <h2 class="hobby-title">Delete Hobby: {{ hobby.HOBBY_NAME }}</h2> <!-- Updated Position -->
     <form action="" method="POST">
         {{ buttons.submit('Confirm deletion!') }}
+        {{ buttons.red('/account/hobbies/hobby/' ~ hobby.HOBBY_ID, 'Cancel') }}
     </form>
 </div>
 

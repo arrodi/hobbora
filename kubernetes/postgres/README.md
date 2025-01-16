@@ -1,4 +1,24 @@
-## Example of entering the pod and logining into Postgres
+## Docker commands to run the container locally:
+
+1. Pull the desired Docker images
+
+docker pull postgres:latest
+docker pull dpage/pgadmin4:latest
+
+2. Create a docker volume for minio to persist data
+
+docker volume create postgres-data
+
+3. Run the image as a container
+
+docker run -p 5432:5432 --name postgres \
+  -v postgres-data:/var/lib/postgresql/data \
+  -e POSTGRES_USER=postgresadmin \
+  -e POSTGRES_PASSWORD=super_secure_password_987 \
+  -e POSTGRES_DB=hobbora-db \
+  -d postgres:16.4
+
+## Example of entering the pod and loggining into Postgres
 
 ```
 # ENTER THE POSTGRES POD

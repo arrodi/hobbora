@@ -113,14 +113,14 @@ def tutoring_mode_function(function_nm):
             CREATE OR REPLACE FUNCTION {function_nm}()
             RETURNS TRIGGER AS $$
             BEGIN
-                IF NEW.TUTORING_MODE_LIVE_CALL IS NULL THEN
-                    NEW.TUTORING_MODE_LIVE_CALL := false;
+                IF NEW.MODE_LIVE_CALL IS NULL THEN
+                    NEW.MODE_LIVE_CALL := false;
                 END IF;
-                IF NEW.TUTORING_MODE_PUBLIC_IN_PERSON IS NULL THEN
-                    NEW.TUTORING_MODE_PUBLIC_IN_PERSON := false;
+                IF NEW.MODE_PUBLIC_IN_PERSON IS NULL THEN
+                    NEW.MODE_PUBLIC_IN_PERSON := false;
                 END IF;
-                IF NEW.TUTORING_MODE_PRIVATE_IN_PERSON IS NULL THEN
-                    NEW.TUTORING_MODE_PRIVATE_IN_PERSON := false;
+                IF NEW.MODE_PRIVATE_IN_PERSON IS NULL THEN
+                    NEW.MODE_PRIVATE_IN_PERSON := false;
                 END IF;
                 RETURN NEW;
             END;

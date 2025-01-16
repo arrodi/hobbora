@@ -8,23 +8,23 @@
 
 <!-- Hobbies Section -->
 <div class="hobbies-section">
-    <h2 class="hobby-title">Edit Hobby: {{ hobby.HOBBY_NAME }}</h2> <!-- Updated Position -->
+    <h2 class="hobby-title">Edit Hobby: {{ hobby.NAME }}</h2> <!-- Updated Position -->
 
     <!-- Hobby Input Form -->
     <div class="edit-hobby">
         <form action="/account/hobbies/hobby/edit/{{ hobby.HOBBY_ID }}" method="post" class="edit-hobby-form">
             <div class="input-group">
                 <label for="hobby-name">Hobby Name</label>
-                <input type="text" id="hobby-name" name="HOBBY_NAME" value="{{ hobby.HOBBY_NAME }}" required>
+                <input type="text" id="hobby-name" name="NAME" value="{{ hobby.NAME }}" required>
             </div>
             <div class="input-group">
                 <label for="hobby-description">Hobby Description</label>
-                <textarea id="hobby-description" name="HOBBY_DESCRIPTION" rows="4"
-                    required>{{ hobby.HOBBY_DESCRIPTION }}</textarea>
+                <textarea id="hobby-description" name="DESCRIPTION" rows="4"
+                    required>{{ hobby.DESCRIPTION }}</textarea>
             </div>
             <div class="input-group">
                 <label for="hobby-proficiency">Hobby Proficiency</label>
-                <select id="hobby-proficiency" name="HOBBY_PROFICIENCY" required>
+                <select id="hobby-proficiency" name="PROFICIENCY" required>
                     <option value="Beginner" {% if hobby.proficiency=='Beginner' %}selected{% endif %}>Beginner
                     </option>
                     <option value="Intermediate" {% if hobby.proficiency=='Intermediate' %}selected{% endif %}>
@@ -43,41 +43,44 @@
                 <input type="number" id="experience-months" name="EXPERIENCE_MONTHS"
                     value="{{ hobby.EXPERIENCE_MONTHS }}" min="0" max="11" required>
             </div>
-            {% if hobby.HOBBY_TUTORING %}
+            {% if hobby.TUTORING %}
             <div class="input-group">
                 <label for="tutor-rate">Hourly Rate</label>
-                <input type="number" id="tutor-rate" name="TUTORING_HOURLY_RATE" required>
+                <input type="number" id="tutor-rate" name="HOURLY_RATE" 
+                    value="{{ hobby.HOURLY_RATE }}" required>
             </div>
 
             <div class="input-group">
-                <h4>Select Tutoring Mode (choose one)</h4>
-                <div>
-                    <label>
-                        <input type="radio" name="TUTORING_MODE_LIVE_CALL" value=true>
-                        Tutoring Mode: Live Call
-                    </label>
+                <label for="tutoring-mode">Tutoring Mode</label>
+                <div id="tutoring-mode">
+                    <!-- Live Call -->
+                    Live Call
+                    <input 
+                        type="checkbox" 
+                        name="MODE_LIVE_CALL" 
+                        value="true" 
+                        {% if hobby.MODE_LIVE_CALL %} checked {% endif %}>
+                    
+                    <!-- Public In Person -->
+                    Public In Person
+                    <input 
+                        type="checkbox" 
+                        name="MODE_PUBLIC_IN_PERSON" 
+                        value="true" 
+                        {% if hobby.MODE_PUBLIC_IN_PERSON %} checked {% endif %}>
+                    
+                    <!-- Private In Person -->
+                    Private In Person
+                    <input 
+                        type="checkbox" 
+                        name="MODE_PRIVATE_IN_PERSON" 
+                        value="true" 
+                        {% if hobby.MODE_PRIVATE_IN_PERSON %} checked {% endif %}>
                 </div>
-                <div>
-                    <label>
-                        <input type="radio" name="TUTORING_MODE_PUBLIC_IN_PERSON" value=true>
-                        Tutoring Mode: Public In-Person
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="radio" name="TUTORING_MODE_PRIVATE_IN_PERSON" value=true>
-                        Tutoring Mode: Private In-Person
-                    </label>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="tutor-description">Additional Information</label>
-                <textarea id="tutor-description" name="TUTORING_DESCRIPTION" rows="6"
-                    placeholder="Enter additional details here..." required></textarea>
             </div>
             {% endif %}
             {{ buttons.submit('Save Changes') }}
+            {{ buttons.red('/account/hobbies/hobby/' ~ hobby.HOBBY_ID, 'Cancel') }}
         </form>
     </div>
 </div>
