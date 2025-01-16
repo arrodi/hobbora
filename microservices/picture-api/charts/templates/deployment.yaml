@@ -28,18 +28,14 @@ spec:
               name: {{ .Values.s3.secret }}
               key: S3_USER
               optional: false
-        - name: S3_ENDPOINT
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.s3.secret }}
-              key: S3_ENDPOINT
-              optional: false
         - name: S3_PASS
           valueFrom:
             secretKeyRef:
               name: {{ .Values.s3.secret }}
               key: S3_PASS
               optional: false
+        - name: S3_HOST
+          value: {{ .Values.app.s3.bucket.host  | quote }}:{{ .Values.app.s3.bucket.port  | quote }}
         - name: PICTURE_BUCKET
           value: {{ .Values.app.s3.bucket.picture  | quote }}
         - name: DEFAULT_PROFILE_PIC_PATH
