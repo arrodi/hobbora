@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 
 class S3:
     def __init__(self, access_key, secret_key, endpoint):
+        logger.info("Initializing S3 client...")
+        logger.info(f"Access Key: {access_key} Endpoint: {endpoint}")
         try:
             self.client = boto3.client(
                 's3',

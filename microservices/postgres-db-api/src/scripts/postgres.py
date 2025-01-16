@@ -8,6 +8,8 @@ logger = logging.getLogger(__name__)
 
 class Postgres:
     def __init__(self, database, user, password, host, port):
+        logger.info('Connecting to PostgreSQL database')
+        logger.info(f'Database: {database} User: {user} Host: {host} Port: {port}')
         self.connection = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
 
     def execute_query(self, sql_query, sql_values='', fetch=False):
