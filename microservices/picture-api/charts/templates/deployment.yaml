@@ -26,13 +26,13 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.s3.secret }}
-              key: S3_USER
+              key: {{ .Values.s3.secret.key.user }}
               optional: false
         - name: S3_PASS
           valueFrom:
             secretKeyRef:
               name: {{ .Values.s3.secret }}
-              key: S3_PASS
+              key: {{ .Values.s3.secret.key.pass }}
               optional: false
         - name: S3_HOST
           value: "{{ .Values.s3.host}}:{{ .Values.s3.port}}"

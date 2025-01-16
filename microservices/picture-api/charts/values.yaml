@@ -11,7 +11,11 @@ deployment:
   port: 5000
 
 s3:
-  secret: minio-creds
+  secret:
+    name: minio-creds
+    key:
+      user: MINIO_ROOT_USER
+      pass: MINIO_ROOT_PASSWORD
   host: http://minio-service.minio.svc.cluster.local
   port: 9000
 

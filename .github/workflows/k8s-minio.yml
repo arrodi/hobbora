@@ -70,7 +70,7 @@ jobs:
 
       - name: Create Secret - minio-creds
         run: |
-          kubectl -n minio create secret generic minio-creds --from-literal S3_USER="${{ vars.MINIO_ROOT_USER }}" --from-literal S3_PASS="${{ secrets.MINIO_ROOT_PASSWORD }}"
+          kubectl -n minio create secret generic minio-creds --from-literal MINIO_ROOT_USER="${{ vars.MINIO_ROOT_USER }}" --from-literal MINIO_ROOT_PASSWORD="${{ secrets.MINIO_ROOT_PASSWORD }}"
       
       - name: Populate STORAGE_CLASS_NAME_VAR in persistentvolumeclaim.yaml
         run: |
