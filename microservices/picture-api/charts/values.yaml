@@ -12,7 +12,7 @@ deployment:
 
 s3:
   secret: minio-creds
-  host: http://minio-service.default.svc.cluster.local
+  host: http://minio-service.minio.svc.cluster.local
   port: 9000
 
 app:
