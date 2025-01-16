@@ -5,8 +5,8 @@ on:
   
 
 env:
-  CHART_VERSION: 4.11.1
-  APP_VERSION: 1.11.1
+  CHART_VERSION: 4.12.0
+  APP_VERSION: 1.12.0
 
 jobs:
   deploy_nginx:
