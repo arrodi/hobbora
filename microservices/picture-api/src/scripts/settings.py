@@ -1,6 +1,6 @@
 from os import environ
 
-print("te3t")
+print("test4")
 
 class Settings:
     def __init__(self):
