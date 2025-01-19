@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/pages/authentication.css')}}">
+<link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='css/pages/auth/authentication.css')}}">
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
 <main class="authentication-section">
     <div class="input-box">
         <h2>Sign Up for {{ config.name }}</h2>
-        <form action="/sign-up" method="POST">
+        <form action="{{ url_for('auth.signup') }}" method="POST">
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="USERNAME" required>
@@ -30,7 +30,7 @@
                 </div>
             {% endif %}
         </form>
-        <p>Already have an account? <a class="standard-link" href="/sign-in">Sign In</a></p>
+        <p>Already have an account? <a class="standard-link" href="{{ url_for('auth.signin') }}">Sign In</a></p>
     </div>
 </main>
 {% endblock %}

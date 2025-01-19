@@ -5,17 +5,17 @@
     <nav class="top-nav">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/catalog">Tutoring Catalog</a></li>
-            <li><a href="/account">My Account</a></li>
+            <li><a href="{{ url_for('catalog.catalog') }}">Tutoring Catalog</a></li>
+            <li><a href="{{ url_for('account.profile') }}">My Account</a></li>
         </ul>
     </nav>
     <div class="profile-icon">
         {% if encoded_image %}
-        <a href="/account/profile">
+        <a href="{{ url_for('account.profile') }}">
             <img src="data:image/jpeg;base64,{{ encoded_image }}" alt="Image">
         </a>
         {% else %}
-            {{ buttons.redirect('/account/profile', 'Sign In') }}
+            {{ buttons.redirect(url_for('auth.signin'), 'Sign In') }}
         {% endif %}
     </div>
 </header>

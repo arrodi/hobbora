@@ -17,20 +17,20 @@
     </div>
     <div class="menu">
         <ul>
-            <li class="{% if request.path == '/account/profile' %}active{% endif %}"><a
-                    href="/account/profile">Profile</a></li>
-            <li class="{% if request.path == '/account/hobbies' %}active{% endif %}"><a
-                    href="/account/hobbies">Hobbies</a></li>
-            <li class="{% if request.path == '/account/sessions' %}active{% endif %}"><a
-                    href="/account/sessions">Sessions</a></li>
-            <li class="{% if request.path == '/account/payments' %}active{% endif %}"><a
-                    href="/account/payments">Payments</a></li>
+            <li class="{% if request.path == url_for('account.profile') %}active{% endif %}"><a
+                    href="{{ url_for('account.profile') }}">Profile</a></li>
+            <li class="{% if request.path == url_for('account.hobbies') %}active{% endif %}"><a
+                    href="{{ url_for('account.hobbies') }}">Hobbies</a></li>
+            <li class="{% if request.path == url_for('account.sessions') %}active{% endif %}"><a
+                    href="{{ url_for('account.sessions') }}">Sessions</a></li>
+            <li class="{% if request.path == url_for('account.payments') %}active{% endif %}"><a
+                    href="{{ url_for('account.payments') }}">Payments</a></li>
         </ul>
     </div>
     <div class="account-actions">
         {% if not user.TUTORING %}
-        {{ buttons.redirect('/account/become-tutor', 'Become Tutor') }}
+        {{ buttons.redirect(url_for('account.become_tutor'), 'Become Tutor') }}
         {% endif %}
-        {{ buttons.red('/logout', 'Log Out') }}
+        {{ buttons.red(url_for('auth.logout'), 'Log Out') }}
     </div>
 </div>

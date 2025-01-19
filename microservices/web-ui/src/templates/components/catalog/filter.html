@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/filter.css') }}">
+<!-- Header Section -->
+<div class="filter-section">
+    <div class="filter-header">
+        <h2>Filter</h2>
+    </div>
+    <div class="filter-list">
+        <div class="filter-item">
+            <h3>Category</h3>
+            <select id="category">
+                <option value="all">All</option>
+                <option value="sports">Sports</option>
+                <option value="music">Music</option>
+                <option value="art">Art</option>
+                <option value="cooking">Cooking</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <h3>Price</h3>
+            <select id="price">
+                <option value="all">All</option>
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <h3>Location</h3>
+            <select id="location">
+                <option value="all">All</option>
+                <option value="online">Online</option>
+                <option value="in-person">In-Person</option>
+            </select>
+        </div>
+    </div>
+</div>

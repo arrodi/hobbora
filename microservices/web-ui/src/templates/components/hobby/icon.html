@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/hobby/icon.css') }}">
+
+<a href="{{ url_for('hobby.view', hobby_id=hobby.HOBBY_ID) }}" class="hobby-tile">
+    <div class="hobby-tile-content">
+            <div class="hobby-picture-reg {% if hobby.TUTORING %}hobby-picture-tutor{% endif %}">
+                <img src="data:image/jpeg;base64,{{ hobby.FACE_PICTURE.bytes | default('') }}"
+                     alt="Image for {{ hobby.NAME }}" />
+            </div>
+            <div class="hobby-header">
+                <h3 class="hobby-name">{{ hobby.NAME }}</h3>
+                <div class="hourly-rate">
+                    ${{ hobby.HOURLY_RATE }}/hr
+                </div>
+            </div>
+            <div class="hobby-description">
+                <p>{{ hobby.DESCRIPTION }}</p>
+            </div>
+            <div class="hobby-attributes">
+                <p>{{ hobby.PROFICIENCY }}</p>
+                <p>{{ hobby.EXPERIENCE_YEARS }} y, {{ hobby.EXPERIENCE_MONTHS }} m</p>
+            </div>
+            <div class="tutoring-modes">
+                <span class="tutoring-mode {{ 'true' if hobby.MODE_LIVE_CALL else 'false' }}">
+                    <strong>Calls</strong>
+                </span>
+                <span class="separator">|</span>
+                <span class="tutoring-mode {{ 'true' if hobby.MODE_PRIVATE_IN_PERSON else 'false' }}">
+                    <strong>Private</strong>
+                </span>
+                <span class="separator">|</span>
+                <span class="tutoring-mode {{ 'true' if hobby.MODE_PUBLIC_IN_PERSON else 'false' }}">
+                    <strong>Public</strong>
+                </span>
+            </div>
+            
+    </div>
+</a>

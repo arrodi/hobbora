@@ -13,8 +13,8 @@
         <p>Find the perfect tutor or offer your tutoring services to others!</p>
         
         <div class="button-container"> <!-- New button container -->
-            {{ buttons.redirect('/catalog', 'Browse Tutors') }}
-            {{ buttons.redirect('/sign-up', 'Become a Tutor') }}
+            {{ buttons.redirect(url_for('catalog.catalog'), 'Browse Tutors') }}
+            {{ buttons.redirect(url_for('auth.signup'), 'Become a Tutor') }}
         </div>
     </section>
 </main>

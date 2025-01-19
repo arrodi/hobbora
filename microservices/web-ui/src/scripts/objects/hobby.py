@@ -93,7 +93,7 @@ class Hobby:
             print(api_return)
         else:
             return True, "The default picture cannot be deleted!"
-        if api_return.json()["SUCCESS"]:
+        if api_return["SUCCESS"]:
             return True, "Picture deleted successfully!"
         else:
             return False, "Failed to delete picture!"

@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/hobby/list.css') }}">
+<!-- Header Section -->
+<div class="hobbies-list">
+    {% if hobbies is none or hobbies|length == 0 %}
+    <div class="no-hobbies-message">
+        <p>No hobbies yet</p>
+    </div>
+    {% else %}
+    {% for hobby in hobbies %}
+    {% include 'components/hobby/icon.html' %}
+    {% endfor %}
+    {% endif %}
+</div>

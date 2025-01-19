@@ -9,7 +9,7 @@
 <main class="agreement-section">
     <div class="input-box">
         <h2>User Agreement for Hobbora</h2>
-        <form action="/account/become-tutor/user_agreement" method="POST">
+        <form action="{{ url_for('account.user_agreement') }}" method="POST">
             <p>Click agree if you want to be a tutor.</p>
             {{ buttons.submit('Agree') }}
             <!-- Error message -->

@@ -1,0 +1,41 @@
+/* Hobbies List Grid */
+.hobbies-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 2 columns of equal width */
+    gap: 20px; /* Space between tiles */
+    justify-content: center; /* Center-align the grid */
+    margin: 0 auto;
+    grid-auto-rows: 1fr; /* Ensure all rows have equal height */
+}
+
+/* No Hobbies Message */
+.no-hobbies-message {
+    padding: 20px;
+    text-align: center;
+    font-size: clamp(1rem, 1.5vw, 2rem); /* Responsive font size */
+    color: rgba(30, 30, 30, 0.65);
+    font-weight: bold;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    max-height: clamp(150px, 15vh, 250px); /* Scales dynamically */
+    box-sizing: border-box;
+}
+/* Media Queries for Responsive Grid */
+@media (max-width: 1700px) {
+    .hobbies-list {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+    }
+}
+
+@media (max-width: 1300px) {
+    .hobbies-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+    }
+}
+
+@media (max-width: 1000px) {
+    .hobbies-list {
+        grid-template-columns: 1fr; /* 1 column for very small screens */
+    }
+}
