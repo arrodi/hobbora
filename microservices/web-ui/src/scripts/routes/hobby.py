@@ -19,7 +19,7 @@ def add():
         g.logger.info(f"Adding a hobby with info: {dict_payload}")
 
         create_response = Hobby.create(dict_payload)
-        g.current_user.get_hobby_ids().hobby_bpend(create_response['HOBBY_ID'])
+        # g.current_user.get_hobby_ids().hobby_apend(create_response['HOBBY_ID'])
 
         if create_response["SUCCESS"]:
             return redirect(url_for('account.hobbies'))    

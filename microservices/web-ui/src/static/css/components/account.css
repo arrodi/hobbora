@@ -12,7 +12,6 @@ main {
     margin-left: 50px; /* Add space between account and profile */
     border-radius: 10px;
     position: relative;
-    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Align top, ensuring the top section stays at the top */

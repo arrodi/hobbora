@@ -4,32 +4,60 @@
     <div class="filter-header">
         <h2>Filter</h2>
     </div>
-    <div class="filter-list">
-        <div class="filter-item">
-            <h3>Category</h3>
-            <select id="category">
-                <option value="all">All</option>
-                <option value="sports">Sports</option>
-                <option value="music">Music</option>
-                <option value="art">Art</option>
-                <option value="cooking">Cooking</option>
-            </select>
-        </div>
-        <div class="filter-item">
-            <h3>Price</h3>
-            <select id="price">
-                <option value="all">All</option>
-                <option value="free">Free</option>
-                <option value="paid">Paid</option>
-            </select>
-        </div>
-        <div class="filter-item">
-            <h3>Location</h3>
-            <select id="location">
-                <option value="all">All</option>
-                <option value="online">Online</option>
-                <option value="in-person">In-Person</option>
-            </select>
-        </div>
+    <div class="filter-hobbies">
+        <form action="{{ url_for('catalog.catalog') }}" method="post" class="add-hobby-form">
+            <div class="input-group">
+                <label for="name">Hobby Name</label>
+                <input type="text" id="name" name="NAME" value="{{ input.NAME }}">
+            </div>
+            <div class="input-group">
+                <label for="name">Minimum Year Experience</label>
+                <input type="text" id="name" name="EXPERIENCE_YEARS" value="{{ input.EXPERIENCE_YEARS }}">
+            </div>
+            <div class="input-group">
+                <label for="hobby-proficiency">Hobby Proficiency</label>
+                <select id="hobby-proficiency" name="PROFICIENCY" required>
+                    <option value="Beginner" {% if input.PROFICIENCY=='Beginner' %}selected{% endif %}>Beginner
+                    </option>
+                    <option value="Intermediate" {% if input.PROFICIENCY=='Intermediate' %}selected{% endif %}>
+                        Intermediate</option>
+                    <option value="Expert" {% if input.PROFICIENCY=='Expert' %}selected{% endif %}>Expert
+                    </option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="name">Maximum Hourly Rate</label>
+                <input type="text" id="name" name="HOURLY_RATE" value="{{ input.HOURLY_RATE }}">
+            </div>
+            <div class="input-group">
+                <label for="tutoring-mode">Tutoring Mode</label>
+                <div id="tutoring-mode">
+                    <!-- Live Call -->
+                    Live Call
+                    <input 
+                        type="checkbox" 
+                        name="MODE_LIVE_CALL" 
+                        value="true" 
+                        {% if input.MODE_LIVE_CALL %} checked {% endif %}>
+                    
+                    <!-- Public In Person -->
+                    Public In Person
+                    <input 
+                        type="checkbox" 
+                        name="MODE_PUBLIC_IN_PERSON" 
+                        value="true" 
+                        {% if input.MODE_PUBLIC_IN_PERSON %} checked {% endif %}>
+                    
+                    <!-- Private In Person -->
+                    Private In Person
+                    <input 
+                        type="checkbox" 
+                        name="MODE_PRIVATE_IN_PERSON" 
+                        value="true" 
+                        {% if input.MODE_PRIVATE_IN_PERSON %} checked {% endif %}>
+                </div>
+            </div>
+            {{ buttons.submit('Search Hobbies') }}
+        </form>
     </div>
 </div>

@@ -6,10 +6,13 @@
 
 {% block content %}
 
+{% include 'components/catalog/filter.html' %}
+
 <div class="hobbies-section">
     <div class="hobbies-header">
-    {% include 'components/hobby/list.html' %}
+        <h2>Hobbies</h2>
     </div>
+    {% include 'components/hobby/list.html' %}
 </div>
 
 {% endblock %}

@@ -98,7 +98,6 @@ def hobbies():
         return redirect(url_for('auth.signin'))
     
     try:
-        print(g.current_user.get_hobby_ids)
         hobby_data = []
         for _hobby_id in g.current_user.get_hobby_ids():
             current_hobby = Hobby(_hobby_id)

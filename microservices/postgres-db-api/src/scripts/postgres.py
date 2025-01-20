@@ -17,7 +17,10 @@ class Postgres:
             with self.connection.cursor() as cursor:
                 logger.info('EXECUTING:' + sql_query)
                 
-                cursor.execute(sql_query, sql_values)
+                if sql_values:
+                    cursor.execute(sql_query, sql_values)
+                else:
+                    cursor.execute(sql_query)
                 
                 # Log PostgreSQL notices if any
                 if self.connection.notices:

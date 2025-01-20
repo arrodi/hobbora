@@ -17,3 +17,8 @@
     align-items: center;
     margin-bottom: 10px;
 }
+.hobbies-header h2 {
+    color: #4CAF50; /* Neon green */
+    margin: 0px;
+    font-size: 25px;
+}
