@@ -440,6 +440,14 @@ def catalog_hobbies_get():
         ##['name', 'type', 'experience_years', 'proficiency', 'hourly_rate', 'mode_live_call', 'mode_public_in_person', 'mode_private_in_person']:
         param_dict = request.args.to_dict()
         print(param_dict)
+        if param_dict.get("HIDE_MY_HOBBIES") == 'true':
+            user_id = param_dict["USER_ID"]
+            where_clause_string += f"a.USER_ID!='{user_id}'"
+        if param_dict.get("USER_ID"):  
+            del param_dict["USER_ID"]
+        if param_dict.get("HIDE_MY_HOBBIES"):
+            del param_dict["HIDE_MY_HOBBIES"]
+
         for key in param_dict:
             if key.upper() == 'NAME':
                 where_clause_string += f"a.NAME IS NOT NULL AND a.NAME LIKE '%{param_dict[key]}%'"
@@ -447,10 +455,16 @@ def catalog_hobbies_get():
                 if param_dict[key].upper() == "ANY":
                     continue
                 else:
+                    if where_clause_string:  # Add a comma separator if the string already has content
+                        where_clause_string += " AND "
                     where_clause_string += f"a.{key}='{param_dict[key]}'"
             elif key.upper() == 'EXPERIENCE_YEARS':
+                if where_clause_string:  # Add a comma separator if the string already has content
+                    where_clause_string += " AND "
                 where_clause_string += f"a.{key}>={param_dict[key]}"
             elif key.upper() == 'HOURLY_RATE':
+                if where_clause_string:  # Add a comma separator if the string already has content
+                    where_clause_string += " AND "
                 where_clause_string += f"b.{key}<={param_dict[key]}"
             else:
                 if where_clause_string:  # Add a comma separator if the string already has content

@@ -30,7 +30,7 @@ def add():
 
 @hobby_bp.route('view/<hobby_id>', methods=['GET', 'POST'])
 def view(hobby_id):
-    g.logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/{hobby_id} ------- ")
+    g.logger.info(f" ------- ACCOUNT/HOBBIES/HOBBY/VIEW/{hobby_id} ------- ")
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('auth.signin'))

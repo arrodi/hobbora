@@ -17,6 +17,7 @@ def catalog():
     if request.method == 'POST':
         g.logger.info(" POST: ------- CATALOG ------- ")
         dict_payload = dict(request.form)
+        dict_payload["USER_ID"] = g.current_user.id
         print(dict_payload)
 
     try:
@@ -36,3 +37,14 @@ def catalog():
     except Exception as e:
         g.logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
         return redirect(url_for('account.profile'))
+
+@catalog_bp.route("hobby/view/<hobby_id>'", methods=['GET'])
+def hobby_view(hobby_id):
+    g.logger.info(f" ------- CATALOG/HOBBY/VIEW/{hobby_id} ------- ")
+
+    if request.method == 'GET':
+        current_hobby = Hobby(hobby_id)
+        hobby_data = current_hobby.get_json()
+        hobby_data.update(current_hobby.get_pictures())
+
+    return dr.dynamic_render('pages/catalog/hobby/view.html', hobby=hobby_data, user=g.current_user.get_json())

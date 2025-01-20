@@ -2,10 +2,11 @@
 <!-- Header Section -->
 <div class="filter-section">
     <div class="filter-header">
-        <h2>Filter</h2>
+        <h2>Filters</h2>
     </div>
     <div class="filter-hobbies">
-        <form action="{{ url_for('catalog.catalog') }}" method="post" class="add-hobby-form">
+        <form action="{{ url_for('catalog.catalog') }}" method="post" class="filter-form">
+            {{ switches.toggle('HideMyHobbies', 'Hide My Hobbies', 'HIDE_MY_HOBBIES', input.HIDE_MY_HOBBIES) }}
             <div class="input-group">
                 <label for="name">Hobby Name</label>
                 <input type="text" id="name" name="NAME" value="{{ input.NAME }}">
@@ -17,6 +18,8 @@
             <div class="input-group">
                 <label for="hobby-proficiency">Hobby Proficiency</label>
                 <select id="hobby-proficiency" name="PROFICIENCY" required>
+                    <option value="Any" {% if input.PROFICIENCY=='Any' %}selected{% endif %}>Any
+                    </option>
                     <option value="Beginner" {% if input.PROFICIENCY=='Beginner' %}selected{% endif %}>Beginner
                     </option>
                     <option value="Intermediate" {% if input.PROFICIENCY=='Intermediate' %}selected{% endif %}>

@@ -110,7 +110,7 @@ def hobbies():
         
         g.logger.info("Successfully fetched hobbies data with pictures.")
 
-        return dr.dynamic_render("pages/account/hobbies.html", hobbies=hobby_data)
+        return dr.dynamic_render("pages/account/hobbies.html", hobbies=hobby_data, user=g.current_user.get_json())
     except Exception as e:
         g.logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
         return redirect(url_for('account.profile'))

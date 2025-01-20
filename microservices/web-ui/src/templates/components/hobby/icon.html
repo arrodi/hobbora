@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/components/hobby/icon.css') }}">
 
-<a href="{{ url_for('hobby.view', hobby_id=hobby.HOBBY_ID) }}" class="hobby-tile">
+<a href="{{ url_for('hobby.view', hobby_id=hobby.HOBBY_ID) if user.USER_ID == hobby.USER_ID else url_for('catalog.hobby_view', hobby_id=hobby.HOBBY_ID) }}" 
+   class="hobby-tile">
     <div class="hobby-tile-content">
             <div class="hobby-picture-reg {% if hobby.TUTORING %}hobby-picture-tutor{% endif %}">
                 <img src="data:image/jpeg;base64,{{ hobby.FACE_PICTURE.bytes | default('') }}"

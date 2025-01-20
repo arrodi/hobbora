@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/view.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="hobby-main-section">
+    <!-- Collage of Hobby Pictures -->
+    {{ buttons.back(url_for('catalog.catalog'), 'Back to the Catalog') }}
+    <section class="hobby-pictures-section">
+        <div class="pictures-gallery">
+            {% for picture in hobby.GRID_PICTURES %}
+            <div class="picture-item">
+                <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
+                alt="Image for {{ hobby.NAME }}" />
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="hobby-title-section">
+        <h2>{{ hobby.NAME }}</h2>
+        <div class="action-buttons-container">
+            <!-- Edit Hobby Button -->
+        </div>
+    </section>
+    
+
+    <!-- Hobby Description, Tutor Section and Upcoming Sessions Section -->
+    <div class="lower-section">
+        <!-- Hobby Description and Tutor Section -->
+        <section class="hobby-description-section">
+            <h3>Description</h3>
+            <p><strong>Description:</strong> {{ hobby.DESCRIPTION }}</p>
+            <p><strong>Proficiency:</strong> {{ hobby.PROFICIENCY }}</p>
+            <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months
+            <p><strong>Completed Sessions:</strong> {{ hobby.COMPLETED_SESSIONS }}</p>
+            <p><strong>Average Rating:</strong> {{ hobby.AVERAGE_RATING }}/5</p>
+            <p><strong>Total Hours Tutored:</strong> {{ hobby.TOTAL_HOURS_TUTORED }}</p>
+        </section>
+        <!-- Scheduled Tutoring Sessions -->
+        <section class="tutor-account-section">
+            <h3>Tutor</h3>
+        </section>
+    </div>
+    <!-- Reviews Section -->
+    
+    <div class="reviews-section">
+        <h3>Reviews</h3>
+        {% if hobby.TUTORING %}
+        {% if hobby.REVIEWS and hobby.REVIEWS|length > 0 %}
+        <ul>
+            {% for review in hobby.REVIEWS %}
+            <li>
+                <p><strong>{{ review.student_name }}:</strong> {{ review.text }}</p>
+                <p><strong>Rating:</strong> {{ review.rating }}/5</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="greyed-out">No reviews for this hobby yet.</p>
+        {% endif %}
+        {% else %}
+        <p class="greyed-out">You are not tutoring this hobby yet!</p>
+        {% endif %}
+    </div>
+    
+</div>
+
+{% endblock %}

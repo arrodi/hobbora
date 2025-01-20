@@ -28,7 +28,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session time
 
 # Register blueprints
 app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(hobby_bp, url_prefix='/hobby')
+app.register_blueprint(hobby_bp, url_prefix='/account/hobby')
 app.register_blueprint(account_bp, url_prefix='/account')
 app.register_blueprint(catalog_bp, url_prefix='/catalog')
 app.register_blueprint(session_bp, url_prefix='/session')
