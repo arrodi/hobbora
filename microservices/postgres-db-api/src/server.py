@@ -140,18 +140,19 @@ def user_authenticate():
 
 @app.route("/user/get", methods=['POST'])
 def user_get():
+    print("/user/get")
 
     try:
     #Get data from the request
         request_data = request.get_json()
-        EMAIL = request_data.get("EMAIL")
-        USERNAME = request_data.get("USERNAME")
+        email = request_data.get("EMAIL")
+        username = request_data.get("USERNAME")
         user_id = request_data.get("USER_ID")
 
-        if EMAIL:
-            sql_condition = f"EMAIL = '{EMAIL}'"
-        elif USERNAME:
-            sql_condition = f"USERNAME = '{USERNAME}'"
+        if email:
+            sql_condition = f"EMAIL = '{email}'"
+        elif username:
+            sql_condition = f"USERNAME = '{username}'"
         elif user_id:
             sql_condition = f"USER_ID = '{user_id}'"
         else:

@@ -2,6 +2,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/view.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/catalog/hobby/tutor_info.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -42,6 +43,16 @@
         <!-- Scheduled Tutoring Sessions -->
         <section class="tutor-account-section">
             <h3>Tutor</h3>
+            <div class="tutor-info">
+                <div class="tutor-picture">
+                    <img src="data:image/jpeg;base64,{{ hobby.user.PROFILE_PICTURE | default('') }}" 
+                    alt="Picture of {{ hobby.user.USERNAME }}" />
+                </div>
+                <div class="tutor-details">
+                    <p>{{ hobby.user.USERNAME }}</p>
+                    <p><a href="mailto:{{ hobby.user.EMAIL }}">{{ hobby.user.EMAIL }}</a></p>
+                </div>
+            </div>
         </section>
     </div>
     <!-- Reviews Section -->

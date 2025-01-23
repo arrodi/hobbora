@@ -42,9 +42,17 @@ def catalog():
 def hobby_view(hobby_id):
     g.logger.info(f" ------- CATALOG/HOBBY/VIEW/{hobby_id} ------- ")
 
+    if not session.get('user'):
+        g.logger.warning("User session not found. Redirecting to sign-in page.")
+        return redirect(url_for('auth.signin'))
+
     if request.method == 'GET':
         current_hobby = Hobby(hobby_id)
         hobby_data = current_hobby.get_json()
         hobby_data.update(current_hobby.get_pictures())
+        hobby_owner = User(id = current_hobby.user_id)
+        hobby_data["user"] = hobby_owner.get_json()
+        hobby_data["user"]["PROFILE_PICTURE"] = hobby_owner.get_profile_picture()
+        del hobby_owner
 
     return dr.dynamic_render('pages/catalog/hobby/view.html', hobby=hobby_data, user=g.current_user.get_json())

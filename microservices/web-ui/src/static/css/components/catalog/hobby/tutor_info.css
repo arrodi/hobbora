@@ -1,0 +1,47 @@
+/* Hobby Description and Tutor Section */
+.tutor-account-section{
+    background-color: rgba(30, 30, 30, 0.65);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+/* Tutor Info Section */
+.tutor-info {
+    display: flex;
+    align-items: left;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.tutor-picture img {
+    width: 100px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the image circular */
+    margin-top: 20px;
+    object-fit: cover;
+    border: 2px solid #4CAF50; /* Optional: Add a border */
+}
+
+.tutor-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tutor-details p {
+    margin: 5px 0;
+    font-size: 16px; /* Adjust for readability */
+    color: #FFFFFF; /* Matches the text color in the hobby section */
+}
+
+.tutor-details a {
+    color: #4CAF50; /* Matches the green used for headings */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.tutor-details a:hover {
+    text-decoration: underline;
+}
