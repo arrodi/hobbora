@@ -1,4 +1,4 @@
-name: app-deploy-postgres_db_api
+name: app-deploy-picture_db_api
 
 on:
   push:
