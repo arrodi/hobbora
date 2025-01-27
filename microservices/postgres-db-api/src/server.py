@@ -140,18 +140,19 @@ def user_authenticate():
 
 @app.route("/user/get", methods=['POST'])
 def user_get():
+    print("/user/get")
 
     try:
     #Get data from the request
         request_data = request.get_json()
-        EMAIL = request_data.get("EMAIL")
-        USERNAME = request_data.get("USERNAME")
+        email = request_data.get("EMAIL")
+        username = request_data.get("USERNAME")
         user_id = request_data.get("USER_ID")
 
-        if EMAIL:
-            sql_condition = f"EMAIL = '{EMAIL}'"
-        elif USERNAME:
-            sql_condition = f"USERNAME = '{USERNAME}'"
+        if email:
+            sql_condition = f"EMAIL = '{email}'"
+        elif username:
+            sql_condition = f"USERNAME = '{username}'"
         elif user_id:
             sql_condition = f"USER_ID = '{user_id}'"
         else:
@@ -437,44 +438,75 @@ def catalog_hobbies_get():
     print("/catalog/hobbies/get")
     try: 
         where_clause_string = ""
-        for key in ['type', 'experience_years', 'proficiency', 'hourly_rate', 'mode_live_call', 'mode_public_in_person', 'mode_private_in_person']:
-            value = request.args.get(key)
-            if value is not None:
+        ##['name', 'type', 'experience_years', 'proficiency', 'hourly_rate', 'mode_live_call', 'mode_public_in_person', 'mode_private_in_person']:
+        param_dict = request.args.to_dict()
+        print(param_dict)
+        if param_dict.get("HIDE_MY_HOBBIES") == 'true':
+            user_id = param_dict["USER_ID"]
+            where_clause_string += f"a.USER_ID!='{user_id}'"
+        if param_dict.get("USER_ID"):  
+            del param_dict["USER_ID"]
+        if param_dict.get("HIDE_MY_HOBBIES"):
+            del param_dict["HIDE_MY_HOBBIES"]
+
+        for key in param_dict:
+            if key.upper() == 'NAME':
+                where_clause_string += f"a.NAME IS NOT NULL AND a.NAME LIKE '%{param_dict[key]}%'"
+            elif key.upper() == 'PROFICIENCY':
+                if param_dict[key].upper() == "ANY":
+                    continue
+                else:
+                    if where_clause_string:  # Add a comma separator if the string already has content
+                        where_clause_string += " AND "
+                    where_clause_string += f"a.{key}='{param_dict[key]}'"
+            elif key.upper() == 'EXPERIENCE_YEARS':
                 if where_clause_string:  # Add a comma separator if the string already has content
                     where_clause_string += " AND "
-                key = key.upper()
+                where_clause_string += f"a.{key}>={param_dict[key]}"
+            elif key.upper() == 'HOURLY_RATE':
+                if where_clause_string:  # Add a comma separator if the string already has content
+                    where_clause_string += " AND "
+                where_clause_string += f"b.{key}<={param_dict[key]}"
+            else:
+                if where_clause_string:  # Add a comma separator if the string already has content
+                    where_clause_string += " AND "
                 if key in list(schemas.table_schemas["USER_HOBBIES_TUTORING"].keys()):
                     if "text" in schemas.table_schemas["USER_HOBBIES_TUTORING"][key]:
-                        where_clause_string += f"{key}='{value}'"
+                        where_clause_string += f"b.{key}='{param_dict[key]}'"
                     else:
-                        where_clause_string += f'{key}={value}'
+                        where_clause_string += f'b.{key}={param_dict[key]}'
                 if key in list(schemas.table_schemas["USER_HOBBIES"].keys()):
                     if "text" in schemas.table_schemas["USER_HOBBIES"][key]:
-                        where_clause_string += f"{key} = '{value}'"
+                        where_clause_string += f"a.{key} = '{param_dict[key]}'"
                     else:
-                        where_clause_string += f"{key} = {value}"
+                        where_clause_string += f"a.{key} = {param_dict[key]}"
 
         if where_clause_string:
-            where_clause_string = "TUTORING = true AND " + where_clause_string
+            where_clause_string = "a.TUTORING = true AND " + where_clause_string
         else:
-            where_clause_string = "TUTORING = true"
+            where_clause_string = "a.TUTORING = true"
 
         USER_HOBBIES_TUTORING_lst = list(schemas.table_schemas["USER_HOBBIES_TUTORING"].keys())
         USER_HOBBIES_lst = list(schemas.table_schemas["USER_HOBBIES"].keys())
 
-        USER_HOBBIES_TUTORING_lst.extend(USER_HOBBIES_lst)
+        USER_HOBBIES_ALL_lst = USER_HOBBIES_TUTORING_lst
+        USER_HOBBIES_ALL_lst.extend(USER_HOBBIES_lst)
 
         for _index, _column in enumerate(USER_HOBBIES_TUTORING_lst):
             if _column in USER_HOBBIES_lst:
-                USER_HOBBIES_TUTORING_lst[_index] = f"a.{_column}"
+                USER_HOBBIES_ALL_lst[_index] = f"a.{_column}"
+            if _column in USER_HOBBIES_TUTORING_lst:
+                USER_HOBBIES_ALL_lst[_index] = f"b.{_column}"
 
-        USER_HOBBIES_COMBINED_SET = set(USER_HOBBIES_TUTORING_lst)
+        USER_HOBBIES_COMBINED_SET = set(USER_HOBBIES_ALL_lst)
 
         request_columns = list(USER_HOBBIES_COMBINED_SET)
 
         sql_query = queries.select_join_table("USER_HOBBIES", "USER_HOBBIES_TUTORING", request_columns, "HOBBY_ID", where_clause_string)
         
         query_return = postgres.execute_query(sql_query, fetch=True)
+
+        print("--QUERY RETURN: " + str(query_return))
         
 
         request_columns = [_column.replace("a.", "") for _column in request_columns]

@@ -8,10 +8,10 @@
 {% block content %}
 
 <!-- Account Section -->
-{% include 'components/account.html' %}
+{% include 'components/account/account.html' %}
 <!-- Description Section -->
 <div class="description-section">
-    <form action="/account/profile/edit/description" method="POST">
+    <form action="{{ url_for('account.profile_edit_description') }}" method="POST">
         <div class="description-about">
             <div class="input-group">
                 <label for="about">About</label>

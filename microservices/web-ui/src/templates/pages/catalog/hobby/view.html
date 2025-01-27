@@ -1,23 +1,33 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/catalog/hobby/view.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/view.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/catalog/hobby/tutor_info.css') }}">
 {% endblock %}
 
 {% block content %}
 
 <div class="hobby-main-section">
     <!-- Collage of Hobby Pictures -->
+    {{ buttons.back(url_for('catalog.catalog'), 'Back to the Catalog') }}
     <section class="hobby-pictures-section">
         <div class="pictures-gallery">
-            {% for url in picture_urls %}
+            {% for picture in hobby.GRID_PICTURES %}
             <div class="picture-item">
-                <img src="{{ url_for('static', filename=url) }}" alt="Pictures of hobbies">
+                <img src="data:image/jpeg;base64,{{ picture.bytes | default('') }}" 
+                alt="Image for {{ hobby.NAME }}" />
             </div>
             {% endfor %}
         </div>
     </section>
+    <section class="hobby-title-section">
+        <h2>{{ hobby.NAME }}</h2>
+        <div class="action-buttons-container">
+            <!-- Edit Hobby Button -->
+        </div>
+    </section>
+    
+
     <!-- Hobby Description, Tutor Section and Upcoming Sessions Section -->
     <div class="lower-section">
         <!-- Hobby Description and Tutor Section -->
@@ -26,24 +36,30 @@
             <p><strong>Description:</strong> {{ hobby.DESCRIPTION }}</p>
             <p><strong>Proficiency:</strong> {{ hobby.PROFICIENCY }}</p>
             <p><strong>Experience:</strong> {{ hobby.EXPERIENCE_YEARS }} years and {{ hobby.EXPERIENCE_MONTHS }} months
-            </p>
-            {% if hobby.TUTORING %}
             <p><strong>Completed Sessions:</strong> {{ hobby.COMPLETED_SESSIONS }}</p>
             <p><strong>Average Rating:</strong> {{ hobby.AVERAGE_RATING }}/5</p>
             <p><strong>Total Hours Tutored:</strong> {{ hobby.TOTAL_HOURS_TUTORED }}</p>
-            {% endif %}
         </section>
-        {% if hobby.TUTORING %}
         <!-- Scheduled Tutoring Sessions -->
-        <section class="upcoming-sessions-section">
-            
+        <section class="tutor-account-section">
+            <h3>Tutor</h3>
+            <div class="tutor-info">
+                <div class="tutor-picture">
+                    <img src="data:image/jpeg;base64,{{ hobby.user.PROFILE_PICTURE | default('') }}" 
+                    alt="Picture of {{ hobby.user.USERNAME }}" />
+                </div>
+                <div class="tutor-details">
+                    <p>{{ hobby.user.USERNAME }}</p>
+                    <p><a href="mailto:{{ hobby.user.EMAIL }}">{{ hobby.user.EMAIL }}</a></p>
+                </div>
+            </div>
         </section>
-        {% endif %}
     </div>
     <!-- Reviews Section -->
-    {% if hobby.TUTORING %}
+    
     <div class="reviews-section">
         <h3>Reviews</h3>
+        {% if hobby.TUTORING %}
         {% if hobby.REVIEWS and hobby.REVIEWS|length > 0 %}
         <ul>
             {% for review in hobby.REVIEWS %}
@@ -54,10 +70,13 @@
             {% endfor %}
         </ul>
         {% else %}
-        <p>No reviews for this hobby yet.</p>
+        <p class="greyed-out">No reviews for this hobby yet.</p>
+        {% endif %}
+        {% else %}
+        <p class="greyed-out">You are not tutoring this hobby yet!</p>
         {% endif %}
     </div>
-    {% endif %}
+    
 </div>
 
 {% endblock %}

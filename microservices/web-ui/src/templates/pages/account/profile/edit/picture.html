@@ -7,7 +7,7 @@
 
 {% block content %}
 <!-- Main Content Section -->
-{% include 'components/account.html' %}
+{% include 'components/account/account.html' %}
 
 <!-- Sub Content Section -->
 <div class="image-upload-section">
@@ -17,6 +17,7 @@
         <input type="file" id="file-input" accept="image/*" multiple>
     </div>
     <button id="upload-button" disabled>Upload</button>
+    <script>const uploadUrl = "{{ url_for('account.profile_edit_picture') }}";</script>
     <script src="{{ url_for('static', filename='js/upload_box.js') }}"></script>    
 
 </div>

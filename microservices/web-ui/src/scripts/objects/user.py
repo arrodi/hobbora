@@ -15,14 +15,15 @@ picture_api = API(settings.picture_api_url)
 
 class User:
 
-    def __init__(self, email=None, username=None):
+    def __init__(self, email=None, username=None, id=None):
         if email:
             api_return = db_api.post(f"user/get", {"EMAIL": email})
         if username:
             api_return = db_api.post(f"user/get", {"USERNAME": username})
+        if id:
+            api_return = db_api.post(f"user/get", {"USER_ID": id})
         
         self.id = api_return.get("DATA").get("USER_ID")
-
         self.email = api_return.get("DATA").get("EMAIL")
         self.username = api_return.get("DATA").get("USERNAME")
         self.first_name = api_return.get("DATA").get("FIRST_NAME")

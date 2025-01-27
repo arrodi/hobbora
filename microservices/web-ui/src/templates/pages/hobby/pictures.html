@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/pictures.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/pictures.css') }}">
 {% endblock %}
 
 {% block content %}
 <!-- Main Content Section -->
 <div class="hobby-main-section">
-    {{ buttons.back('/account/hobbies/hobby/' ~ hobby.HOBBY_ID, 'Back to hobby') }}
+    {{ buttons.back(url_for('hobby.view', hobby_id=hobby.HOBBY_ID), 'Back to hobby') }}
     <section class="hobby-pictures-section">
         <div class="pictures-gallery">
             {% for picture in hobby.GRID_PICTURES %}
@@ -18,11 +18,15 @@
                     <button 
                         class="replace-button" 
                         data-hobby-id="{{ hobby.HOBBY_ID }}" 
-                        data-picture-id="{{ picture.id }}">Replace Picture</button>
+                        data-picture-id="{{ picture.id }}"
+                        data-replace-url="{{ url_for('hobby.picture_replace', hobby_id=hobby.HOBBY_ID, picture_id=picture.id) }}">
+                        Replace Picture</button>
                     <button
                         class="delete-button"
                         data-hobby-id="{{ hobby.HOBBY_ID }}" 
-                        data-picture-id="{{ picture.id }}">Delete Picture</button>
+                        data-picture-id="{{ picture.id }}"
+                        data-delete-url="{{ url_for('hobby.picture_delete', hobby_id=hobby.HOBBY_ID, picture_id=picture.id) }}">
+                        Delete Picture</button>
                 </div>
             </div>
             {% endfor %}
@@ -31,7 +35,7 @@
 </div>
 
 <!-- Popup Modal -->
-<div id="upload-modal" class="modal hidden" data-hobby-id="" data-picture-id="">
+<div id="upload-modal" class="modal hidden">
     <div class="modal-content">
         <h2>Replace Picture</h2>
         <p>Drag and drop a new picture or click to upload.</p>

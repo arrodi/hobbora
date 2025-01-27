@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/view.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/view.css') }}">
 {% endblock %}
 
 {% block content %}
 
 <div class="hobby-main-section">
     <!-- Collage of Hobby Pictures -->
-    {{ buttons.back('/account/hobbies', 'Back to hobbies') }}
+    {{ buttons.back(url_for('account.hobbies'), 'Back to hobbies') }}
     <section class="hobby-pictures-section">
         <div class="pictures-gallery">
             {% for picture in hobby.GRID_PICTURES %}
@@ -22,18 +22,17 @@
     <section class="hobby-title-section">
         <h2>{{ hobby.NAME }}</h2>
         <div class="action-buttons-container">
-            {% set path = '/account/hobbies/hobby/pictures/' ~ hobby.HOBBY_ID %}
             <!-- Edit Hobby Button -->
-            {{ buttons.redirect('/account/hobbies/hobby/pictures/' ~ hobby.HOBBY_ID, 'Edit Pictures') }}
-            {{ buttons.redirect('/account/hobbies/hobby/edit/' ~ hobby.HOBBY_ID, 'Edit Hobby') }}
+            {{ buttons.redirect(url_for('hobby.pictures_edit', hobby_id=hobby.HOBBY_ID), 'Edit Pictures') }}
+            {{ buttons.redirect(url_for('hobby.edit', hobby_id=hobby.HOBBY_ID), 'Edit Hobby') }}
             <!-- Conditionally Display Tutor Hobby Button -->
             {% if not hobby.TUTORING %}
-            {{ buttons.redirect('/account/hobbies/hobby/tutor/' ~ hobby.HOBBY_ID, 'Tutor Hobby') }}
+            {{ buttons.redirect(url_for('hobby.tutor', hobby_id=hobby.HOBBY_ID), 'Tutor Hobby') }}
             {% endif %}
             {% if hobby.TUTORING %}
-            {{ buttons.redirect('/account/hobbies/hobby/tutor/stop' ~ hobby.HOBBY_ID, 'Stop Tutoring Hobby') }}
+            {{ buttons.redirect(url_for('hobby.tutor_stop', hobby_id=hobby.HOBBY_ID), 'Stop Tutoring Hobby') }}
             {% endif %}
-            {{ buttons.redirect('/account/hobbies/hobby/delete/' ~ hobby.HOBBY_ID, 'Delete Hobby') }}
+            {{ buttons.redirect(url_for('hobby.delete', hobby_id=hobby.HOBBY_ID), 'Delete Hobby') }}
         </div>
     </section>
     

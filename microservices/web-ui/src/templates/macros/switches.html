@@ -1,0 +1,14 @@
+{% macro toggle(id, text, name, checked=False) %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/switches/toggle.css') }}">
+
+<div class="switch">
+    <label for="{{ id }}" class="switch-label">{{ text }}</label>
+    <input 
+        type="checkbox" 
+        id="{{ id }}" 
+        name="{{ name }}" 
+        value="true" 
+        {% if checked %}checked{% endif %} />
+    <label for="{{ id }}" class="switch-toggle"></label>
+</div>
+{% endmacro %}

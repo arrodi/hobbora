@@ -66,7 +66,7 @@ uploadButton.addEventListener('click', () => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    fetch('/account/profile/edit/picture', {
+    fetch(uploadUrl, {
       method: 'POST',
       body: formData,
     })
@@ -81,8 +81,7 @@ uploadButton.addEventListener('click', () => {
         console.log('Upload successful:', data);
       })
       .catch((error) => {
-        console.error('Upload failed:', error);
-        alert('Upload failed. Please try again.');
+        alert(`Upload failed. Please try again.\nError: ${error.message}`);
       });
   }
 });

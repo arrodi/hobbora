@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies/hobby/tutor.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/hobby/tutor.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
     <h2 class="hobby-title">Add A Hobby</h2> <!-- Updated Position -->
 
     <div class="all-hobby">
-        <form action="/account/hobbies/hobby/tutor/{{ hobby.HOBBY_ID }}" method="post" class="tutor-hobby-form">
+        <form action="{{ url_for('hobby.tutor', hobby_id=hobby.HOBBY_ID) }}"" method="post" class="tutor-hobby-form">
             <div class="edit-hobby">
                 <div class="input-group">
                     <label for="hobby-name">Hobby Name</label>

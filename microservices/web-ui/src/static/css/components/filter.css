@@ -1,0 +1,95 @@
+/* Layout for Account and Profile Sections */
+main {
+    display: flex;
+    align-items: flex-start;
+    /* Align items at the start */
+    padding-top: 20px;
+    /* Add space between the top of the page and the content */
+}
+
+/* Account Section Styles */
+.filter-section {
+
+    width: 300px;
+    margin-right: 50px;
+    /* Add space between account and profile */
+    margin-left: 50px;
+    /* Add space between account and profile */
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Align top, ensuring the top section stays at the top */
+    background: rgba(30, 30, 30, 0.65);
+    border-radius: 15px;
+    padding: 40px;
+}
+
+.filter-header h2 {
+    color: #4CAF50;
+    /* Neon green */
+    margin: 0px;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    background: rgba(30, 30, 30, 0.65);
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.input-box h2 {
+    margin: 0px;
+    font-size: 1.75rem;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #e0e0e0;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(60, 60, 60, 0.8);
+    color: #e0e0e0;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #4CAF50;
+    /* Neon Green */
+    outline: none;
+}
+
+hr {
+    border: none;
+    /* Removes the default border */
+    height: 2px;
+    /* Thickness of the line */
+    background-color: rgba(60, 60, 60, 0.8);
+    /* Line color */
+}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/account/hobbies.css') }}">
+{% endblock %}
+{% block content %}
+<!-- Main Content Section -->
+{% include 'components/account/account.html' %}
+
+
+<div class="hobbies-section">
+    <div class="hobbies-header">
+        <h2>Hobbies</h2>
+        {{ buttons.redirect(url_for('hobby.add'), 'Add a Hobby') }}
+    </div>
+    {% include 'components/hobby/list.html' %}
+</div>
+{% endblock %}

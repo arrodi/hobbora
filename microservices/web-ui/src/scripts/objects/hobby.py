@@ -93,7 +93,7 @@ class Hobby:
             print(api_return)
         else:
             return True, "The default picture cannot be deleted!"
-        if api_return.json()["SUCCESS"]:
+        if api_return["SUCCESS"]:
             return True, "Picture deleted successfully!"
         else:
             return False, "Failed to delete picture!"
@@ -272,7 +272,11 @@ class Hobby:
 
         return api_return
     @staticmethod
-    def get(filter_dict=None):
+    def get_all(filter_dict=None):
+
+        if filter_dict:
+            filter_dict = {key: value for key, value in filter_dict.items() if value}
+
         
         api_return = db_api.get(f"/catalog/hobbies/get", filter_dict)
 
