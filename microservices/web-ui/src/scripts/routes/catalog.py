@@ -35,6 +35,7 @@ def catalog():
 
         return dr.dynamic_render("pages/catalog/catalog.html", hobbies=hobby_data, input=dict_payload)
     except Exception as e:
+        error_message = "No Email Found! Try Again or Sign Up!"
         g.logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
         return redirect(url_for('account.profile'))
 

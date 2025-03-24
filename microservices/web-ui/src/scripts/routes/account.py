@@ -8,12 +8,14 @@ def account():
     
 @account_bp.route("/profile", methods=['GET'])
 def profile():
+    success_message = request.args.get('success_message')
+    error_message = request.args.get('error_message')
     g.logger.info(" ------- ACCOUNT/PROFILE ------- ")
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('auth.signin'))
     else:
-        return dr.dynamic_render("pages/account/profile/profile.html")
+        return dr.dynamic_render("pages/account/profile/profile.html", success_message=success_message, error_message=error_message)
     
 @account_bp.route("/profile/edit/picture", methods=['GET', 'POST'])
 def profile_edit_picture():
@@ -36,6 +38,7 @@ def profile_edit_picture():
     
 @account_bp.route("/profile/edit/description", methods=['GET', 'POST'])
 def profile_edit_description():
+
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('auth.signin'))
@@ -51,13 +54,14 @@ def profile_edit_description():
             session.modified = True
             return redirect(url_for('account.profile'))
         else:
-            return dr.dynamic_render("pages/account/profile/edit/description.html")
+            error_message = "Error updating user description!"
+            return dr.dynamic_render("pages/account/profile/edit/description.html", error_message = error_message)
 
 @account_bp.route('/become-tutor', methods=['GET', 'POST'])
 def become_tutor():
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
-        return redirect(url_for('auth.signin'))
+        return redirect(url_for('auth.signin')) 
 
     if session.get('user').get("TUTORING"):
         return redirect(url_for('account.profile'))
@@ -70,12 +74,14 @@ def become_tutor():
     
 @account_bp.route('/become-tutor/user_agreement', methods=['GET', 'POST'])
 def user_agreement():
+    success_message = request.args.get('success_message')
+    error_message = request.args.get('error_message')
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
         return redirect(url_for('auth.signin'))
     
     if request.method == 'GET':
-        return dr.dynamic_render('pages/account/profile/user_agreement.html')
+        return dr.dynamic_render('pages/account/profile/user_agreement.html', error_message=error_message)
     
     if request.method == 'POST':
         become_tutor_return = g.current_user.become_tutor()
@@ -83,15 +89,17 @@ def user_agreement():
         session.modified = True
 
         if become_tutor_return["SUCCESS"]:
-            #TODO: ADD A SUCCESS MESSAGE
-            return redirect(url_for('account.profile'))
+            success_message = "You have succesfully became a tutor!"
+            return redirect(url_for('account.profile', success_message=success_message))
         else:
-            #TODO: ADD A FAILURE MESSAGE
-            return redirect(url_for('account.become_tutor'))
+            error_message = "Not able to become a tutor!"
+            return redirect(url_for('account.become_tutor', error_message=error_message))
     
 @account_bp.route("/hobbies", methods=['GET'])
 def hobbies():
     g.logger.info(" ------- ACCOUNT/HOBBIES ------- ")
+    success_message = request.args.get('success_message')
+    error_message = request.args.get('error_message')
     
     if not session.get('user'):
         g.logger.warning("User session not found. Redirecting to sign-in page.")
@@ -110,10 +118,11 @@ def hobbies():
         
         g.logger.info("Successfully fetched hobbies data with pictures.")
 
-        return dr.dynamic_render("pages/account/hobbies.html", hobbies=hobby_data, user=g.current_user.get_json())
+        return dr.dynamic_render("pages/account/hobbies.html", hobbies=hobby_data, user=g.current_user.get_json(), success_message=success_message, error_message=error_message)
     except Exception as e:
-        g.logger.exception(f"An error occurred while fetching hobbies data: {str(e)}")
-        return redirect(url_for('account.profile'))
+        error_message = "An error occurred while fetching hobbies data!"
+        g.logger.exception(f"{error_message}: {str(e)}")
+        return redirect(url_for('account.profile', error_message=error_message))
     
 @account_bp.route("/sessions", methods=['GET'])
 def sessions():

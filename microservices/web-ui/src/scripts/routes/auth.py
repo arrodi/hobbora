@@ -68,6 +68,12 @@ def signup():
         
 @auth_bp.route('/log-out')
 def logout():
-    g.current_user.__del__()
-    session.clear()
-    return redirect(url_for('home_page'))
+    if not session.get('user'):
+        g.logger.warning("User session not found. Redirecting to sign-in page.")
+        return redirect(url_for('auth.signin'))
+    else:
+        g.current_user.__del__()
+        session.clear()
+        success_message = "You have been succesfully logged out."
+        g.logger.warning(success_message)
+        return redirect(url_for('home_page', success_message=success_message))

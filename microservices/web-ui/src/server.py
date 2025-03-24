@@ -55,8 +55,10 @@ def load_globals():
 #########################
 @app.route("/", methods=['GET'])
 def home_page():
+    success_message = request.args.get('success_message')
+    error_message = request.args.get('error_message')
     logger.info(" ------- HOME ------- ")
-    return dr.dynamic_render("pages/home.html")
+    return dr.dynamic_render("pages/home.html", success_message=success_message, error_message=error_message)
 
 @app.route('/favicon.ico')
 def favicon():

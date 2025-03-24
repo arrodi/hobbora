@@ -19,12 +19,6 @@
                 <input type="password" id="password" name="PASSWORD" required>
             </div>
             {{ buttons.submit('Sign In') }}
-            <!-- Error message -->
-            {% if error_message %}
-                <div class="error-message">
-                    {{ error_message }}
-                </div>
-            {% endif %}
         </form>
         <p>Don't have an account? <a class="standard-link" href="{{ url_for('auth.signup') }}">Sign Up</a></p>
     </div>

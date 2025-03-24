@@ -184,11 +184,11 @@ def delete(hobby_id):
             delete_status = current_hobby.delete()
 
             if delete_status:
-                message = ""
-                return redirect(url_for('account.hobbies'))
+                success_message = f"You have successfully deleted {current_hobby.name}!"
+                return redirect(url_for('account.hobbies', success_message=success_message))
             else:
-                message = ""
-                redirect(url_for('hobby.delete', hobby_id = hobby_id))
+                error_message = "{current_hobby.name} failed to delete!"
+                redirect(url_for('hobby.delete', hobby_id = hobby_id, error_message=error_message))
         else:
             message = ""
             return redirect(url_for('auth.signin'))

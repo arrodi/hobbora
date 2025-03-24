@@ -85,3 +85,35 @@ header {
 .profile-icon img:hover {
     box-shadow: 0 0 8px #4CAF50;
 }
+
+/* --------------- Error Message ---------------------- */
+.error-message {
+    top: 100px;            /* Place it 100px from the top of the screen */
+    left: 0;               /* Align to the left edge of the screen */
+    width: 100%;           /* Make it span across the entire width of the screen */
+    padding: 10px;
+    background: rgba(255, 80, 80, 0.2);
+    color: #ff6f6f;
+    border: 1px solid #ff6f6f;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 30px;     /* Vertically center the text inside the error message */
+    z-index: 9999;         /* Ensure it is above other content */
+}
+
+/* --------------- Success Message ---------------------- */
+.success-message {
+    top: 100px;            /* Place it 100px from the top of the screen */
+    left: 0;               /* Align to the left edge of the screen */
+    width: 100%;           /* Make it span across the entire width of the screen */
+    padding: 10px;
+    background: rgba(66, 204, 82, 0.2);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 30px;     /* Vertically center the text inside the error message */
+    z-index: 9999;         /* Ensure it is above other content */
+}

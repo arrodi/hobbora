@@ -19,3 +19,15 @@
         {% endif %}
     </div>
 </header>
+<!-- Error message (only show if not empty) -->
+{% if error_message and error_message != '' %}
+    <div class="error-message">
+        {{ error_message }}
+    </div>
+{% endif %}
+<!-- Error message (only show if not empty) -->
+{% if success_message and success_message != '' %}
+    <div class="success-message">
+        {{ success_message }}
+    </div>
+{% endif %}
