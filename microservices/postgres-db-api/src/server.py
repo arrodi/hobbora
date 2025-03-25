@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # FLASK INIT                 
 app = Flask(__name__)
-print("API HAS BEEN INITIALIZED")
+logger.info("API INITIALIZED")
 
 # Register Blueprints
 app.register_blueprint(user_bp, url_prefix="/user")

@@ -18,7 +18,7 @@ class Hobby:
     def __init__(self, id):
         logger.info(f"Initiating Hobby: {id}")
         if id:
-            api_return = db_api.post(f"/hobby/get", {"HOBBY_ID": id})
+            api_return = db_api.post(f"hobby/get", {"HOBBY_ID": id})
         
         self.id = api_return.get("DATA").get("HOBBY_ID")
         
@@ -35,7 +35,7 @@ class Hobby:
         self.upd_dt = api_return.get("DATA").get("UPD_DT")
 
         if self.tutoring:
-            api_return = db_api.post(f"/hobby/tutored/get", {"HOBBY_ID": id})
+            api_return = db_api.post(f"hobby/tutored/get", {"HOBBY_ID": id})
 
             print(api_return)
 
@@ -76,10 +76,10 @@ class Hobby:
         logger.info(f"Uploading/Replacing hobby picture with id: {picture_id} for hobby {self.id}")
         if 'default' in picture_id or picture_id == None:
             logger.info(f"Uploading new picture")
-            api_return = picture_api.post(f"upload_picture/hobby_picture/{self.user_id}/{self.id}", files=files)
+            api_return = picture_api.post(f"picture/upload/hobby/{self.user_id}/{self.id}", files=files)
         else:
             logger.info(f"Replacing previous picture")
-            api_return = picture_api.post(f"upload_picture/hobby_picture/{self.user_id}/{self.id}/{picture_id}", files=files)
+            api_return = picture_api.post(f"picture/upload/hobby/{self.user_id}/{self.id}/{picture_id}", files=files)
 
         if api_return["SUCCESS"]:
             return True
@@ -89,7 +89,7 @@ class Hobby:
     def delete_picture(self, picture_id):
         logger.info(f"Deleting hobby picture with hobby id: {self.id} and picture id: {picture_id}")
         if 'default' not in picture_id:
-            api_return = picture_api.get(f"delete_picture/hobby_picture/{self.user_id}/{self.id}/{picture_id}")
+            api_return = picture_api.get(f"picture/hobby/delete/{self.user_id}/{self.id}/{picture_id}")
             print(api_return)
         else:
             return True, "The default picture cannot be deleted!"
@@ -101,7 +101,7 @@ class Hobby:
     def get_pictures(self):
         logger.info(f"Fetching pictures for id {self.id}")
         picture_dict={"GRID_PICTURES":[],"FACE_PICTURE":{"id":"","bytes":""}}
-        picture_ids = picture_api.post("/id/hobby/get", {"USER_ID":self.user_id, "HOBBY_ID":self.id})["DATA"]
+        picture_ids = picture_api.post("metadata/hobby/id", {"USER_ID":self.user_id, "HOBBY_ID":self.id})["DATA"]
         default_encoded_picture = base64.b64encode(picture_api.post("picture/hobby/get", {"USER_ID": "default", "HOBBY_ID": "default", "PICTURE_ID": "default_hobby"})).decode('utf-8')
 
         if picture_ids:
