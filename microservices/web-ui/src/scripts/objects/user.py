@@ -91,7 +91,7 @@ class User:
     
     def upload_profile_picture(self, files):
         logger.info(f"Uploading profile picture with {self.id}")
-        api_return = picture_api.post(f"upload_picture/profile_picture/{self.id}", files=files)
+        api_return = picture_api.post(f"picture/upload/profile/{self.id}", files=files)
 
         if api_return["SUCCESS"]:
             return True
