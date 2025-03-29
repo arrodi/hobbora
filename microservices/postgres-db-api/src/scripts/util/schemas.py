@@ -36,19 +36,31 @@ table_schemas = {
         "USER_HOBBIES_TUTORING" : {
             "HOBBY_ID": "text REFERENCES USER_HOBBIES (HOBBY_ID)",
             "HOURLY_RATE": "integer",
-            "LOCATION": "text",
+            "COUNTRY": "text",
+            "CITY": "text",
             "MODE_LIVE_CALL": "boolean",
             "MODE_PUBLIC_IN_PERSON": "boolean",
             "MODE_PRIVATE_IN_PERSON": "boolean",
             "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
             "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
         },
+        "TUTORING_AVAILABILITY" : {
+            "AVAILABILITY_ID": "text PRIMARY KEY",
+            "USER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+            "DAY": "text",
+            "START_TIME": "TIMESTAMP",
+            "END_TIME": "TIMESTAMP",
+            "STATUS": "text",
+            "CRT_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+            "UPD_DT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+        },
         "TUTORING_SESSION" : {
             "SESSION_ID": "text PRIMARY KEY",
+            "AVAILABILITY_ID": "text REFERENCES TUTORING_AVAILABILITY (AVAILABILITY_ID)",
             "USER_TUTOR_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
             "USER_STUDENT_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
-            "SESSION_HOBBY": "text",
-            "SESSION_MODE": "text",
+            "HOBBY_ID": "text REFERENCES USER_HOBBIES_TUTORING (HOBBY_ID)",
+            "MODE": "text",
             "SESSION_SCHEDULED_START_TIME": "TIMESTAMP",
             "SESSION_SCHEDULED_END_TIME": "TIMESTAMP",
             "SESSION_ACTUAL_START_TIME": "TIMESTAMP",
@@ -56,9 +68,22 @@ table_schemas = {
         },
         "TUTORING_SESSION_REVIEWS" : {
             "REVIEW_ID": "text PRIMARY KEY",
-            "USER_EMAIL": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+            "USER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
             "SESSION_ID": "text REFERENCES TUTORING_SESSION (SESSION_ID)",
             "SESSION_REVIEW_TEXT": "text",
             "SESSION_RATING": "integer"
-        }
+        },
+        "PAYMENT_TRANSACTIONS": {
+            "TRANSACTION_ID": "text PRIMARY KEY",
+            "SESSION_ID": "text REFERENCES TUTORING_SESSION (SESSION_ID)",
+            "PAYER_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+            "PAYEE_ID": "text REFERENCES USER_ACCOUNTS (USER_ID)",
+            "AMOUNT": "decimal(10,2)",
+            "CURRENCY": "text",
+            "PAYMENT_METHOD": "text",
+            "PAYMENT_STATUS": "text",
+            "TRANSACTION_DATE": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+            "UPDATED_AT": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+            "EXTERNAL_TRANSACTION_ID": "text"
+        }      
     }
