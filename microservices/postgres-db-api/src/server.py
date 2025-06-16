@@ -1,18 +1,5 @@
 # STL IMPORTS
-from datetime import datetime
-import uuid
-import logging
-
-# EXT IMPORTS
-from flask import Flask, jsonify, request
-from waitress import serve
-
-# AUTHORED IMPORTS
-from scripts.settings import Settings
-from scripts.postgres import Postgres
-from scripts.schemas import Schemas
-import scripts.encrypt as encrypt
-import scripts.queries as queries
+from scripts.util.imports import *
 
 settings = Settings()
 postgres = Postgres(settings.db_name, settings.db_user, settings.db_password, settings.db_host, settings.db_port)
@@ -45,9 +32,23 @@ def prepare_db():
 
 prepare_db()
 
-# FLASK INIT                 
 app = Flask(__name__)
-print("API HAS BEEN INITIALIZED")
+
+@app.before_request
+def load_globals():
+    # Assign settings to g
+
+    g.settings = settings
+    # Assign logging to g
+    
+    g.logger = logger
+
+    # Load current_user into g if user is in session
+    if 'user' in session:
+        print(session['user'])
+        g.current_user = User(username=session['user']['USERNAME'])
+    else:
+        g.current_user = None
 
 #########################
 ##### SERVER ROUTES #####
