@@ -153,7 +153,7 @@ def user_edit():
         request_data["MESSAGE"] = "Unknown failure!"
         return jsonify(request_data)
    
-@user_bp.route("/user/tutor/become", methods=['POST'])
+@user_bp.route("/tutor/become", methods=['POST'])
 def user_tutor_become():
     request_data = request.get_json()
     user_id = request_data["USER_ID"]

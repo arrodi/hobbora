@@ -34,13 +34,13 @@ class API:
 
     def post(self, api_endpoint, json_data=None, files=None):
         full_url = f'{self.url}/{api_endpoint}'
-        logger.info(f"POST:  request to {full_url} with JSON: {type(json_data)}, Files: {type(files)}")
+        logger.info(f"POST:  request to {full_url} with JSON: {json_data}, Files: {type(files)}")
         if files:
             response = requests.post(full_url, files=files)
         else:
             response = requests.post(full_url, json=json_data)
         
-        logger.info(f"POST: response status: {response.status_code}, Content-Type: {response.headers.get('Content-Type')}")
+        logger.info(f"POST: response status: {response.status_code}, Content-Type: {response.headers.get('Content-Type')} Response Type: {type(response.content)} Response Content: {response.content}")
         response.raise_for_status()
         if "application/json" in response.headers.get("Content-Type", ""):
             return response.json()

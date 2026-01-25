@@ -48,6 +48,7 @@ class User:
         return api_return
     
     def become_tutor(self,):
+        print(f"### User {self.id} is becoming a tutor ###")
         api_return = db_api.post(f"user/tutor/become", {"USER_ID": self.id})
         
         if api_return["SUCCESS"]:
