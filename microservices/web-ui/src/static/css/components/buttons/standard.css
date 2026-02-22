@@ -1,20 +1,25 @@
 .button {
-    flex-grow: 1; /* Allow buttons to grow and take up available space */
-    flex-shrink: 1; /* Allow buttons to shrink when there's not enough space */
-    flex-basis: 150px; /* Reduce the base size of the buttons */
-    padding: 0.8em 1.6em; /* Smaller padding */
-    background-color: #4CAF50; /* Neon green */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 150px;
+    padding: 0.8em 1.2em;
+    background-color: #4CAF50;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 0.9rem; /* Smaller font size */
-    transition: background 0.3s ease, transform 0.3s ease;
-    text-align: center; /* Center the text inside the button */
-    white-space: nowrap; /* Prevent text from wrapping inside the button */
-    max-width: 150px; /* Limit the maximum width */
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 180px;
     max-height: 50px;
 }
-.button:hover {
+
+.button:hover,
+.button:focus-visible {
     background-color: #388e3c;
-    transform: scale(1.05); /* Hover scale effect */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    outline: none;
 }

@@ -7,6 +7,15 @@ html, body {
     background: linear-gradient(135deg, #0f0f0f, #0a1100);
     display: flex;
     flex-direction: column;
-    height: 100%; /* Ensure the body takes up the full height */
-    width: 100%;  /* Ensure the body takes up the full width */   
+    min-height: 100%;
+    width: 100%;
+}
+
+main {
+    width: min(1200px, 100% - 2rem);
+    margin: 0 auto;
+}
+
+* {
+    box-sizing: border-box;
 }

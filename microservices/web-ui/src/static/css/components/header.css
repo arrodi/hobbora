@@ -1,32 +1,33 @@
 /* Header Styles */
 header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: rgba(30, 30, 30, 0.65);
-    padding: 15px 30px;
+    gap: 1rem;
+    background-color: rgba(30, 30, 30, 0.75);
+    backdrop-filter: blur(6px);
+    padding: 0.8rem 1.2rem;
     color: #e0e0e0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
     z-index: 1000;
-    height: 40px; /* Adjust as needed */
+    min-height: 64px;
     margin-bottom: 0;
 }
+
 .logo {
-    font-size: 30px;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
     font-weight: 700;
-    margin-right: 30px;
     color: #4CAF50;
+    white-space: nowrap;
 }
+
 /* Navigation Styles */
 .top-nav {
     display: flex;
     justify-content: center;
     flex-grow: 1;
-    margin-right: 5%;
 }
 
 .top-nav ul {
@@ -34,8 +35,10 @@ header {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 20px;
-    align-items: center; /* Center items vertically */
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .top-nav ul li {
@@ -45,17 +48,21 @@ header {
 .top-nav ul li a {
     text-decoration: none;
     color: #e0e0e0;
-    font-size: 16px;
+    font-size: 0.95rem;
     font-weight: 500;
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: block; /* Make the link take up full area */
-    border-left: 3px solid transparent; /* Subtle highlight style */
+    padding: 0.55rem 0.8rem;
+    border-radius: 6px;
+    display: block;
+    border-left: 3px solid transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Hover effect for nav links */
-.top-nav ul li a:hover {
-    background-color: #333; /* Darker background on hover */
+.top-nav ul li a:hover,
+.top-nav ul li a:focus-visible {
+    background-color: #333;
+    color: #ffffff;
+    outline: none;
 }
 
 /* Active nav link styling */
@@ -69,8 +76,8 @@ header {
 
 /* Profile Icon */
 .profile-icon {
-    margin-top: 7px;
-    right: 30px; /* Align to the right with padding */
+    display: flex;
+    align-items: center;
 }
 
 .profile-icon img {
@@ -82,8 +89,21 @@ header {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.profile-icon img:hover {
+.profile-icon img:hover,
+.profile-icon img:focus-visible {
     box-shadow: 0 0 8px #4CAF50;
+}
+
+@media (max-width: 800px) {
+    header {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .top-nav {
+        order: 3;
+        width: 100%;
+    }
 }
 
 /* --------------- Error Message ---------------------- */
