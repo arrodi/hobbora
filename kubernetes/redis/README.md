@@ -1,44 +1,54 @@
-# Redis (Shared Web Session Store)
+## Docker commands to run the container locally:
 
-This deployment provides a shared Redis endpoint for the web-ui Flask sessions.
+1. Pull the desired Docker image
 
-## Why this exists
+docker pull redis:7.2-alpine
 
-For multi-pod web-ui deployments, session data cannot stay in pod memory/local filesystem.
-All web-ui pods must read/write sessions from one shared store.
+2. Create a docker volume for redis to persist data
 
-## Objects
+docker volume create redis-data
 
-- `namespace.yaml` → namespace `redis`
-- `service.yaml` → internal service `redis-service.redis.svc.cluster.local:6379`
-- `statefulset.yaml` → Redis 7.2 with persistent volume
+3. Run the image as a container
 
-## Deploy
+docker run -p 6379:6379 --name redis \
+  -v redis-data:/data \
+  -d redis:7.2-alpine \
+  redis-server --appendonly yes --save 60 1000
 
-```bash
+## Kubernetes deploy commands
+
 kubectl apply -f kubernetes/redis/namespace.yaml
 kubectl apply -f kubernetes/redis/service.yaml
 kubectl apply -f kubernetes/redis/statefulset.yaml
+
+## Example of entering the pod and using Redis CLI
+
+```
+# ENTER THE REDIS POD
+kubectl -n redis exec -it redis-0 -- sh
+
+# OPEN REDIS CLI
+redis-cli
+
+# WRITE A TEST KEY
+SET session:test "hello-from-redis"
+
+# READ THE TEST KEY
+GET session:test
+
+# LIST KEYS (DEV ONLY)
+KEYS session:*
+
+# EXIT REDIS CLI
+exit
 ```
 
-## Verify
+## Web UI env value
 
-```bash
-kubectl -n redis get pods,svc,pvc
-kubectl -n redis logs statefulset/redis
-```
-
-## Web UI wiring
-
-Set this in web-ui env/Helm values:
-
-```bash
 REDIS_URL=redis://redis-service.redis.svc.cluster.local:6379/0
-```
 
 ## Notes
 
-- This manifest currently runs Redis without auth/TLS for in-cluster access simplicity.
-- For production hardening, add:
-  - `requirepass` via Kubernetes Secret
-  - NetworkPolicy to restrict access to only web-ui namespace/pods
+- Redis is used as a shared session store for multi-pod web-ui deployments.
+- Browser stores only the session id cookie; session data is stored in Redis.
+- For production hardening, add Redis auth and NetworkPolicies.
