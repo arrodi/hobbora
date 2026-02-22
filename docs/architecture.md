@@ -30,11 +30,16 @@ flowchart TB
         subgraph "MinIO S3 :9000"
             S3[(S3 Object Storage<br/>Profile Pictures<br/>Hobby Pictures)]
         end
+
+        subgraph "Redis :6379"
+            Redis[(Redis Session Store)]
+        end
     end
 
     Browser -->|HTTP| WebUI
     WebUI -->|REST API| DBAPI
     WebUI -->|REST API| PicAPI
+    WebUI -->|Session Read/Write| Redis
     DBAPI -->|psycopg2| DB
     PicAPI -->|boto3| S3
 ```
@@ -156,6 +161,7 @@ erDiagram
 | Postgres DB API | 8001 | Flask + Waitress |
 | Picture API | 8002 | Flask + Waitress |
 | PostgreSQL | 5432 | PostgreSQL 16.4 |
+| Redis | 6379 | Redis 7.x |
 | MinIO (S3) | 9000 | MinIO |
 | MinIO Console | 9001 | MinIO Web UI |
 
