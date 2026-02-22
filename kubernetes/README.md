@@ -16,6 +16,7 @@ The cluster for this project has been set up through [DigitalOcean](https://clou
 - **nginx Ingress Controller** (namespace: `nginx`)
 - **Jetstack Cert Manager** (namespace: `cert-manager`)
 - **PostgreSQL Database** (namespace: `postgres`)
+- **Redis Session Store** (namespace: `redis`)
 
 ---
 
