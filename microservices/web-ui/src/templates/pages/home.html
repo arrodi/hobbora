@@ -5,17 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<!-- Main Content Section -->
-<main>
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Welcome to {{ config.name }}</h1>
-        <p>Find the perfect tutor or offer your tutoring services to others!</p>
-        
-        <div class="button-container"> <!-- New button container -->
-            {{ buttons.redirect(url_for('catalog.catalog'), 'Browse Tutors') }}
-            {{ buttons.redirect(url_for('auth.signup'), 'Become a Tutor') }}
-        </div>
-    </section>
-</main>
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Welcome to {{ config.name }}</h1>
+    <p>Find the perfect tutor or offer your tutoring services to others.</p>
+
+    <div class="button-container">
+        {{ buttons.redirect(url_for('catalog.catalog'), 'Browse Tutors') }}
+        {{ buttons.redirect(url_for('auth.signup'), 'Become a Tutor') }}
+    </div>
+</section>
 {% endblock %}
