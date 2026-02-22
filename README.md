@@ -101,7 +101,25 @@ export APP_HOST="0.0.0.0"
 export APP_PORT="8000"
 export DB_API_URL="http://localhost:8001"
 export PICTURE_API_URL="http://localhost:8002"
+
+# IMPORTANT: Keep this identical for all web-ui pods.
+# Used to sign/validate the browser session cookie.
+export WEB_UI_SECRET_KEY="replace-with-a-long-random-secret"
+
+# Shared session store so multiple web-ui pods can serve the same user session.
+export REDIS_URL="redis://localhost:6379/0"
+
+# Cookie/session hardening and behavior.
+export SESSION_COOKIE_NAME="hobbora_sid"
+export SESSION_COOKIE_SECURE="false"     # true in HTTPS environments
+export SESSION_COOKIE_SAMESITE="Lax"
+export SESSION_LIFETIME_MINUTES="30"
 ```
+
+**How multi-pod sessions work now:**
+- Browser stores only a session-id cookie (`hobbora_sid` by default)
+- Session data is stored in Redis
+- Any web-ui pod can read/write the same session
 
 **Running the Web UI locally:**
 ```bash

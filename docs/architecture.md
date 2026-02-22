@@ -167,6 +167,54 @@ erDiagram
 | Web Server | Flask + Waitress |
 | Database | PostgreSQL 16.4 |
 | Object Storage | MinIO (S3-compatible) |
-| Authentication | bcrypt + Flask Sessions |
+| Authentication | bcrypt + Flask Sessions + Redis-backed server sessions |
 | Containerization | Docker |
 | Orchestration | Kubernetes |
+
+## Kubernetes Infrastructure Interaction Chart
+
+> This view is cluster-focused (ingress, namespaces, services, stateful components)
+> and complements the app-level diagrams above.
+
+```mermaid
+flowchart LR
+    Internet((Internet)) --> DNS[DNS A Record]
+    DNS --> LB[DigitalOcean Load Balancer]
+    LB --> NginxIngress[nginx Ingress Controller\nnamespace: nginx]
+
+    NginxIngress --> WebUIService[web-ui Service]
+
+    subgraph AppNS[Application Namespaces]
+        WebUIService --> WebUIPods[web-ui Pods xN\nFlask + Waitress]
+
+        WebUIPods --> DBAPIService[postgres-db-api Service]
+        WebUIPods --> PictureAPIService[picture-api Service]
+        WebUIPods --> RedisService[redis-service\nnamespace: redis]
+
+        DBAPIService --> PostgresService[postgres Service\nnamespace: postgres]
+        PictureAPIService --> MinIOService[minio Service\nnamespace: minio]
+    end
+
+    subgraph DataPlane[Stateful Data Plane]
+        PostgresService --> PostgresSTS[(PostgreSQL StatefulSet + PVC)]
+        MinIOService --> MinIOSTS[(MinIO StatefulSet + PVC)]
+        RedisService --> RedisSTS[(Redis StatefulSet + PVC)]
+    end
+
+    CertManager[cert-manager\nnamespace: cert-manager] --> NginxIngress
+
+    classDef infra fill:#1f2937,stroke:#93c5fd,color:#fff;
+    classDef app fill:#14532d,stroke:#86efac,color:#fff;
+    classDef data fill:#4c1d95,stroke:#c4b5fd,color:#fff;
+
+    class NginxIngress,CertManager,LB,DNS infra;
+    class WebUIService,WebUIPods,DBAPIService,PictureAPIService,RedisService,PostgresService,MinIOService app;
+    class PostgresSTS,MinIOSTS,RedisSTS data;
+```
+
+### Why Redis is now in the path
+
+- Browser stores only a `session_id` cookie.
+- Each web-ui request can land on any pod.
+- Pods fetch/write session state in Redis, so login/session persists across replicas.
+
