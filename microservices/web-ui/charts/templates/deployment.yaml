@@ -30,17 +30,3 @@ spec:
           value: {{ .Values.app.api.db_url }}
         - name: PICTURE_API_URL
           value: {{ .Values.app.api.picture_url }}
-
-        # Session settings for multi-pod deployments.
-        - name: WEB_UI_SECRET_KEY
-          value: {{ .Values.session.secretKey | quote }}
-        - name: REDIS_URL
-          value: {{ .Values.session.redisUrl | quote }}
-        - name: SESSION_COOKIE_NAME
-          value: {{ .Values.session.cookieName | quote }}
-        - name: SESSION_COOKIE_SECURE
-          value: {{ .Values.session.cookieSecure | quote }}
-        - name: SESSION_COOKIE_SAMESITE
-          value: {{ .Values.session.cookieSameSite | quote }}
-        - name: SESSION_LIFETIME_MINUTES
-          value: {{ .Values.session.lifetimeMinutes | quote }}

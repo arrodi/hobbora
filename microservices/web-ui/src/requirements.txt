@@ -1,6 +1,4 @@
 flask
-flask-session
-redis
 waitress
 requests
 bcrypt

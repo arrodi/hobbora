@@ -9,7 +9,7 @@ deployment:
     cpu: 100m
     memory: 250Mi
   port: 80
-  replicas: 2
+  repllicas: 1
 
 app:
   host: '0.0.0.0'
@@ -17,17 +17,3 @@ app:
   api:
     db_url: "http://postgres-db-api-service.postgres.svc.cluster.local:8080"
     picture_url: "http://picture-api-service.minio.svc.cluster.local:5000"
-
-session:
-  # Keep this stable across all web-ui pods.
-  # In production use a Kubernetes Secret + value injection.
-  secretKey: "replace-me-with-a-long-random-secret"
-
-  # Shared Redis endpoint used by Flask-Session.
-  redisUrl: "redis://redis-service.redis.svc.cluster.local:6379/0"
-
-  # Cookie settings. Browser stores only the session id.
-  cookieName: "hobbora_sid"
-  cookieSecure: "true"
-  cookieSameSite: "Lax"
-  lifetimeMinutes: "30"
