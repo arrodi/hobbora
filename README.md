@@ -23,18 +23,18 @@ Hobbora primarily runs on a Kubernetes Cluster.
 
 # Development info
 
-## Python Virtual Enviroment Setup
+## Python Virtual Environment Setup
 
-To setup a python virtual enviroment and perform local development we need to create a `VENV` and add a `.env.bat` file that the enviroment will use.
+To set up a Python virtual environment and perform local development, we need to create a `VENV` and add a `.env.bat` file that the environment will use.
 
 **Create the VENV**
 1. Open a `CMD` terminal and navigate to the path where you want your venv stored
-2. Create the virtual enviroment by running `python -m venv {name-of-venv}`
-3. Activate the VENV by running the path of the 'activate' file
+2. Create the virtual environment by running `python -m venv {name-of-venv}`
+3. Activate the VENV by running the path to the `activate` file
 
 **Populate VENV with variables**
 1. Create a `.env.bat` file in {name-of-venv}/bin folder to store your enviroment variables
-2. Populate the `.env.bat` file with variables in format `export {env_name}="{env_string}"` Note: variables can only be strings
+2. Populate the `.env.bat` file with variables in the format `export {env_name}="{env_string}"` (variables can only be strings)
 3. Run the command `source {relative_path/.env.bat}`. This will print out the variables and add them to your VENV
 4. !IMPORTANT: Make sure to add the VENV folder to your `.gitignore` file to prevent pushing secrets to your repo
 
